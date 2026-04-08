@@ -3,501 +3,475 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoS TEAM — Başarı Tablosu</title>
+<title>MoS TEAM — Basari Tablosu</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%}
-body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;min-height:100vh}
 .ms{font-family:'Material Symbols Outlined',sans-serif;font-size:16px;font-variation-settings:'FILL' 1;display:inline-block;vertical-align:middle;line-height:1}
+
+/* ── HEADER ── */
 .header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,17,40,0.97);border-bottom:1px solid #304724;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{color:#ec5b13;width:26px;height:26px;flex-shrink:0}
+.logo svg{color:#ec5b13;width:26px;height:26px;flex-shrink:0}
 .logo h2{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:-0.04em}
 .hdr-r{display:flex;align-items:center;gap:10px}
-.upd-box{text-align:right}
-.upd-lbl{font-size:9px;color:#a5c893;text-transform:uppercase;font-weight:700;letter-spacing:0.08em}
-.upd-val{font-size:11px;font-family:monospace}
+.upd-lbl{font-size:9px;color:#a5c893;text-transform:uppercase;font-weight:700;letter-spacing:0.08em;text-align:right}
+.upd-val{font-size:11px;font-family:monospace;text-align:right}
 .btn{background:#304724;border:none;color:#fff;padding:7px 13px;border-radius:10px;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .15s}
 .btn:hover{background:#3d5a2d}
 .btn:disabled{opacity:.5;cursor:default}
-.btn-primary{background:#ec5b13}
-.btn-primary:hover{background:#d44f0f}
-.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+.btn-p{background:#ec5b13 !important}
+.btn-p:hover{background:#d44f0f !important}
+.spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── MAIN ── */
 .main{padding:16px 20px 80px;display:flex;flex-direction:column;gap:14px;max-width:1600px;margin:0 auto}
-.status-bar{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:10px 16px;font-size:11px;color:#a5c893;display:flex;align-items:center;gap:8px}
-.sdot{width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0}
+
+/* ── STATUS ── */
+.sbar{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:10px 16px;font-size:11px;color:#a5c893;display:flex;align-items:center;gap:8px}
+.sdot{width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;transition:background .3s}
 .sdot.loading{background:#facc15;animation:pulse 1s infinite}
 .sdot.error{background:#f87171}
-.countdown{margin-left:auto;font-family:monospace;font-size:10px;color:#64748b}
+#countdown{margin-left:auto;font-family:monospace;font-size:10px;color:#64748b}
+
+/* ── HERO ── */
 .hero{background:#111d3a;border:1px solid #304724;border-radius:20px;padding:24px;display:flex;gap:24px;align-items:center;position:relative;overflow:hidden}
-.hero-glow{position:absolute;top:0;right:0;width:50%;height:100%;background:radial-gradient(circle at 70% 50%,rgba(236,91,19,.1) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:radial-gradient(circle at 70% 50%,rgba(236,91,19,.1) 0%,transparent 70%);pointer-events:none}
 .av-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;z-index:1}
-.av-ring{width:100px;height:100px;border-radius:50%;border:3px solid #ec5b13;padding:3px}
-.av-img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.av-ring{width:100px;height:100px;border-radius:50%;border:3px solid #ec5b13;padding:3px;overflow:hidden;flex-shrink:0}
+.av-ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
 .av-init{width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#ec5b13}
-.av-badge{background:#ec5b13;color:#fff;font-size:8px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap;text-align:center;line-height:1.6}
+.av-badge{background:#ec5b13;color:#fff;font-size:8px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;text-align:center;line-height:1.5;letter-spacing:.02em}
 .hero-info{flex:1;position:relative;z-index:1}
 .hero-info h1{font-size:26px;font-weight:900;letter-spacing:-0.04em;margin-bottom:8px}
 .hero-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
 .tag{background:#304724;color:#a5c893;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px}
-.tag.orange{background:rgba(236,91,19,.2);color:#ec5b13}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px}
-.stat-mini{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px}
-.stat-mini .sl{font-size:9px;color:#94a3b8;margin-bottom:3px}
-.stat-mini .sv{font-size:20px;font-weight:900}
+.tag.or{background:rgba(236,91,19,.2);color:#ec5b13}
+.hstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px}
+.sm{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px}
+.sm .sl{font-size:9px;color:#94a3b8;margin-bottom:3px}
+.sm .sv{font-size:20px;font-weight:900}
 .hero-deco{opacity:.18;text-align:right;flex-shrink:0;position:relative;z-index:1}
 .hero-deco .dt{font-size:40px;font-weight:900;color:#ec5b13;font-style:italic;line-height:1}
 .hero-deco .ds{font-size:9px;color:#a5c893;font-weight:700;letter-spacing:.1em;margin-top:4px}
-.legend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.leg-card{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
-.leg-card.acc{background:#304724;border-color:#ec5b13}
-.leg-ico{background:rgba(236,91,19,.2);color:#ec5b13;padding:8px;border-radius:8px;display:flex;font-size:18px}
-.leg-ico.wh{background:rgba(255,255,255,.2)}
-.leg-lbl{font-size:10px;color:#94a3b8}
-.leg-card.acc .leg-lbl{color:#a5c893}
-.leg-pts{font-size:13px;font-weight:700}
-.team-progress-section{display:flex;flex-direction:column;gap:8px}
-.team-progress-row{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 16px}
-.tpr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.tpr-score{font-size:24px;font-weight:900;color:#ec5b13;font-family:monospace;margin-right:12px;flex-shrink:0}
-.tpr-name{font-size:13px;font-weight:900}
-.tpr-meta{font-size:10px;color:#a5c893;margin-top:2px}
-.tpr-bar-wrap{width:100%;background:rgba(255,255,255,.07);height:8px;border-radius:99px;overflow:hidden}
-.tpr-bar-fill{height:100%;background:#ec5b13;border-radius:99px;transition:width .6s ease}
-.teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.team-sec .th{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.team-ac{width:4px;height:28px;background:#ec5b13;border-radius:2px;flex-shrink:0}
-.team-sec h3{font-size:16px;font-weight:900;margin:0}
-.team-avg{font-family:monospace;font-size:11px;color:#a5c893;margin-left:auto}
-.tbl-wrap{border:1px solid #304724;border-radius:14px;overflow:hidden;background:rgba(26,42,74,.4)}
+
+/* ── LEGEND ── */
+.lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lcard{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.lcard.acc{background:#304724;border-color:#ec5b13}
+.lico{background:rgba(236,91,19,.2);color:#ec5b13;padding:8px;border-radius:8px;display:flex}
+.lico.wh{background:rgba(255,255,255,.2)}
+.llbl{font-size:10px;color:#94a3b8}
+.lcard.acc .llbl{color:#a5c893}
+.lpts{font-size:13px;font-weight:700}
+
+/* ── TEAM PROGRESS ── */
+.tpsec{display:flex;flex-direction:column;gap:8px}
+.tprow{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 16px}
+.tphdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tpscore{font-size:24px;font-weight:900;color:#ec5b13;font-family:monospace;margin-right:12px;flex-shrink:0;line-height:1}
+.tpname{font-size:13px;font-weight:900}
+.tpmeta{font-size:10px;color:#a5c893;margin-top:2px}
+.tpbw{width:100%;background:rgba(255,255,255,.07);height:8px;border-radius:99px;overflow:hidden}
+.tpbf{height:100%;background:#ec5b13;border-radius:99px;transition:width .6s ease}
+
+/* ── TEAMS TABLE ── */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tsec .th{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tac{width:4px;height:28px;background:#ec5b13;border-radius:2px;flex-shrink:0}
+.tsec h3{font-size:16px;font-weight:900;margin:0}
+.tavg{font-family:monospace;font-size:11px;color:#a5c893;margin-left:auto}
+.twrap{border:1px solid #304724;border-radius:14px;overflow:hidden;background:rgba(26,42,74,.4)}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
 thead tr{background:rgba(48,71,36,.5)}
 th{padding:9px 10px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#a5c893;font-weight:700;text-align:left}
 th:last-child{text-align:right}
-td{padding:9px 10px;border-top:1px solid rgba(255,255,255,.05);vertical-align:middle}
+td{padding:8px 10px;border-top:1px solid rgba(255,255,255,.05);vertical-align:middle}
 td:last-child{text-align:right}
-.nc{display:flex;align-items:center;gap:7px}
-.avsm{width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.nc{display:flex;align-items:center;gap:8px}
+.avsm{width:32px;height:32px;border-radius:50%;border:2px solid #304724;overflow:hidden;flex-shrink:0;background:#334155;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.avsm img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 .nm{font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pval{font-family:monospace;font-size:13px;font-weight:900}
-.pno{color:#64748b;font-weight:700;font-family:monospace;font-size:11px}
 .bdg{font-size:8px;font-weight:700;padding:3px 7px;border-radius:20px;white-space:nowrap}
 .bg-g{background:rgba(34,197,94,.2);color:#4ade80}
 .bg-y{background:rgba(234,179,8,.2);color:#facc15}
 .bg-r{background:rgba(239,68,68,.2);color:#f87171}
+
+/* ── LEVEL LIGHTS ── */
 .lights{display:flex;gap:3px;align-items:center}
-.light{width:12px;height:12px;border-radius:50%;background:#1e293b;border:1px solid rgba(255,255,255,.1);flex-shrink:0}
-.light.on{background:#ec5b13;border-color:transparent;box-shadow:0 0 6px rgba(236,91,19,.8)}
-.light-lbl{font-size:8px;color:#64748b;margin-left:4px;font-family:monospace}
-.charts-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.ch-card{background:#111d3a;border:1px solid #304724;border-radius:14px;padding:16px}
-.ch-card.grn{background:linear-gradient(135deg,#304724 0%,#1a2a4a 100%);border-color:#ec5b13;text-align:center;display:flex;flex-direction:column;justify-content:center}
-.ch-title{font-size:9px;color:#a5c893;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
-.dist-row{display:flex;justify-content:space-between;font-size:10px;font-weight:700;margin-bottom:4px}
-.dist-bw{width:100%;background:rgba(255,255,255,.06);height:6px;border-radius:99px;overflow:hidden;margin-bottom:8px}
-.dist-bf{height:100%;border-radius:99px}
-.tot-num{font-size:42px;font-weight:900;line-height:1}
-.tot-sub{font-size:11px;color:#a5c893;margin-top:6px}
-.tot-bar{background:rgba(0,0,0,.3);border-radius:99px;height:6px;margin-top:12px;overflow:hidden}
-.tot-fill{height:100%;background:#fff;border-radius:99px;transition:width .6s ease}
-.ticker-wrap{position:fixed;bottom:0;left:0;width:100%;height:46px;background:rgba(10,17,40,.98);border-top:1px solid #304724;overflow:hidden;display:flex;align-items:center;z-index:100}
+.lt{width:12px;height:12px;border-radius:50%;background:#1e293b;border:1px solid rgba(255,255,255,.1);flex-shrink:0;transition:all .3s}
+.lt.on{background:#ec5b13;border-color:#ec5b13;box-shadow:0 0 6px rgba(236,91,19,.85)}
+.lt-lbl{font-size:8px;color:#64748b;margin-left:4px;font-family:monospace;min-width:20px}
+
+/* ── CHARTS ── */
+.crow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.cc{background:#111d3a;border:1px solid #304724;border-radius:14px;padding:16px}
+.cc.grn{background:linear-gradient(135deg,#304724 0%,#1a2a4a 100%);border-color:#ec5b13;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.ctit{font-size:9px;color:#a5c893;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.drow{display:flex;justify-content:space-between;font-size:10px;font-weight:700;margin-bottom:4px}
+.dbw{width:100%;background:rgba(255,255,255,.06);height:6px;border-radius:99px;overflow:hidden;margin-bottom:8px}
+.dbf{height:100%;border-radius:99px}
+.tnum{font-size:42px;font-weight:900;line-height:1}
+.tsub{font-size:11px;color:#a5c893;margin-top:6px}
+.tbar{background:rgba(0,0,0,.3);border-radius:99px;height:6px;margin-top:12px;overflow:hidden}
+.tbf{height:100%;background:#fff;border-radius:99px;transition:width .6s ease}
+
+/* ── TICKER ── */
+.tkwrap{position:fixed;bottom:0;left:0;width:100%;height:46px;background:rgba(10,17,40,.98);border-top:1px solid #304724;overflow:hidden;display:flex;align-items:center;z-index:100}
 .ticker{display:inline-block;white-space:nowrap;padding-right:100%;animation:tick 40s linear infinite;font-size:11px;font-weight:700}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 .ti{display:inline-flex;align-items:center;gap:6px;margin-right:48px}
-.tor{color:#ec5b13}
-.tgr{color:#a5c893}
-@media(max-width:960px){.teams-grid{grid-template-columns:1fr}.charts-row{grid-template-columns:1fr}.legend-grid{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;text-align:center}.hero-tags{justify-content:center}.hero-stats{margin:0 auto}.hero-deco{display:none}}
-@media(max-width:500px){.main{padding:12px 12px 80px}.hero-info h1{font-size:20px}.legend-grid{grid-template-columns:1fr 1fr}}
+.tor{color:#ec5b13}.tgr{color:#a5c893}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){.tgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr}.lgrid{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;text-align:center}.hero-tags{justify-content:center}.hstats{margin:0 auto}.hero-deco{display:none}}
+@media(max-width:500px){.main{padding:12px 12px 80px}.hero-info h1{font-size:20px}.lgrid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
 <header class="header">
   <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 48 48" fill="none">
-      <path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/>
-    </svg>
+    <svg viewBox="0 0 48 48" fill="none"><path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/></svg>
     <h2 id="dash-title">MoS TEAM — Basari Tablosu</h2>
   </div>
   <div class="hdr-r">
-    <div class="upd-box">
+    <div>
       <div class="upd-lbl">Son Guncelleme</div>
       <div class="upd-val" id="last-upd">—</div>
     </div>
-    <button class="btn btn-primary" id="refresh-btn" onclick="fetchData(true)">
-      <span id="refresh-icon" class="ms">refresh</span> Manuel Guncelle
+    <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
+      <span id="rico" class="ms">refresh</span> Manuel Guncelle
     </button>
   </div>
 </header>
 
 <div class="main">
-  <div class="status-bar">
+  <div class="sbar">
     <div class="sdot loading" id="sdot"></div>
-    <span id="status-msg">Veriler yukleniyor...</span>
-    <span class="countdown" id="countdown"></span>
+    <span id="smsg">Veriler yukleniyor...</span>
+    <span id="countdown"></span>
   </div>
-  <div id="hero-section"></div>
-  <div id="legend-section"></div>
-  <div id="team-progress-section"></div>
-  <div id="teams-section"></div>
-  <div id="charts-section"></div>
+  <div id="s-hero"></div>
+  <div id="s-legend"></div>
+  <div id="s-progress"></div>
+  <div id="s-teams"></div>
+  <div id="s-charts"></div>
 </div>
 
-<div class="ticker-wrap">
-  <div class="ticker" id="ticker-inner">
+<div class="tkwrap">
+  <div class="ticker" id="ticker">
     <span class="ti tor"><span class="ms">bolt</span>Veriler yukleniyor...</span>
   </div>
 </div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbybanAt2-av_sYFWGKd6gxKoyrOWuHhZ4KlYHiAgy90DELuRkSlfbEgaKtTifqZHahFyA/exec';
-const TARGET = 10;
+const API      = 'https://script.google.com/macros/s/AKfycbybanAt2-av_sYFWGKd6gxKoyrOWuHhZ4KlYHiAgy90DELuRkSlfbEgaKtTifqZHahFyA/exec';
+const TGT      = 10;
 const AUTO_SEC = 60;
-let refreshTimer = null;
-let countdownTimer = null;
+let rTimer = null, cTimer = null;
 
-function calcScore(r){
-  return Math.round(((r.P3||0)*1.0+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100;
-}
+/* ─── PUAN ─── */
+function score(r){ return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100; }
 
-function calcPrim(puan, isT1, isT2, teamGoalMet){
+/* ─── PRİM ─── */
+function prim(puan, is1, is2, teamOK){
   if(puan < 6) return 0;
-  let baz = 0;
-  if     (puan < 7)  baz = 50;
-  else if(puan < 8)  baz = 60;
-  else if(puan < 9)  baz = 75;
-  else if(puan < 10) baz = 85;
-  else {
-    baz = 100;
-    const extra = puan - 10;
-    const tamPuan = Math.floor(extra);
-    const tam3 = Math.floor(extra / 3);
-    baz += tamPuan * 5 + tam3 * 15;
+  let b = puan<7?50:puan<8?60:puan<9?75:puan<10?85:100;
+  if(puan >= 10){
+    const ex = puan - 10;
+    b += Math.floor(ex)*5 + Math.floor(ex/3)*15;
   }
-  if(isT1 && puan >= 15){
-    baz += 20;
-  } else if(teamGoalMet){
-    if(isT1)      baz += 20;
-    else if(isT2) baz += 10;
-  }
-  return Math.round(baz);
+  if(is1 && puan >= 15) b += 20;
+  else if(teamOK){ if(is1) b+=20; else if(is2) b+=10; }
+  return Math.round(b);
 }
 
-function levelLights(score){
-  const dots = [6,7,8,9,10].map(t =>
-    `<div class="light${score >= t ? ' on' : ''}"></div>`
-  ).join('');
-  const reached = [6,7,8,9,10].filter(t => score >= t);
-  const lbl = reached.length > 0
-    ? `<span class="light-lbl">${reached[reached.length-1]}+</span>`
-    : `<span class="light-lbl">—</span>`;
-  return `<div class="lights">${dots}${lbl}</div>`;
+/* ─── LEVEL IŞIKLAR ─── */
+function lights(s){
+  const thrs = [6,7,8,9,10];
+  const dots = thrs.map(t=>`<div class="lt${s>=t?' on':''}"></div>`).join('');
+  const last = thrs.filter(t=>s>=t);
+  const lbl  = last.length ? last[last.length-1]+'+' : '—';
+  return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span></div>`;
 }
 
-function initials(n){ return (n||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+/* ─── AVATAR ─── */
+function avatar(photo, name, size){
+  const ini = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  if(photo && photo.trim()){
+    return `<img src="${photo.trim()}" alt="${name||''}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+            <div style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;align-items:center;justify-content:center;font-size:${Math.round(size*.3)}px;font-weight:900;color:#ec5b13">${ini}</div>`;
+  }
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*.3)}px;font-weight:900;color:#ec5b13">${ini}</div>`;
+}
+
+function ini(n){ return (n||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
 
-function statusBadge(score){
-  if(score >= TARGET) return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
-  if(score >= TARGET * 0.85) return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
+function badge(s){
+  if(s>=TGT)      return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
+  if(s>=TGT*.85)  return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
   return '<span class="bdg bg-r">DEVAM EDIYOR</span>';
 }
+function primColor(p){ return p>=100?'#4ade80':p>=75?'#a5c893':p>=50?'#facc15':'#64748b'; }
 
-function primColor(pct){
-  if(pct >= 100) return '#4ade80';
-  if(pct >= 75)  return '#a5c893';
-  if(pct >= 50)  return '#facc15';
-  return '#64748b';
-}
+/* ─── VERİ İŞLE ─── */
+function process(raw){
+  const teams={}, all=[];
+  if(!raw.teams||!Array.isArray(raw.teams)) return {teams,all};
 
-function processData(raw){
-  const teams = {};
-  const allReps = [];
+  raw.teams.forEach((t,ti)=>{
+    const nm = t.name||('MoS TEAM '+(ti+1));
+    const members = (t.members||[]).map(r=>({
+      ...r,
+      score: r.score!==undefined ? r.score : score(r),
+      teamName: nm,
+      photo: r.photo||''
+    }));
+    members.sort((a,b)=>b.score-a.score);
 
-  if(raw.teams && Array.isArray(raw.teams)){
-    raw.teams.forEach((team, ti) => {
-      const tName = team.name || ('MoS TEAM '+(ti+1));
-      const members = (team.members || []).map(rep => ({
-        ...rep,
-        score: rep.score !== undefined ? rep.score : calcScore(rep),
-        teamName: tName
-      }));
-      members.sort((a,b) => b.score - a.score);
+    const total   = t.toplamPuan!==undefined ? t.toplamPuan : Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
+    const hedef   = t.hedef || members.length*TGT;
+    const teamOK  = t.hedefGecildi!==undefined ? t.hedefGecildi : total>=hedef;
 
-      const toplamPuan = team.toplamPuan !== undefined
-        ? team.toplamPuan
-        : Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
-      const hedef = team.hedef || members.length * TARGET;
-      const hedefGecildi = team.hedefGecildi !== undefined
-        ? team.hedefGecildi
-        : toplamPuan >= hedef;
-
-      members.forEach((rep, idx) => {
-        if(rep.primPct === undefined){
-          rep.primPct = calcPrim(rep.score, idx===0, idx===1, hedefGecildi);
-        }
-        allReps.push(rep);
-      });
-
-      teams[tName] = { toplamPuan, hedef, hedefGecildi, members };
+    members.forEach((r,i)=>{
+      r.primPct = r.primPct!==undefined ? r.primPct : prim(r.score, i===0, i===1, teamOK);
+      all.push(r);
     });
-  }
+    teams[nm] = {total, hedef, teamOK, members};
+  });
 
-  allReps.sort((a,b) => b.score - a.score);
-  return { teams, allReps };
+  all.sort((a,b)=>b.score-a.score);
+  return {teams,all};
 }
 
-function renderHero(allReps){
-  const top = allReps[0] || {};
-  const pctDone = top.score >= TARGET
-    ? '&#10003; TAMAMLANDI'
-    : fmt((top.score/TARGET)*100,0)+'%';
-  document.getElementById('hero-section').innerHTML = `
+/* ─── RENDER HERO ─── */
+function renderHero(all){
+  const top = all[0]||{};
+  const pct = top.score>=TGT ? '&#10003; TAMAMLANDI' : fmt((top.score/TGT)*100,0)+'%';
+  document.getElementById('s-hero').innerHTML=`
     <div class="hero">
-      <div class="hero-glow"></div>
       <div class="av-wrap">
-        <div class="av-ring">
-          ${top.photo
-            ? `<img class="av-img" src="${top.photo}" alt="${top.name||''}">`
-            : `<div class="av-init">${initials(top.name)}</div>`}
-        </div>
+        <div class="av-ring">${avatar(top.photo, top.name, 94)}</div>
         <div class="av-badge">EKİBİN ŞU ANKİ<br>ZİRVE PERFORMANSI</div>
       </div>
       <div class="hero-info">
         <h1>${top.name||'—'}</h1>
         <div class="hero-tags">
-          <span class="tag orange">${fmt(top.score)} Toplam Puan</span>
+          <span class="tag or">${fmt(top.score)} Toplam Puan</span>
           <span class="tag">#1 Genel Siralama</span>
-          <span class="tag">Hedef: ${pctDone}</span>
-          ${(top.primPct||0)>0 ? `<span class="tag orange">Prim: %${top.primPct}</span>` : ''}
-          ${top.score>=15 ? `<span class="tag orange">&#9733; Zirve Bonusu Aktif</span>` : ''}
+          <span class="tag">Hedef: ${pct}</span>
+          ${(top.primPct||0)>0?`<span class="tag or">Prim: %${top.primPct}</span>`:''}
+          ${top.score>=15?`<span class="tag or">&#9733; Zirve Bonusu Aktif</span>`:''}
         </div>
-        <div class="hero-stats">
-          <div class="stat-mini"><div class="sl">ProStart-3</div><div class="sv">${top.P3||0}</div></div>
-          <div class="stat-mini"><div class="sl">ProStart-6</div><div class="sv">${top.P6||0}</div></div>
-          <div class="stat-mini"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
+        <div class="hstats">
+          <div class="sm"><div class="sl">ProStart-3</div><div class="sv">${top.P3||0}</div></div>
+          <div class="sm"><div class="sl">ProStart-6</div><div class="sv">${top.P6||0}</div></div>
+          <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
         </div>
       </div>
-      <div class="hero-deco">
-        <div class="dt">MoS<br>TEAM</div>
-        <div class="ds">KURUMSAL SATIS v4.0</div>
-      </div>
+      <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>
     </div>`;
 }
 
+/* ─── RENDER LEGEND ─── */
 function renderLegend(){
-  document.getElementById('legend-section').innerHTML = `
-    <div class="legend-grid">
-      <div class="leg-card"><div class="leg-ico"><span class="ms">stars</span></div><div><div class="leg-lbl">ProStart-3</div><div class="leg-pts">1.0 Puan</div></div></div>
-      <div class="leg-card"><div class="leg-ico"><span class="ms">rocket_launch</span></div><div><div class="leg-lbl">ProStart-6</div><div class="leg-pts">1.7 Puan</div></div></div>
-      <div class="leg-card"><div class="leg-ico"><span class="ms">workspace_premium</span></div><div><div class="leg-lbl">ProStart-12</div><div class="leg-pts">2.5 Puan</div></div></div>
-      <div class="leg-card acc"><div class="leg-ico wh"><span class="ms">target</span></div><div><div class="leg-lbl">Aylik Hedef</div><div class="leg-pts">10 Puan / Kisi</div></div></div>
+  document.getElementById('s-legend').innerHTML=`
+    <div class="lgrid">
+      <div class="lcard"><div class="lico"><span class="ms">stars</span></div><div><div class="llbl">ProStart-3</div><div class="lpts">1.0 Puan</div></div></div>
+      <div class="lcard"><div class="lico"><span class="ms">rocket_launch</span></div><div><div class="llbl">ProStart-6</div><div class="lpts">1.7 Puan</div></div></div>
+      <div class="lcard"><div class="lico"><span class="ms">workspace_premium</span></div><div><div class="llbl">ProStart-12</div><div class="lpts">2.5 Puan</div></div></div>
+      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">10 Puan / Kisi</div></div></div>
     </div>`;
 }
 
-function renderTeamProgress(teams){
-  let html = '<div class="team-progress-section">';
-  Object.keys(teams).forEach(tName => {
-    const t = teams[tName];
-    const pct = t.hedef > 0 ? Math.min(100,(t.toplamPuan/t.hedef)*100) : 0;
-    const badge = t.hedefGecildi
-      ? '<span class="bdg bg-g">HEDEF ASILDI</span>'
-      : '<span class="bdg bg-y">DEVAM EDIYOR</span>';
-    html += `
-      <div class="team-progress-row">
-        <div class="tpr-header">
-          <div style="display:flex;align-items:center">
-            <span class="tpr-score">${fmt(t.toplamPuan)}</span>
-            <div>
-              <div class="tpr-name">${tName} &nbsp;${badge}</div>
-              <div class="tpr-meta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef,0)} puan</div>
-            </div>
-          </div>
-          <span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%${fmt(pct,1)}</span>
+/* ─── RENDER PROGRESS ─── */
+function renderProgress(teams){
+  let h='<div class="tpsec">';
+  Object.keys(teams).forEach(nm=>{
+    const t=teams[nm];
+    const pct=t.hedef>0?Math.min(100,(t.total/t.hedef)*100):0;
+    const b=t.teamOK?'<span class="bdg bg-g">HEDEF ASILDI</span>':'<span class="bdg bg-y">DEVAM EDIYOR</span>';
+    h+=`<div class="tprow">
+      <div class="tphdr">
+        <div style="display:flex;align-items:center">
+          <span class="tpscore">${fmt(t.total)}</span>
+          <div><div class="tpname">${nm} &nbsp;${b}</div><div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef,0)} puan</div></div>
         </div>
-        <div class="tpr-bar-wrap">
-          <div class="tpr-bar-fill" style="width:${fmt(pct,1)}%"></div>
-        </div>
-      </div>`;
-  });
-  html += '</div>';
-  document.getElementById('team-progress-section').innerHTML = html;
-}
-
-function renderTeams(teams){
-  const names = Object.keys(teams);
-  if(!names.length){
-    document.getElementById('teams-section').innerHTML =
-      '<div style="text-align:center;padding:40px;color:#64748b">Takim verisi bulunamadi.</div>';
-    return;
-  }
-  let html = '<div class="teams-grid">';
-  names.forEach(tName => {
-    const {members, hedefGecildi} = teams[tName];
-    const avg = members.length ? fmt(members.reduce((s,r)=>s+r.score,0)/members.length) : '0.0';
-    html += `
-      <div class="team-sec">
-        <div class="th">
-          <div class="team-ac"></div>
-          <h3>${tName}</h3>
-          <span class="team-avg">Ort: ${avg} ${hedefGecildi?'<span style="color:#4ade80">&#10003;</span>':''}</span>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <colgroup>
-              <col style="width:26%"><col style="width:13%"><col style="width:22%"><col style="width:16%"><col style="width:23%">
-            </colgroup>
-            <thead><tr>
-              <th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th><th style="text-align:right">Durum</th>
-            </tr></thead>
-            <tbody>
-              ${members.map((rep,ri) => {
-                const pColor = primColor(rep.primPct||0);
-                const isFirst = ri === 0;
-                const nameStyle = isFirst ? 'color:#ec5b13' : ri===1 ? 'color:#a5c893' : '';
-                return `<tr>
-                  <td><div class="nc">
-                    <div class="avsm" style="${nameStyle}">${initials(rep.name)}</div>
-                    <span class="nm" style="${nameStyle}">${rep.name||'—'}</span>
-                  </div></td>
-                  <td class="pval">${fmt(rep.score)}</td>
-                  <td>${levelLights(rep.score)}</td>
-                  <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(rep.primPct||0)>0?pColor:'#64748b'}">
-                    ${(rep.primPct||0)>0?'%'+rep.primPct:'—'}
-                  </td>
-                  <td>${statusBadge(rep.score)}</td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>`;
-  });
-  html += '</div>';
-  document.getElementById('teams-section').innerHTML = html;
-}
-
-function renderCharts(allReps){
-  const p3t  = allReps.reduce((s,r)=>s+(r.P3||0),0);
-  const p6t  = allReps.reduce((s,r)=>s+(r.P6||0),0);
-  const p12t = allReps.reduce((s,r)=>s+(r.P12||0),0);
-  const ptot = p3t+p6t+p12t;
-  const p3p  = ptot>0?Math.round(p3t/ptot*100):33;
-  const p6p  = ptot>0?Math.round(p6t/ptot*100):33;
-  const p12p = ptot>0?Math.round(p12t/ptot*100):34;
-  const total   = allReps.reduce((s,r)=>s+r.score,0);
-  const target  = allReps.length * TARGET;
-  const teamPct = target>0?Math.min(100,(total/target)*100):0;
-  const top5    = allReps.slice(0,5);
-  const maxS    = top5.length ? top5[0].score : 1;
-
-  document.getElementById('charts-section').innerHTML = `
-    <div class="charts-row">
-      <div class="ch-card">
-        <div class="ch-title">Urun Dagilimi</div>
-        <div class="dist-row"><span>ProStart-3</span><span>${p3p}%</span></div>
-        <div class="dist-bw"><div class="dist-bf" style="width:${p3p}%;background:#ec5b13"></div></div>
-        <div class="dist-row"><span>ProStart-6</span><span>${p6p}%</span></div>
-        <div class="dist-bw"><div class="dist-bf" style="width:${p6p}%;background:#a5c893"></div></div>
-        <div class="dist-row"><span>ProStart-12</span><span>${p12p}%</span></div>
-        <div class="dist-bw"><div class="dist-bf" style="width:${p12p}%;background:#60a5fa"></div></div>
+        <span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%${fmt(pct,1)}</span>
       </div>
-      <div class="ch-card">
-        <div class="ch-title">Genel Siralama (Top ${top5.length})</div>
-        ${top5.map((r,i)=>`
+      <div class="tpbw"><div class="tpbf" style="width:${fmt(pct,1)}%"></div></div>
+    </div>`;
+  });
+  h+='</div>';
+  document.getElementById('s-progress').innerHTML=h;
+}
+
+/* ─── RENDER TEAMS ─── */
+function renderTeams(teams){
+  const nms=Object.keys(teams);
+  if(!nms.length){ document.getElementById('s-teams').innerHTML=''; return; }
+  let h='<div class="tgrid">';
+  nms.forEach(nm=>{
+    const {members,teamOK}=teams[nm];
+    const avg=members.length?fmt(members.reduce((s,r)=>s+r.score,0)/members.length):'0.0';
+    h+=`<div class="tsec">
+      <div class="th">
+        <div class="tac"></div>
+        <h3>${nm}</h3>
+        <span class="tavg">Ort: ${avg} ${teamOK?'<span style="color:#4ade80">&#10003;</span>':''}</span>
+      </div>
+      <div class="twrap">
+        <table>
+          <colgroup><col style="width:28%"><col style="width:13%"><col style="width:22%"><col style="width:15%"><col style="width:22%"></colgroup>
+          <thead><tr><th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th><th style="text-align:right">Durum</th></tr></thead>
+          <tbody>
+            ${members.map((r,i)=>{
+              const col=i===0?'#ec5b13':i===1?'#a5c893':'';
+              const pc=primColor(r.primPct||0);
+              const photoEl=r.photo&&r.photo.trim()
+                ? `<img src="${r.photo.trim()}" alt="${r.name||''}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${col||'#304724'}" onerror="this.outerHTML='<div style=\\'width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${col||'#fff'};\\'>${ini(r.name)}</div>'">`
+                : `<div style="width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${col||'#fff'}">${ini(r.name)}</div>`;
+              return `<tr>
+                <td><div class="nc">${photoEl}<span class="nm" style="${col?'color:'+col:''}">${r.name||'—'}</span></div></td>
+                <td class="pval" style="${col?'color:'+col:''}">${fmt(r.score)}</td>
+                <td>${lights(r.score)}</td>
+                <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct||0)>0?pc:'#64748b'}">${(r.primPct||0)>0?'%'+r.primPct:'—'}</td>
+                <td>${badge(r.score)}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  });
+  h+='</div>';
+  document.getElementById('s-teams').innerHTML=h;
+}
+
+/* ─── RENDER CHARTS ─── */
+function renderCharts(all){
+  const p3=all.reduce((s,r)=>s+(r.P3||0),0);
+  const p6=all.reduce((s,r)=>s+(r.P6||0),0);
+  const p12=all.reduce((s,r)=>s+(r.P12||0),0);
+  const pt=p3+p6+p12;
+  const pp3=pt>0?Math.round(p3/pt*100):33;
+  const pp6=pt>0?Math.round(p6/pt*100):33;
+  const pp12=pt>0?Math.round(p12/pt*100):34;
+  const tot=all.reduce((s,r)=>s+r.score,0);
+  const tgt=all.length*TGT;
+  const tpct=tgt>0?Math.min(100,(tot/tgt)*100):0;
+  const t5=all.slice(0,5);
+  const mx=t5.length?t5[0].score:1;
+  document.getElementById('s-charts').innerHTML=`
+    <div class="crow">
+      <div class="cc">
+        <div class="ctit">Urun Dagilimi</div>
+        <div class="drow"><span>ProStart-3</span><span>${pp3}%</span></div>
+        <div class="dbw"><div class="dbf" style="width:${pp3}%;background:#ec5b13"></div></div>
+        <div class="drow"><span>ProStart-6</span><span>${pp6}%</span></div>
+        <div class="dbw"><div class="dbf" style="width:${pp6}%;background:#a5c893"></div></div>
+        <div class="drow"><span>ProStart-12</span><span>${pp12}%</span></div>
+        <div class="dbw"><div class="dbf" style="width:${pp12}%;background:#60a5fa"></div></div>
+      </div>
+      <div class="cc">
+        <div class="ctit">Genel Siralama (Top ${t5.length})</div>
+        ${t5.map((r,i)=>`
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
             <span style="font-size:11px;font-weight:700;color:${i===0?'#ec5b13':i===1?'#a5c893':'#fff'}">${i+1}. ${r.name||'—'}</span>
             <span style="font-family:monospace;font-size:10px;color:#a5c893">${fmt(r.score)}</span>
           </div>
           <div style="width:100%;background:rgba(255,255,255,.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">
-            <div style="width:${fmt(Math.min(100,(r.score/maxS)*100),1)}%;height:100%;background:${i===0?'#ec5b13':'#304724'};border-radius:99px"></div>
+            <div style="width:${fmt(Math.min(100,r.score/mx*100),1)}%;height:100%;background:${i===0?'#ec5b13':'#304724'};border-radius:99px"></div>
           </div>`).join('')}
       </div>
-      <div class="ch-card grn">
-        <div class="ch-title">Toplam Ekip Puani</div>
-        <div class="tot-num">${fmt(total)}</div>
-        <div class="tot-sub">Hedef: ${fmt(target,0)} puan</div>
-        <div class="tot-bar"><div class="tot-fill" style="width:${fmt(teamPct,1)}%"></div></div>
-        <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(teamPct,1)} tamamlandi</div>
+      <div class="cc grn">
+        <div class="ctit">Toplam Ekip Puani</div>
+        <div class="tnum">${fmt(tot)}</div>
+        <div class="tsub">Hedef: ${fmt(tgt,0)} puan</div>
+        <div class="tbar"><div class="tbf" style="width:${fmt(tpct,1)}%"></div></div>
+        <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(tpct,1)} tamamlandi</div>
       </div>
     </div>`;
 }
 
-function renderTicker(allReps){
-  if(!allReps.length) return;
-  const top = allReps[0];
-  const ranking = allReps.map((r,i)=>`${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
-  const total  = allReps.reduce((s,r)=>s+r.score,0);
-  const target = allReps.length * TARGET;
-  const pct    = target>0?fmt(Math.min(100,(total/target)*100),1):'0.0';
-  document.getElementById('ticker-inner').innerHTML = `
+/* ─── RENDER TICKER ─── */
+function renderTicker(all){
+  if(!all.length) return;
+  const top=all[0];
+  const rank=all.map((r,i)=>`${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
+  const tot=all.reduce((s,r)=>s+r.score,0);
+  const tgt=all.length*TGT;
+  const pct=tgt>0?fmt(Math.min(100,tot/tgt*100),1):'0.0';
+  document.getElementById('ticker').innerHTML=`
     <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}${top.score>=15?' | ★ Zirve Bonusu':''}</span>
-    <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${ranking}</span>
-    <span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(total)} / ${fmt(target,0)} puan (%${pct})</span>
+    <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>
+    <span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(tot)} / ${fmt(tgt,0)} puan (%${pct})</span>
     <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}${top.score>=15?' | ★ Zirve Bonusu':''}</span>
-    <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${ranking}</span>`;
+    <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>`;
 }
 
+/* ─── COUNTDOWN ─── */
 function startCountdown(){
-  if(countdownTimer) clearInterval(countdownTimer);
-  let val = AUTO_SEC;
-  document.getElementById('countdown').textContent = `Sonraki: ${val}s`;
-  countdownTimer = setInterval(()=>{
-    val--;
-    if(val > 0) document.getElementById('countdown').textContent = `Sonraki: ${val}s`;
-    else{ document.getElementById('countdown').textContent = 'Guncelleniyor...'; clearInterval(countdownTimer); }
+  if(cTimer) clearInterval(cTimer);
+  let v=AUTO_SEC;
+  document.getElementById('countdown').textContent=`Sonraki: ${v}s`;
+  cTimer=setInterval(()=>{
+    v--;
+    if(v>0) document.getElementById('countdown').textContent=`Sonraki: ${v}s`;
+    else{ document.getElementById('countdown').textContent='Guncelleniyor...'; clearInterval(cTimer); }
   },1000);
 }
 
+/* ─── FETCH ─── */
 async function fetchData(manual=false){
-  const btn  = document.getElementById('refresh-btn');
-  const sdot = document.getElementById('sdot');
-  const smsg = document.getElementById('status-msg');
-  btn.disabled = true;
-  document.getElementById('refresh-icon').outerHTML = '<span class="spin" id="refresh-icon"></span>';
-  sdot.className = 'sdot loading';
-  smsg.textContent = 'Veriler guncelleniyor...';
-  document.getElementById('countdown').textContent = '';
-  if(refreshTimer)   clearInterval(refreshTimer);
-  if(countdownTimer) clearInterval(countdownTimer);
+  const btn=document.getElementById('rbtn');
+  btn.disabled=true;
+  document.getElementById('rico').outerHTML='<span class="spin" id="rico"></span>';
+  document.getElementById('sdot').className='sdot loading';
+  document.getElementById('smsg').textContent='Veriler guncelleniyor...';
+  document.getElementById('countdown').textContent='';
+  if(rTimer)  clearInterval(rTimer);
+  if(cTimer)  clearInterval(cTimer);
 
   try{
-    const opts = manual ? {cache:'no-cache'} : {};
-    const res  = await fetch(API + '?t=' + Date.now(), opts);
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const raw  = await res.json();
+    const opts=manual?{cache:'no-cache'}:{};
+    const res=await fetch(API+'?t='+Date.now(),opts);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const raw=await res.json();
+    const {teams,all}=process(raw);
 
-    const {teams, allReps} = processData(raw);
-    renderHero(allReps);
+    renderHero(all);
     renderLegend();
-    renderTeamProgress(teams);
+    renderProgress(teams);
     renderTeams(teams);
-    renderCharts(allReps);
-    renderTicker(allReps);
+    renderCharts(all);
+    renderTicker(all);
 
-    const now = new Date();
-    document.getElementById('last-upd').textContent =
-      now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
-    if(raw.title) document.getElementById('dash-title').textContent = raw.title;
+    const now=new Date();
+    document.getElementById('last-upd').textContent=
+      now.toLocaleDateString('tr-TR')+' '+now.toLocaleTimeString('tr-TR');
+    if(raw.title) document.getElementById('dash-title').textContent=raw.title;
 
-    sdot.className = 'sdot';
-    smsg.textContent = 'Veriler basariyla guncellendi.';
+    document.getElementById('sdot').className='sdot';
+    document.getElementById('smsg').textContent='Veriler basariyla guncellendi.';
     startCountdown();
-    refreshTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+    rTimer=setInterval(()=>fetchData(false),AUTO_SEC*1000);
 
   }catch(e){
-    sdot.className = 'sdot error';
-    smsg.textContent = 'Veri alinamadi: ' + e.message;
-    document.getElementById('countdown').textContent = '';
-    refreshTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+    document.getElementById('sdot').className='sdot error';
+    document.getElementById('smsg').textContent='Veri alinamadi: '+e.message;
+    rTimer=setInterval(()=>fetchData(false),AUTO_SEC*1000);
   }finally{
-    const ic = document.getElementById('refresh-icon');
-    if(ic) ic.outerHTML = '<span class="ms" id="refresh-icon">refresh</span>';
-    btn.disabled = false;
+    const ic=document.getElementById('rico');
+    if(ic) ic.outerHTML='<span class="ms" id="rico">refresh</span>';
+    btn.disabled=false;
   }
 }
 
