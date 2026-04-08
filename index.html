@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoS TEAM — Başarı Tablosu</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #0a1128; color: #fff; font-family: 'Public Sans', sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+
+  .ms { font-family: 'Material Symbols Outlined', sans-serif; font-size: 16px; font-variation-settings: 'FILL' 1; display: inline-block; vertical-align: middle; }
+
+  /* HEADER */
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(10,17,40,0.96); border-bottom: 1px solid #304724; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { color: #ec5b13; width: 26px; height: 26px; flex-shrink: 0; }
+  .logo h2 { font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; }
+  .hdr-r { display: flex; align-items: center; gap: 10px; }
+  .upd-box { text-align: right; }
+  .upd-lbl { font-size: 9px; color: #a5c893; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; }
+  .upd-val { font-size: 11px; font-family: monospace; }
+  .btn { background: #304724; border: none; color: #fff; padding: 7px 12px; border-radius: 10px; cursor: pointer; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 5px; font-family: inherit; transition: background 0.15s; }
+  .btn:hover { background: #3d5a2d; }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .btn-primary { background: #ec5b13; }
+  .btn-primary:hover { background: #d44f0f; }
+
+  /* SPINNER */
+  .spin { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(165,200,147,0.4); border-top-color: #a5c893; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  /* MAIN */
+  .main { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; max-width: 1600px; margin: 0 auto; padding-bottom: 70px; }
+
+  /* STATUS BAR */
+  .status-bar { background: #1a2a4a; border: 1px solid #304724; border-radius: 12px; padding: 10px 16px; font-size: 11px; color: #a5c893; display: flex; align-items: center; gap: 8px; }
+  .sdot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
+  .sdot.loading { background: #facc15; animation: pulse 1s infinite; }
+  .sdot.error { background: #f87171; }
+  .countdown { margin-left: auto; font-family: monospace; font-size: 10px; color: #64748b; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #1a2a4a 0%, #0a1128 100%); border: 1px solid #304724; border-radius: 20px; padding: 24px; display: flex; gap: 24px; align-items: center; overflow: hidden; position: relative; }
+  .hero::after { content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: radial-gradient(circle at 70% 50%, rgba(236,91,19,0.12) 0%, transparent 70%); pointer-events: none; }
+  .av-wrap { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .av-ring { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #ec5b13; padding: 3px; }
+  .av-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .av-init { width: 100%; height: 100%; border-radius: 50%; background: #1a2a4a; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; color: #ec5b13; }
+  .av-badge { background: #ec5b13; color: #fff; font-size: 9px; font-weight: 700; padding: 3px 12px; border-radius: 20px; white-space: nowrap; text-align: center; }
+  .hero-info { flex: 1; position: relative; z-index: 1; }
+  .hero-info h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.04em; margin-bottom: 8px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag { background: #304724; color: #a5c893; font-size: 9px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 320px; }
+  .stat-mini { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 12px; }
+  .stat-mini .sl { font-size: 9px; color: #94a3b8; margin-bottom: 3px; }
+  .stat-mini .sv { font-size: 20px; font-weight: 900; }
+  .hero-deco { opacity: 0.2; text-align: right; flex-shrink: 0; position: relative; z-index: 1; }
+  .hero-deco .dt { font-size: 40px; font-weight: 900; color: #ec5b13; font-style: italic; line-height: 1; }
+  .hero-deco .ds { font-size: 9px; color: #a5c893; font-weight: 700; letter-spacing: 0.1em; margin-top: 4px; }
+
+  /* LEGEND */
+  .legend-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .leg-card { background: #1a2a4a; border: 1px solid #304724; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  .leg-card.acc { background: #304724; border-color: #ec5b13; }
+  .leg-ico { background: rgba(236,91,19,0.2); color: #ec5b13; padding: 8px; border-radius: 8px; font-size: 18px; display: flex; }
+  .leg-ico.wh { background: rgba(255,255,255,0.2); }
+  .leg-lbl { font-size: 10px; color: #94a3b8; }
+  .leg-card.acc .leg-lbl { color: #a5c893; }
+  .leg-pts { font-size: 13px; font-weight: 700; }
+
+  /* TEAMS */
+  .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .team-sec .th { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .team-ac { width: 4px; height: 28px; background: #ec5b13; border-radius: 2px; flex-shrink: 0; }
+  .team-sec h3 { font-size: 17px; font-weight: 900; margin: 0; }
+  .team-avg { font-family: monospace; font-size: 11px; color: #a5c893; margin-left: auto; }
+  .tbl-wrap { border: 1px solid #304724; border-radius: 14px; overflow: hidden; background: rgba(26,42,74,0.4); }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  thead tr { background: rgba(48,71,36,0.5); }
+  th { padding: 9px 11px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; color: #a5c893; font-weight: 700; text-align: left; }
+  th:last-child { text-align: right; }
+  td { padding: 9px 11px; border-top: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+  td:last-child { text-align: right; }
+  .nc { display: flex; align-items: center; gap: 7px; }
+  .avsm { width: 30px; height: 30px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .nm { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pval { font-family: monospace; font-size: 12px; font-weight: 700; }
+  .pok { color: #a5c893; font-weight: 700; font-family: monospace; font-size: 11px; }
+  .pno { color: #64748b; font-weight: 700; font-family: monospace; font-size: 11px; }
+  .bdg { font-size: 8px; font-weight: 700; padding: 3px 7px; border-radius: 20px; white-space: nowrap; }
+  .bg-g { background: rgba(34,197,94,0.2); color: #4ade80; }
+  .bg-y { background: rgba(234,179,8,0.2); color: #facc15; }
+  .bg-r { background: rgba(239,68,68,0.2); color: #f87171; }
+
+  /* LEVEL LIGHTS */
+  .lights { display: flex; gap: 3px; align-items: center; }
+  .light { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: #1e293b; }
+  .light.on { border-color: transparent; }
+  .light.on.l6 { background: #ef4444; box-shadow: 0 0 5px rgba(239,68,68,0.7); }
+  .light.on.l7 { background: #f97316; box-shadow: 0 0 5px rgba(249,115,22,0.7); }
+  .light.on.l8 { background: #eab308; box-shadow: 0 0 5px rgba(234,179,8,0.7); }
+  .light.on.l9 { background: #22c55e; box-shadow: 0 0 5px rgba(34,197,94,0.7); }
+  .light.on.l10 { background: #ec5b13; box-shadow: 0 0 6px rgba(236,91,19,0.9); }
+
+  /* CHARTS */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .ch-card { background: linear-gradient(135deg, #1a2a4a 0%, #0a1128 100%); border: 1px solid #304724; border-radius: 14px; padding: 16px; }
+  .ch-card.grn { background: linear-gradient(135deg, #304724 0%, #1a2a4a 100%); border-color: #ec5b13; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .ch-title { font-size: 9px; color: #a5c893; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .dist-row { display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+  .dist-bw { width: 100%; background: rgba(255,255,255,0.06); height: 6px; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+  .dist-bf { height: 100%; border-radius: 99px; }
+  .tot-num { font-size: 42px; font-weight: 900; line-height: 1; }
+  .tot-sub { font-size: 11px; color: #a5c893; margin-top: 6px; }
+  .tot-bar { background: rgba(0,0,0,0.3); border-radius: 99px; height: 6px; margin-top: 12px; overflow: hidden; }
+  .tot-fill { height: 100%; background: #fff; border-radius: 99px; transition: width 0.6s ease; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 60px 20px; color: #64748b; }
+  .empty .ei { font-size: 48px; margin-bottom: 12px; color: #304724; }
+  .empty p { font-size: 14px; }
+
+  /* TICKER */
+  .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; height: 46px; background: rgba(10,17,40,0.97); border-top: 1px solid #304724; overflow: hidden; display: flex; align-items: center; z-index: 100; }
+  .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: tick 40s linear infinite; font-size: 11px; font-weight: 700; }
+  @keyframes tick { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .ti { display: inline-flex; align-items: center; gap: 6px; margin-right: 48px; }
+  .tor { color: #ec5b13; }
+  .tgr { color: #a5c893; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .teams-grid { grid-template-columns: 1fr; }
+    .charts-row { grid-template-columns: 1fr; }
+    .legend-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero { flex-direction: column; text-align: center; }
+    .hero-tags { justify-content: center; }
+    .hero-stats { margin: 0 auto; }
+    .hero-deco { display: none; }
+  }
+  @media (max-width: 500px) {
+    .legend-grid { grid-template-columns: 1fr 1fr; }
+    .hero-info h1 { font-size: 20px; }
+    .main { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/>
+    </svg>
+    <h2 id="dash-title">MoS TEAM — Başarı Tablosu</h2>
+  </div>
+  <div class="hdr-r">
+    <div class="upd-box">
+      <div class="upd-lbl">Son Güncelleme</div>
+      <div class="upd-val" id="last-upd">—</div>
+    </div>
+    <button class="btn btn-primary" id="refresh-btn" onclick="fetchData()">
+      <span class="ms" id="refresh-icon">refresh</span> Manuel Güncelle
+    </button>
+  </div>
+</header>
+
+<div class="main">
+  <div class="status-bar">
+    <div class="sdot loading" id="sdot"></div>
+    <span id="status-msg">Veriler yükleniyor...</span>
+    <span class="countdown" id="countdown"></span>
+  </div>
+
+  <div id="hero-section"></div>
+  <div id="legend-section"></div>
+  <div id="teams-section"></div>
+  <div id="charts-section"></div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker-inner">
+    <span class="ti tor"><span class="ms">bolt</span>Veriler yükleniyor, lütfen bekleyin...</span>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbybanAt2-av_sYFWGKd6gxKoyrOWuHhZ4KlYHiAgy90DELuRkSlfbEgaKtTifqZHahFyA/exec';
+  const WEIGHTS = { P3: 1.0, P6: 1.7, P12: 2.5 };
+  const MONTHLY_TARGET = 10;
+  const AUTO_REFRESH_SEC = 60;
+
+  let refreshTimer = null;
+  let countdownTimer = null;
+  let countdownVal = AUTO_REFRESH_SEC;
+
+  function calcScore(rep) {
+    const s = (rep.P3 || 0) * WEIGHTS.P3 + (rep.P6 || 0) * WEIGHTS.P6 + (rep.P12 || 0) * WEIGHTS.P12;
+    return Math.round(s * 100) / 100;
+  }
+
+  function calcPrimPct(score, isGlobal1st, isGlobal2nd, teamGoalMet) {
+    if (score < 6) return 0;
+    let base = 0;
+    if (score < 7)       base = 0.06;
+    else if (score < 8)  base = 0.07;
+    else if (score < 9)  base = 0.08;
+    else if (score < 10) base = 0.09;
+    else {
+      base = 0.10;
+      const over = score - 10;
+      const full3 = Math.floor(over / 3);
+      const rem = over - full3 * 3;
+      base += full3 * 0.15 + Math.round(rem) * 0.05;
+    }
+    if (teamGoalMet) {
+      if (isGlobal1st) base += 0.10;
+      else if (isGlobal2nd) base += 0.05;
+    }
+    return Math.round(base * 100);
+  }
+
+  function levelLights(score) {
+    return [6,7,8,9,10].map(lvl =>
+      `<div class="light${score >= lvl ? ' on' : ''} l${lvl}"></div>`
+    ).join('');
+  }
+
+  function initials(name) {
+    return (name || '?').trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  function fmt(n, d = 1) {
+    return parseFloat(n).toFixed(d);
+  }
+
+  function statusBadge(score) {
+    if (score >= MONTHLY_TARGET)           return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
+    if (score >= MONTHLY_TARGET * 0.85)    return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
+    return '<span class="bdg bg-r">DEVAM EDİYOR</span>';
+  }
+
+  function parseData(raw) {
+    const teams = {};
+    const allReps = [];
+
+    if (raw.teams && Array.isArray(raw.teams)) {
+      raw.teams.forEach((team, ti) => {
+        const tName = team.name || team.team_name || ('MoS TEAM ' + (ti + 1));
+        teams[tName] = [];
+        const members = team.members || team.reps || [];
+        members.forEach(rep => {
+          const score = calcScore(rep);
+          const r = { ...rep, score, teamName: tName };
+          teams[tName].push(r);
+          allReps.push(r);
+        });
+      });
+    } else if (raw.reps && Array.isArray(raw.reps)) {
+      raw.reps.forEach(rep => {
+        const score = calcScore(rep);
+        const tName = rep.team || 'MoS TEAM 1';
+        if (!teams[tName]) teams[tName] = [];
+        const r = { ...rep, score, teamName: tName };
+        teams[tName].push(r);
+        allReps.push(r);
+      });
+    }
+
+    allReps.sort((a, b) => b.score - a.score);
+    Object.keys(teams).forEach(t => teams[t].sort((a, b) => b.score - a.score));
+
+    const teamGoals = {};
+    Object.keys(teams).forEach(tName => {
+      const avg = teams[tName].reduce((s, r) => s + r.score, 0) / (teams[tName].length || 1);
+      teamGoals[tName] = avg >= MONTHLY_TARGET;
+    });
+
+    allReps.forEach((rep, idx) => {
+      rep.primPct = calcPrimPct(rep.score, idx === 0, idx === 1, teamGoals[rep.teamName]);
+    });
+
+    return { allReps, teams, teamGoals };
+  }
+
+  function renderHero(allReps) {
+    const top = allReps[0] || {};
+    const heroLabel = (top.score >= 15 || allReps.indexOf(top) === 0)
+      ? 'EKİBİN ZİRVE PERFORMANSI' : 'AYIN ŞAMPİYONU';
+    const pctDisplay = top.score >= MONTHLY_TARGET
+      ? '&#10003; TAMAMLANDI'
+      : fmt((top.score / MONTHLY_TARGET) * 100, 0) + '%';
+
+    document.getElementById('hero-section').innerHTML = `
+      <div class="hero">
+        <div class="av-wrap">
+          <div class="av-ring">
+            ${top.photo
+              ? `<img class="av-img" src="${top.photo}" alt="${top.name || ''}">`
+              : `<div class="av-init">${initials(top.name || '?')}</div>`}
+          </div>
+          <div class="av-badge">${heroLabel}</div>
+        </div>
+        <div class="hero-info">
+          <h1>${top.name || '—'}</h1>
+          <div class="hero-tags">
+            <span class="tag">${fmt(top.score)} Toplam Puan</span>
+            <span class="tag">#1 Genel Sıralama</span>
+            <span class="tag">Hedef: ${pctDisplay}</span>
+            ${top.primPct > 0 ? `<span class="tag">Prim: %${top.primPct}</span>` : ''}
+          </div>
+          <div class="hero-stats">
+            <div class="stat-mini"><div class="sl">ProStart-3</div><div class="sv">${top.P3 || 0}</div></div>
+            <div class="stat-mini"><div class="sl">ProStart-6</div><div class="sv">${top.P6 || 0}</div></div>
+            <div class="stat-mini"><div class="sl">ProStart-12</div><div class="sv">${top.P12 || 0}</div></div>
+          </div>
+        </div>
+        <div class="hero-deco">
+          <div class="dt">MoS<br>TEAM</div>
+          <div class="ds">KURUMSAL SATIS v4.0</div>
+        </div>
+      </div>`;
+  }
+
+  function renderLegend() {
+    document.getElementById('legend-section').innerHTML = `
+      <div class="legend-grid">
+        <div class="leg-card"><div class="leg-ico"><span class="ms">stars</span></div><div><div class="leg-lbl">ProStart-3</div><div class="leg-pts">1.0 Puan</div></div></div>
+        <div class="leg-card"><div class="leg-ico"><span class="ms">rocket_launch</span></div><div><div class="leg-lbl">ProStart-6</div><div class="leg-pts">1.7 Puan</div></div></div>
+        <div class="leg-card"><div class="leg-ico"><span class="ms">workspace_premium</span></div><div><div class="leg-lbl">ProStart-12</div><div class="leg-pts">2.5 Puan</div></div></div>
+        <div class="leg-card acc"><div class="leg-ico wh"><span class="ms">target</span></div><div><div class="leg-lbl">Aylik Hedef</div><div class="leg-pts">10 Puan</div></div></div>
+      </div>`;
+  }
+
+  function renderTeams(teams, teamGoals) {
+    const teamNames = Object.keys(teams);
+    if (!teamNames.length) {
+      document.getElementById('teams-section').innerHTML = `
+        <div class="empty"><div class="ei"><span class="ms" style="font-size:48px">group_off</span></div><p>Ekip verisi bulunamadi.</p></div>`;
+      return;
+    }
+
+    let html = '<div class="teams-grid">';
+    teamNames.forEach(tName => {
+      const members = teams[tName];
+      const avg = members.length ? fmt(members.reduce((s,r) => s + r.score, 0) / members.length) : '0.0';
+      const tgMet = teamGoals[tName];
+
+      html += `
+        <div class="team-sec">
+          <div class="th">
+            <div class="team-ac"></div>
+            <h3>${tName}</h3>
+            <span class="team-avg">Ort: ${avg} ${tgMet ? '<span style="color:#4ade80">&#10003;</span>' : ''}</span>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <colgroup>
+                <col style="width:27%"><col style="width:13%"><col style="width:25%"><col style="width:13%"><col style="width:22%">
+              </colgroup>
+              <thead><tr>
+                <th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th><th style="text-align:right">Durum</th>
+              </tr></thead>
+              <tbody>
+                ${members.map(rep => `
+                  <tr>
+                    <td><div class="nc"><div class="avsm">${initials(rep.name)}</div><span class="nm">${rep.name || '—'}</span></div></td>
+                    <td class="pval">${fmt(rep.score)}</td>
+                    <td><div class="lights">${levelLights(rep.score)}</div></td>
+                    <td class="${rep.primPct > 0 ? 'pok' : 'pno'}">${rep.primPct > 0 ? '%' + rep.primPct : '—'}</td>
+                    <td>${statusBadge(rep.score)}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    document.getElementById('teams-section').innerHTML = html;
+  }
+
+  function renderCharts(allReps) {
+    const p3t = allReps.reduce((s,r) => s + (r.P3 || 0), 0);
+    const p6t = allReps.reduce((s,r) => s + (r.P6 || 0), 0);
+    const p12t = allReps.reduce((s,r) => s + (r.P12 || 0), 0);
+    const ptot = p3t + p6t + p12t;
+    const p3p = ptot > 0 ? Math.round(p3t / ptot * 100) : 33;
+    const p6p = ptot > 0 ? Math.round(p6t / ptot * 100) : 33;
+    const p12p = ptot > 0 ? Math.round(p12t / ptot * 100) : 34;
+
+    const totalScore = allReps.reduce((s,r) => s + r.score, 0);
+    const teamTarget = allReps.length * MONTHLY_TARGET;
+    const teamPct = teamTarget > 0 ? Math.min(100, (totalScore / teamTarget) * 100) : 0;
+
+    const top5 = [...allReps].slice(0, 5);
+    const maxScore = top5.length ? top5[0].score : 1;
+
+    document.getElementById('charts-section').innerHTML = `
+      <div class="charts-row">
+        <div class="ch-card">
+          <div class="ch-title">Urun Dagilimi</div>
+          <div class="dist-row"><span>ProStart-3</span><span>${p3p}%</span></div>
+          <div class="dist-bw"><div class="dist-bf" style="width:${p3p}%;background:#ec5b13"></div></div>
+          <div class="dist-row"><span>ProStart-6</span><span>${p6p}%</span></div>
+          <div class="dist-bw"><div class="dist-bf" style="width:${p6p}%;background:#a5c893"></div></div>
+          <div class="dist-row"><span>ProStart-12</span><span>${p12p}%</span></div>
+          <div class="dist-bw"><div class="dist-bf" style="width:${p12p}%;background:#60a5fa"></div></div>
+        </div>
+        <div class="ch-card">
+          <div class="ch-title">Siralama (Top ${Math.min(5, top5.length)})</div>
+          ${top5.map((r,i) => `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+              <span style="font-size:11px;font-weight:700;color:${i===0?'#ec5b13':'#fff'}">${i+1}. ${r.name||'—'}</span>
+              <span style="font-family:monospace;font-size:10px;color:#a5c893">${fmt(r.score)}</span>
+            </div>
+            <div style="width:100%;background:rgba(255,255,255,0.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">
+              <div style="width:${fmt(Math.min(100, (r.score/maxScore)*100),1)}%;height:100%;background:${i===0?'#ec5b13':'#304724'};border-radius:99px"></div>
+            </div>`).join('')}
+        </div>
+        <div class="ch-card grn">
+          <div class="ch-title">Toplam Ekip Puani</div>
+          <div class="tot-num">${fmt(totalScore)}</div>
+          <div class="tot-sub">Hedef: ${fmt(teamTarget, 0)} puan</div>
+          <div class="tot-bar"><div class="tot-fill" style="width:${fmt(teamPct,1)}%"></div></div>
+          <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(teamPct,1)} tamamlandi</div>
+        </div>
+      </div>`;
+  }
+
+  function renderTicker(allReps) {
+    if (!allReps.length) return;
+    const ranking = allReps.map((r,i) => `${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
+    const top = allReps[0];
+    const totalScore = allReps.reduce((s,r) => s + r.score, 0);
+    const teamTarget = allReps.length * MONTHLY_TARGET;
+    const teamPct = teamTarget > 0 ? fmt(Math.min(100,(totalScore/teamTarget)*100),1) : '0.0';
+
+    document.getElementById('ticker-inner').innerHTML = `
+      <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}</span>
+      <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${ranking}</span>
+      <span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(totalScore)} / ${fmt(teamTarget,0)} puan (%${teamPct})</span>
+      <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}</span>
+      <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${ranking}</span>`;
+  }
+
+  function startCountdown() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    countdownVal = AUTO_REFRESH_SEC;
+    document.getElementById('countdown').textContent = `Sonraki: ${countdownVal}s`;
+    countdownTimer = setInterval(() => {
+      countdownVal--;
+      if (countdownVal > 0) {
+        document.getElementById('countdown').textContent = `Sonraki: ${countdownVal}s`;
+      } else {
+        document.getElementById('countdown').textContent = 'Güncelleniyor...';
+        clearInterval(countdownTimer);
+      }
+    }, 1000);
+  }
+
+  async function fetchData() {
+    const btn = document.getElementById('refresh-btn');
+    const sdot = document.getElementById('sdot');
+    const smsg = document.getElementById('status-msg');
+    const icon = document.getElementById('refresh-icon');
+
+    btn.disabled = true;
+    icon.innerHTML = '<span class="spin"></span>';
+    sdot.className = 'sdot loading';
+    smsg.textContent = 'Veriler güncelleniyor...';
+    document.getElementById('countdown').textContent = '';
+
+    if (refreshTimer) clearInterval(refreshTimer);
+    if (countdownTimer) clearInterval(countdownTimer);
+
+    try {
+      const res = await fetch(API_URL + '?t=' + Date.now());
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const raw = await res.json();
+
+      const { allReps, teams, teamGoals } = parseData(raw);
+
+      renderHero(allReps);
+      renderLegend();
+      renderTeams(teams, teamGoals);
+      renderCharts(allReps);
+      renderTicker(allReps);
+
+      const now = new Date();
+      document.getElementById('last-upd').textContent =
+        now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
+
+      const title = raw.month || raw.title || 'MoS TEAM — Basar\u0131 Tablosu';
+      document.getElementById('dash-title').textContent = title;
+
+      sdot.className = 'sdot';
+      smsg.textContent = 'Veriler basariyla guncellendi.';
+
+      startCountdown();
+      refreshTimer = setInterval(fetchData, AUTO_REFRESH_SEC * 1000);
+
+    } catch (e) {
+      sdot.className = 'sdot error';
+      smsg.textContent = 'Veri alinamadi: ' + e.message;
+      document.getElementById('countdown').textContent = '';
+      refreshTimer = setInterval(fetchData, AUTO_REFRESH_SEC * 1000);
+    } finally {
+      btn.disabled = false;
+      icon.textContent = 'refresh';
+    }
+  }
+
+  fetchData();
+</script>
+</body>
+</html>
