@@ -13,7 +13,7 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,17,40,0.97);border-bottom:1px solid #304724;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .logo svg{color:#ec5b13;width:26px;height:26px;flex-shrink:0}
-.logo h2{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:-0.04em}
+.logo h2{font-size:14px;font-weight:900;letter-spacing:-0.04em}
 .hdr-r{display:flex;align-items:center;gap:10px}
 .upd-lbl{font-size:9px;color:#a5c893;text-transform:uppercase;font-weight:700;letter-spacing:0.08em;text-align:right}
 .upd-val{font-size:11px;font-family:monospace;text-align:right}
@@ -145,15 +145,16 @@ tr.clickable:hover td{background:rgba(236,91,19,.06)}
   <div class="logo">
     <svg viewBox="0 0 48 48" fill="none"><path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/></svg>
     <h2 id="dash-title">MoS Team</h2>
+    <div style="width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 2px;flex-shrink:0"></div>
+    <select class="period-select" id="period-select" onchange="onPeriodChange()">
+      <option value="">Yukleniyor...</option>
+    </select>
   </div>
   <div class="hdr-r">
     <div>
       <div class="upd-lbl">Son Guncelleme</div>
       <div class="upd-val" id="last-upd">—</div>
     </div>
-    <select class="period-select" id="period-select" onchange="onPeriodChange()">
-      <option value="">Donem yukleniyor...</option>
-    </select>
     <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
       <span id="rico" class="ms">refresh</span> Guncelle
     </button>
