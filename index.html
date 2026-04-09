@@ -3,15 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoS TEAM — Basari Tablosu</title>
+<title>Nisan 2026 - Başarı Tablosu </title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;min-height:100vh}
 .ms{font-family:'Material Symbols Outlined',sans-serif;font-size:16px;font-variation-settings:'FILL' 1;display:inline-block;vertical-align:middle;line-height:1}
-
-/* ── HEADER ── */
 .header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,17,40,0.97);border-bottom:1px solid #304724;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .logo svg{color:#ec5b13;width:26px;height:26px;flex-shrink:0}
@@ -22,23 +20,17 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .btn{background:#304724;border:none;color:#fff;padding:7px 13px;border-radius:10px;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .15s}
 .btn:hover{background:#3d5a2d}
 .btn:disabled{opacity:.5;cursor:default}
-.btn-p{background:#ec5b13 !important}
-.btn-p:hover{background:#d44f0f !important}
+.btn-p{background:#ec5b13!important}
+.btn-p:hover{background:#d44f0f!important}
 .spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ── MAIN ── */
 .main{padding:16px 20px 80px;display:flex;flex-direction:column;gap:14px;max-width:1600px;margin:0 auto}
-
-/* ── STATUS ── */
 .sbar{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:10px 16px;font-size:11px;color:#a5c893;display:flex;align-items:center;gap:8px}
 .sdot{width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;transition:background .3s}
 .sdot.loading{background:#facc15;animation:pulse 1s infinite}
 .sdot.error{background:#f87171}
 #countdown{margin-left:auto;font-family:monospace;font-size:10px;color:#64748b}
-
-/* ── HERO ── */
 .hero{background:#111d3a;border:1px solid #304724;border-radius:20px;padding:24px;display:flex;gap:24px;align-items:center;position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:radial-gradient(circle at 70% 50%,rgba(236,91,19,.1) 0%,transparent 70%);pointer-events:none}
 .av-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;z-index:1}
@@ -58,8 +50,6 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .hero-deco{opacity:.18;text-align:right;flex-shrink:0;position:relative;z-index:1}
 .hero-deco .dt{font-size:40px;font-weight:900;color:#ec5b13;font-style:italic;line-height:1}
 .hero-deco .ds{font-size:9px;color:#a5c893;font-weight:700;letter-spacing:.1em;margin-top:4px}
-
-/* ── LEGEND ── */
 .lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .lcard{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
 .lcard.acc{background:#304724;border-color:#ec5b13}
@@ -68,8 +58,6 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .llbl{font-size:10px;color:#94a3b8}
 .lcard.acc .llbl{color:#a5c893}
 .lpts{font-size:13px;font-weight:700}
-
-/* ── TEAM PROGRESS ── */
 .tpsec{display:flex;flex-direction:column;gap:8px}
 .tprow{background:#1a2a4a;border:1px solid #304724;border-radius:12px;padding:12px 16px}
 .tphdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -78,8 +66,6 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .tpmeta{font-size:10px;color:#a5c893;margin-top:2px}
 .tpbw{width:100%;background:rgba(255,255,255,.07);height:8px;border-radius:99px;overflow:hidden}
 .tpbf{height:100%;background:#ec5b13;border-radius:99px;transition:width .6s ease}
-
-/* ── TEAMS TABLE ── */
 .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .tsec .th{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .tac{width:4px;height:28px;background:#ec5b13;border-radius:2px;flex-shrink:0}
@@ -93,22 +79,16 @@ th:last-child{text-align:right}
 td{padding:8px 10px;border-top:1px solid rgba(255,255,255,.05);vertical-align:middle}
 td:last-child{text-align:right}
 .nc{display:flex;align-items:center;gap:8px}
-.avsm{width:32px;height:32px;border-radius:50%;border:2px solid #304724;overflow:hidden;flex-shrink:0;background:#334155;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
-.avsm img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 .nm{font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pval{font-family:monospace;font-size:13px;font-weight:900}
 .bdg{font-size:8px;font-weight:700;padding:3px 7px;border-radius:20px;white-space:nowrap}
 .bg-g{background:rgba(34,197,94,.2);color:#4ade80}
 .bg-y{background:rgba(234,179,8,.2);color:#facc15}
 .bg-r{background:rgba(239,68,68,.2);color:#f87171}
-
-/* ── LEVEL LIGHTS ── */
 .lights{display:flex;gap:3px;align-items:center}
 .lt{width:12px;height:12px;border-radius:50%;background:#1e293b;border:1px solid rgba(255,255,255,.1);flex-shrink:0;transition:all .3s}
 .lt.on{background:#ec5b13;border-color:#ec5b13;box-shadow:0 0 6px rgba(236,91,19,.85)}
 .lt-lbl{font-size:8px;color:#64748b;margin-left:4px;font-family:monospace;min-width:20px}
-
-/* ── CHARTS ── */
 .crow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .cc{background:#111d3a;border:1px solid #304724;border-radius:14px;padding:16px}
 .cc.grn{background:linear-gradient(135deg,#304724 0%,#1a2a4a 100%);border-color:#ec5b13;text-align:center;display:flex;flex-direction:column;justify-content:center}
@@ -120,17 +100,14 @@ td:last-child{text-align:right}
 .tsub{font-size:11px;color:#a5c893;margin-top:6px}
 .tbar{background:rgba(0,0,0,.3);border-radius:99px;height:6px;margin-top:12px;overflow:hidden}
 .tbf{height:100%;background:#fff;border-radius:99px;transition:width .6s ease}
-
-/* ── TICKER ── */
 .tkwrap{position:fixed;bottom:0;left:0;width:100%;height:46px;background:rgba(10,17,40,.98);border-top:1px solid #304724;overflow:hidden;display:flex;align-items:center;z-index:100}
 .tk-track{display:flex;align-items:center;white-space:nowrap;animation:tick 50s linear infinite}
 .tk-copy{display:inline-flex;align-items:center;font-size:11px;font-weight:700;flex-shrink:0}
-.tk-sep{display:inline-flex;align-items:center;padding:0 32px;color:#f59e0b;font-size:18px;flex-shrink:0;user-select:none;font-family:'Material Symbols Outlined',sans-serif;font-variation-settings:'FILL' 1}
+.tk-sep{display:inline-flex;align-items:center;gap:4px;padding:0 28px;color:#f59e0b;flex-shrink:0;user-select:none;font-family:'Material Symbols Outlined',sans-serif;font-size:16px;font-variation-settings:'FILL' 1;line-height:1}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .ti{display:inline-flex;align-items:center;gap:6px;margin-right:48px}
-.tor{color:#ec5b13}.tgr{color:#a5c893}
-
-/* ── RESPONSIVE ── */
+.tor{color:#ec5b13}
+.tgr{color:#a5c893}
 @media(max-width:960px){.tgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr}.lgrid{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;text-align:center}.hero-tags{justify-content:center}.hstats{margin:0 auto}.hero-deco{display:none}}
 @media(max-width:500px){.main{padding:12px 12px 80px}.hero-info h1{font-size:20px}.lgrid{grid-template-columns:1fr 1fr}}
 </style>
@@ -148,7 +125,7 @@ td:last-child{text-align:right}
       <div class="upd-val" id="last-upd">—</div>
     </div>
     <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
-      <span id="rico" class="ms">refresh</span> Manuel Guncelle
+      <span id="rico" class="ms">refresh</span>  Güncelle
     </button>
   </div>
 </header>
@@ -169,9 +146,9 @@ td:last-child{text-align:right}
 <div class="tkwrap">
   <div class="tk-track" id="tk-track">
     <div class="tk-copy" id="tk-a"><span class="ti tor"><span class="ms">bolt</span>Veriler yukleniyor...</span></div>
-    <div class="tk-sep">emoji_events</div>
+    <div class="tk-sep">emoji_events emoji_events emoji_events</div>
     <div class="tk-copy" id="tk-b"><span class="ti tor"><span class="ms">bolt</span>Veriler yukleniyor...</span></div>
-    <div class="tk-sep">emoji_events</div>
+    <div class="tk-sep">emoji_events emoji_events emoji_events</div>
   </div>
 </div>
 
@@ -181,11 +158,11 @@ const TGT      = 10;
 const AUTO_SEC = 60;
 let rTimer = null, cTimer = null;
 
-/* ─── PUAN ─── */
-function score(r){ return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100; }
+function calcScore(r){
+  return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100;
+}
 
-/* ─── PRİM ─── */
-function prim(puan, is1, is2, teamOK){
+function calcPrim(puan, is1, is2, teamOK){
   if(puan < 6) return 0;
   let b = puan<7?50:puan<8?60:puan<9?75:puan<10?85:100;
   if(puan >= 10){
@@ -197,37 +174,51 @@ function prim(puan, is1, is2, teamOK){
   return Math.round(b);
 }
 
-/* ─── LEVEL IŞIKLAR ─── */
-function lights(s){
-  const thrs = [6,7,8,9,10];
-  const dots = thrs.map(t=>`<div class="lt${s>=t?' on':''}"></div>`).join('');
-  const last = thrs.filter(t=>s>=t);
+function levelLights(s){
+  const dots = [6,7,8,9,10].map(t=>`<div class="lt${s>=t?' on':''}"></div>`).join('');
+  const last = [6,7,8,9,10].filter(t=>s>=t);
   const lbl  = last.length ? last[last.length-1]+'+' : '—';
   return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span></div>`;
 }
 
-/* ─── AVATAR ─── */
 function avatar(photo, name, size){
-  const ini = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const i2 = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const fs  = Math.round(size*.3);
   if(photo && photo.trim()){
-    return `<img src="${photo.trim()}" alt="${name||''}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-            <div style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;align-items:center;justify-content:center;font-size:${Math.round(size*.3)}px;font-weight:900;color:#ec5b13">${ini}</div>`;
+    return `<img src="${photo.trim()}" alt="${name||''}"
+              style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block"
+              onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+            <div style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;
+              align-items:center;justify-content:center;font-size:${fs}px;font-weight:900;color:#ec5b13">${i2}</div>`;
   }
-  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*.3)}px;font-weight:900;color:#ec5b13">${ini}</div>`;
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;display:flex;
+            align-items:center;justify-content:center;font-size:${fs}px;font-weight:900;color:#ec5b13">${i2}</div>`;
 }
 
-function ini(n){ return (n||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function rowAvatar(photo, name, col){
+  const i2  = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const bdr  = col || '#304724';
+  const txtc = col || '#fff';
+  if(photo && photo.trim()){
+    const fallback = `<div style="width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${txtc}">${i2}</div>`;
+    return `<img src="${photo.trim()}" alt="${name||''}"
+              style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${bdr};flex-shrink:0"
+              onerror="this.outerHTML='${fallback.replace(/'/g,"\\'")}'">`;
+  }
+  return `<div style="width:30px;height:30px;border-radius:50%;background:#334155;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${txtc}">${i2}</div>`;
+}
+
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
 
-function badge(s){
-  if(s>=TGT)      return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
-  if(s>=TGT*.85)  return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
+function statusBadge(s){
+  if(s>=TGT)     return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
+  if(s>=TGT*.85) return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
   return '<span class="bdg bg-r">DEVAM EDIYOR</span>';
 }
+
 function primColor(p){ return p>=100?'#4ade80':p>=75?'#a5c893':p>=50?'#facc15':'#64748b'; }
 
-/* ─── VERİ İŞLE ─── */
-function process(raw){
+function processData(raw){
   const teams={}, all=[];
   if(!raw.teams||!Array.isArray(raw.teams)) return {teams,all};
 
@@ -235,28 +226,27 @@ function process(raw){
     const nm = t.name||('MoS TEAM '+(ti+1));
     const members = (t.members||[]).map(r=>({
       ...r,
-      score: r.score!==undefined ? r.score : score(r),
+      score: r.score!==undefined ? r.score : calcScore(r),
       teamName: nm,
       photo: r.photo||''
     }));
     members.sort((a,b)=>b.score-a.score);
 
-    const total   = t.toplamPuan!==undefined ? t.toplamPuan : Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
-    const hedef   = t.hedef || members.length*TGT;
-    const teamOK  = t.hedefGecildi!==undefined ? t.hedefGecildi : total>=hedef;
+    const total  = t.toplamPuan!==undefined ? t.toplamPuan : Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
+    const hedef  = t.hedef || members.length*TGT;
+    const teamOK = t.hedefGecildi!==undefined ? t.hedefGecildi : total>=hedef;
 
     members.forEach((r,i)=>{
-      r.primPct = r.primPct!==undefined ? r.primPct : prim(r.score, i===0, i===1, teamOK);
+      if(r.primPct===undefined) r.primPct = calcPrim(r.score, i===0, i===1, teamOK);
       all.push(r);
     });
     teams[nm] = {total, hedef, teamOK, members};
   });
 
   all.sort((a,b)=>b.score-a.score);
-  return {teams,all};
+  return {teams, all};
 }
 
-/* ─── RENDER HERO ─── */
 function renderHero(all){
   const top = all[0]||{};
   const pct = top.score>=TGT ? '&#10003; TAMAMLANDI' : fmt((top.score/TGT)*100,0)+'%';
@@ -285,7 +275,6 @@ function renderHero(all){
     </div>`;
 }
 
-/* ─── RENDER LEGEND ─── */
 function renderLegend(){
   document.getElementById('s-legend').innerHTML=`
     <div class="lgrid">
@@ -296,18 +285,22 @@ function renderLegend(){
     </div>`;
 }
 
-/* ─── RENDER PROGRESS ─── */
 function renderProgress(teams){
   let h='<div class="tpsec">';
   Object.keys(teams).forEach(nm=>{
     const t=teams[nm];
     const pct=t.hedef>0?Math.min(100,(t.total/t.hedef)*100):0;
-    const b=t.teamOK?'<span class="bdg bg-g">HEDEF ASILDI</span>':'<span class="bdg bg-y">DEVAM EDIYOR</span>';
+    const b=t.teamOK
+      ?'<span class="bdg bg-g">HEDEF ASILDI</span>'
+      :'<span class="bdg bg-y">DEVAM EDIYOR</span>';
     h+=`<div class="tprow">
       <div class="tphdr">
         <div style="display:flex;align-items:center">
           <span class="tpscore">${fmt(t.total)}</span>
-          <div><div class="tpname">${nm} &nbsp;${b}</div><div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef,0)} puan</div></div>
+          <div>
+            <div class="tpname">${nm} &nbsp;${b}</div>
+            <div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef,0)} puan</div>
+          </div>
         </div>
         <span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%${fmt(pct,1)}</span>
       </div>
@@ -318,7 +311,6 @@ function renderProgress(teams){
   document.getElementById('s-progress').innerHTML=h;
 }
 
-/* ─── RENDER TEAMS ─── */
 function renderTeams(teams){
   const nms=Object.keys(teams);
   if(!nms.length){ document.getElementById('s-teams').innerHTML=''; return; }
@@ -334,21 +326,29 @@ function renderTeams(teams){
       </div>
       <div class="twrap">
         <table>
-          <colgroup><col style="width:28%"><col style="width:13%"><col style="width:22%"><col style="width:15%"><col style="width:22%"></colgroup>
-          <thead><tr><th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th><th style="text-align:right">Durum</th></tr></thead>
+          <colgroup>
+            <col style="width:28%"><col style="width:13%"><col style="width:22%">
+            <col style="width:15%"><col style="width:22%">
+          </colgroup>
+          <thead><tr>
+            <th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th>
+            <th style="text-align:right">Durum</th>
+          </tr></thead>
           <tbody>
             ${members.map((r,i)=>{
-              const col=i===0?'#ec5b13':i===1?'#a5c893':'';
-              const pc=primColor(r.primPct||0);
-              const photoEl=r.photo&&r.photo.trim()
-                ? `<img src="${r.photo.trim()}" alt="${r.name||''}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${col||'#304724'}" onerror="this.outerHTML='<div style=\\'width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${col||'#fff'};\\'>${ini(r.name)}</div>'">`
-                : `<div style="width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${col||'#fff'}">${ini(r.name)}</div>`;
+              const col = i===0?'#ec5b13':i===1?'#a5c893':'';
+              const pc  = primColor(r.primPct||0);
               return `<tr>
-                <td><div class="nc">${photoEl}<span class="nm" style="${col?'color:'+col:''}">${r.name||'—'}</span></div></td>
+                <td><div class="nc">
+                  ${rowAvatar(r.photo, r.name, col)}
+                  <span class="nm" style="${col?'color:'+col:''}">${r.name||'—'}</span>
+                </div></td>
                 <td class="pval" style="${col?'color:'+col:''}">${fmt(r.score)}</td>
-                <td>${lights(r.score)}</td>
-                <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct||0)>0?pc:'#64748b'}">${(r.primPct||0)>0?'%'+r.primPct:'—'}</td>
-                <td>${badge(r.score)}</td>
+                <td>${levelLights(r.score)}</td>
+                <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct||0)>0?pc:'#64748b'}">
+                  ${(r.primPct||0)>0?'%'+r.primPct:'—'}
+                </td>
+                <td>${statusBadge(r.score)}</td>
               </tr>`;
             }).join('')}
           </tbody>
@@ -360,20 +360,20 @@ function renderTeams(teams){
   document.getElementById('s-teams').innerHTML=h;
 }
 
-/* ─── RENDER CHARTS ─── */
 function renderCharts(all){
   const p3=all.reduce((s,r)=>s+(r.P3||0),0);
   const p6=all.reduce((s,r)=>s+(r.P6||0),0);
   const p12=all.reduce((s,r)=>s+(r.P12||0),0);
   const pt=p3+p6+p12;
-  const pp3=pt>0?Math.round(p3/pt*100):33;
-  const pp6=pt>0?Math.round(p6/pt*100):33;
+  const pp3 =pt>0?Math.round(p3/pt*100):33;
+  const pp6 =pt>0?Math.round(p6/pt*100):33;
   const pp12=pt>0?Math.round(p12/pt*100):34;
-  const tot=all.reduce((s,r)=>s+r.score,0);
-  const tgt=all.length*TGT;
+  const tot =all.reduce((s,r)=>s+r.score,0);
+  const tgt =all.length*TGT;
   const tpct=tgt>0?Math.min(100,(tot/tgt)*100):0;
-  const t5=all.slice(0,5);
-  const mx=t5.length?t5[0].score:1;
+  const t5  =all.slice(0,5);
+  const mx  =t5.length?t5[0].score:1;
+
   document.getElementById('s-charts').innerHTML=`
     <div class="crow">
       <div class="cc">
@@ -406,52 +406,48 @@ function renderCharts(all){
     </div>`;
 }
 
-/* ─── RENDER TICKER ─── */
 function renderTicker(all){
   if(!all.length) return;
-  const top=all[0];
-  const rank=all.map((r,i)=>`${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
-  const tot=all.reduce((s,r)=>s+r.score,0);
-  const tgt=all.length*TGT;
-  const pct=tgt>0?fmt(Math.min(100,tot/tgt*100),1):'0.0';
-  const content=`
+  const top  = all[0];
+  const rank = all.map((r,i)=>`${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
+  const tot  = all.reduce((s,r)=>s+r.score,0);
+  const tgt  = all.length*TGT;
+  const pct  = tgt>0?fmt(Math.min(100,tot/tgt*100),1):'0.0';
+  const content = `
     <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}${top.score>=15?' | ★ Zirve Bonusu':''}</span>
     <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>
     <span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(tot)} / ${fmt(tgt,0)} puan (%${pct})</span>`;
-  document.getElementById('tk-a').innerHTML=content;
-  document.getElementById('tk-b').innerHTML=content;
-}
+  document.getElementById('tk-a').innerHTML = content;
+  document.getElementById('tk-b').innerHTML = content;
 }
 
-/* ─── COUNTDOWN ─── */
 function startCountdown(){
   if(cTimer) clearInterval(cTimer);
-  let v=AUTO_SEC;
-  document.getElementById('countdown').textContent=`Sonraki: ${v}s`;
-  cTimer=setInterval(()=>{
+  let v = AUTO_SEC;
+  document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
+  cTimer = setInterval(()=>{
     v--;
-    if(v>0) document.getElementById('countdown').textContent=`Sonraki: ${v}s`;
-    else{ document.getElementById('countdown').textContent='Guncelleniyor...'; clearInterval(cTimer); }
-  },1000);
+    if(v>0) document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
+    else { document.getElementById('countdown').textContent = 'Guncelleniyor...'; clearInterval(cTimer); }
+  }, 1000);
 }
 
-/* ─── FETCH ─── */
 async function fetchData(manual=false){
-  const btn=document.getElementById('rbtn');
-  btn.disabled=true;
-  document.getElementById('rico').outerHTML='<span class="spin" id="rico"></span>';
-  document.getElementById('sdot').className='sdot loading';
-  document.getElementById('smsg').textContent='Veriler guncelleniyor...';
-  document.getElementById('countdown').textContent='';
-  if(rTimer)  clearInterval(rTimer);
-  if(cTimer)  clearInterval(cTimer);
+  const btn = document.getElementById('rbtn');
+  btn.disabled = true;
+  document.getElementById('rico').outerHTML = '<span class="spin" id="rico"></span>';
+  document.getElementById('sdot').className = 'sdot loading';
+  document.getElementById('smsg').textContent = 'Veriler guncelleniyor...';
+  document.getElementById('countdown').textContent = '';
+  if(rTimer) clearInterval(rTimer);
+  if(cTimer) clearInterval(cTimer);
 
-  try{
-    const opts=manual?{cache:'no-cache'}:{};
-    const res=await fetch(API+'?t='+Date.now(),opts);
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const raw=await res.json();
-    const {teams,all}=process(raw);
+  try {
+    const opts = manual ? {cache:'no-cache'} : {};
+    const res  = await fetch(API + '?t=' + Date.now(), opts);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const raw  = await res.json();
+    const {teams, all} = processData(raw);
 
     renderHero(all);
     renderLegend();
@@ -460,24 +456,24 @@ async function fetchData(manual=false){
     renderCharts(all);
     renderTicker(all);
 
-    const now=new Date();
-    document.getElementById('last-upd').textContent=
-      now.toLocaleDateString('tr-TR')+' '+now.toLocaleTimeString('tr-TR');
-    if(raw.title) document.getElementById('dash-title').textContent=raw.title;
+    const now = new Date();
+    document.getElementById('last-upd').textContent =
+      now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
+    if(raw.title) document.getElementById('dash-title').textContent = raw.title;
 
-    document.getElementById('sdot').className='sdot';
-    document.getElementById('smsg').textContent='Veriler basariyla guncellendi.';
+    document.getElementById('sdot').className = 'sdot';
+    document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
     startCountdown();
-    rTimer=setInterval(()=>fetchData(false),AUTO_SEC*1000);
+    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
 
-  }catch(e){
-    document.getElementById('sdot').className='sdot error';
-    document.getElementById('smsg').textContent='Veri alinamadi: '+e.message;
-    rTimer=setInterval(()=>fetchData(false),AUTO_SEC*1000);
-  }finally{
-    const ic=document.getElementById('rico');
-    if(ic) ic.outerHTML='<span class="ms" id="rico">refresh</span>';
-    btn.disabled=false;
+  } catch(e) {
+    document.getElementById('sdot').className = 'sdot error';
+    document.getElementById('smsg').textContent = 'Veri alinamadi: ' + e.message;
+    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+  } finally {
+    const ic = document.getElementById('rico');
+    if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
+    btn.disabled = false;
   }
 }
 
