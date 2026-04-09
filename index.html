@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nisan 2026 - Başarı Tablosu </title>
+<title>MoS TEAM — Basari Tablosu</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
 <style>
@@ -22,6 +22,8 @@ body{background:#0a1128;color:#fff;font-family:'Public Sans',sans-serif;font-siz
 .btn:disabled{opacity:.5;cursor:default}
 .btn-p{background:#ec5b13!important}
 .btn-p:hover{background:#d44f0f!important}
+.period-select{background:#1a2a4a;border:1px solid #304724;color:#fff;padding:6px 12px;border-radius:10px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;outline:none}
+.period-select:focus{border-color:#ec5b13}
 .spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
@@ -100,14 +102,39 @@ td:last-child{text-align:right}
 .tsub{font-size:11px;color:#a5c893;margin-top:6px}
 .tbar{background:rgba(0,0,0,.3);border-radius:99px;height:6px;margin-top:12px;overflow:hidden}
 .tbf{height:100%;background:#fff;border-radius:99px;transition:width .6s ease}
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#111d3a;border:1px solid #304724;border-radius:20px;padding:28px;min-width:320px;max-width:440px;width:90%;position:relative}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:#64748b;cursor:pointer;font-size:20px;line-height:1;padding:4px}
+.modal-close:hover{color:#fff}
+.modal-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.modal-av{width:56px;height:56px;border-radius:50%;border:2px solid #ec5b13;overflow:hidden;flex-shrink:0}
+.modal-av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
+.modal-av-init{width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13}
+.modal-name{font-size:18px;font-weight:900;letter-spacing:-0.03em}
+.modal-sub{font-size:10px;color:#a5c893;margin-top:2px}
+.modal-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.mc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center}
+.mc-lbl{font-size:9px;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.mc-val{font-size:28px;font-weight:900;line-height:1}
+.mc-pts{font-size:9px;color:#64748b;margin-top:3px}
+.modal-score{background:rgba(236,91,19,.1);border:1px solid rgba(236,91,19,.3);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between}
+.modal-score-lbl{font-size:10px;color:#a5c893;font-weight:700}
+.modal-score-val{font-size:28px;font-weight:900;color:#ec5b13;font-family:monospace}
+.modal-prim{font-size:11px;color:#4ade80;font-weight:700}
+/* ── TICKER ── */
 .tkwrap{position:fixed;bottom:0;left:0;width:100%;height:46px;background:rgba(10,17,40,.98);border-top:1px solid #304724;overflow:hidden;display:flex;align-items:center;z-index:100}
 .tk-track{display:flex;align-items:center;white-space:nowrap;animation:tick 50s linear infinite}
 .tk-copy{display:inline-flex;align-items:center;font-size:11px;font-weight:700;flex-shrink:0}
-.tk-sep{display:inline-flex;align-items:center;gap:4px;padding:0 28px;color:#f59e0b;flex-shrink:0;user-select:none;font-family:'Material Symbols Outlined',sans-serif;font-size:16px;font-variation-settings:'FILL' 1;line-height:1}
+.tk-sep{display:inline-flex;align-items:center;gap:6px;padding:0 28px;color:#f59e0b;flex-shrink:0;user-select:none;font-family:'Material Symbols Outlined',sans-serif;font-size:18px;font-variation-settings:'FILL' 1;line-height:1}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .ti{display:inline-flex;align-items:center;gap:6px;margin-right:48px}
 .tor{color:#ec5b13}
 .tgr{color:#a5c893}
+/* ── ROW CLICKABLE ── */
+tr.clickable{cursor:pointer}
+tr.clickable:hover td{background:rgba(236,91,19,.06)}
 @media(max-width:960px){.tgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr}.lgrid{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;text-align:center}.hero-tags{justify-content:center}.hstats{margin:0 auto}.hero-deco{display:none}}
 @media(max-width:500px){.main{padding:12px 12px 80px}.hero-info h1{font-size:20px}.lgrid{grid-template-columns:1fr 1fr}}
 </style>
@@ -117,15 +144,18 @@ td:last-child{text-align:right}
 <header class="header">
   <div class="logo">
     <svg viewBox="0 0 48 48" fill="none"><path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/></svg>
-    <h2 id="dash-title">MoS TEAM — Basari Tablosu</h2>
+    <h2 id="dash-title">MoS Team</h2>
   </div>
   <div class="hdr-r">
     <div>
       <div class="upd-lbl">Son Guncelleme</div>
       <div class="upd-val" id="last-upd">—</div>
     </div>
+    <select class="period-select" id="period-select" onchange="onPeriodChange()">
+      <option value="">Donem yukleniyor...</option>
+    </select>
     <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
-      <span id="rico" class="ms">refresh</span>  Güncelle
+      <span id="rico" class="ms">refresh</span> Guncelle
     </button>
   </div>
 </header>
@@ -143,6 +173,47 @@ td:last-child{text-align:right}
   <div id="s-charts"></div>
 </div>
 
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal(null,'force')">&#10005;</button>
+    <div class="modal-head">
+      <div class="modal-av" id="m-av"></div>
+      <div>
+        <div class="modal-name" id="m-name">—</div>
+        <div class="modal-sub" id="m-sub">—</div>
+      </div>
+    </div>
+    <div class="modal-cards">
+      <div class="mc">
+        <div class="mc-lbl">ProStart-3</div>
+        <div class="mc-val" id="m-p3">0</div>
+        <div class="mc-pts">× 1.0 puan</div>
+      </div>
+      <div class="mc">
+        <div class="mc-lbl">ProStart-6</div>
+        <div class="mc-val" id="m-p6">0</div>
+        <div class="mc-pts">× 1.7 puan</div>
+      </div>
+      <div class="mc">
+        <div class="mc-lbl">ProStart-12</div>
+        <div class="mc-val" id="m-p12">0</div>
+        <div class="mc-pts">× 2.5 puan</div>
+      </div>
+    </div>
+    <div class="modal-score">
+      <div>
+        <div class="modal-score-lbl">TOPLAM PUAN</div>
+        <div class="modal-score-val" id="m-score">0.0</div>
+      </div>
+      <div style="text-align:right">
+        <div class="modal-score-lbl">PRİM</div>
+        <div class="modal-prim" id="m-prim">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="tkwrap">
   <div class="tk-track" id="tk-track">
     <div class="tk-copy" id="tk-a"><span class="ti tor"><span class="ms">bolt</span>Veriler yukleniyor...</span></div>
@@ -157,6 +228,15 @@ const API      = 'https://script.google.com/macros/s/AKfycbybanAt2-av_sYFWGKd6gx
 const TGT      = 10;
 const AUTO_SEC = 60;
 let rTimer = null, cTimer = null;
+let rawCache = null;
+let currentPeriod = '';
+
+/* ── INİTİALS: sadece İsim + Soyisim baş harfi ── */
+function ini2(name){
+  const parts = (name||'?').trim().split(/\s+/);
+  if(parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  return parts[0].slice(0,2).toUpperCase();
+}
 
 function calcScore(r){
   return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100;
@@ -181,31 +261,32 @@ function levelLights(s){
   return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span></div>`;
 }
 
-function avatar(photo, name, size){
-  const i2 = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const fs  = Math.round(size*.3);
+function heroAvatar(photo, name){
+  const i2 = ini2(name);
   if(photo && photo.trim()){
     return `<img src="${photo.trim()}" alt="${name||''}"
-              style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block"
-              onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-            <div style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;
-              align-items:center;justify-content:center;font-size:${fs}px;font-weight:900;color:#ec5b13">${i2}</div>`;
+      style="width:94px;height:94px;border-radius:50%;object-fit:cover;display:block"
+      onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+    <div style="display:none;width:94px;height:94px;border-radius:50%;background:#1a2a4a;
+      align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">${i2}</div>`;
   }
-  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#1a2a4a;display:flex;
-            align-items:center;justify-content:center;font-size:${fs}px;font-weight:900;color:#ec5b13">${i2}</div>`;
+  return `<div style="width:94px;height:94px;border-radius:50%;background:#1a2a4a;display:flex;
+    align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">${i2}</div>`;
 }
 
 function rowAvatar(photo, name, col){
-  const i2  = (name||'?').trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const bdr  = col || '#304724';
-  const txtc = col || '#fff';
+  const i2  = ini2(name);
+  const bdr = col || '#304724';
+  const tc  = col || '#fff';
   if(photo && photo.trim()){
-    const fallback = `<div style="width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${txtc}">${i2}</div>`;
     return `<img src="${photo.trim()}" alt="${name||''}"
-              style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${bdr};flex-shrink:0"
-              onerror="this.outerHTML='${fallback.replace(/'/g,"\\'")}'">`;
+      style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${bdr};flex-shrink:0"
+      onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+    <div style="display:none;width:30px;height:30px;border-radius:50%;background:#334155;
+      align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${tc};flex-shrink:0">${i2}</div>`;
   }
-  return `<div style="width:30px;height:30px;border-radius:50%;background:#334155;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${txtc}">${i2}</div>`;
+  return `<div style="width:30px;height:30px;border-radius:50%;background:#334155;flex-shrink:0;display:flex;
+    align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${tc}">${i2}</div>`;
 }
 
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
@@ -215,8 +296,74 @@ function statusBadge(s){
   if(s>=TGT*.85) return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
   return '<span class="bdg bg-r">DEVAM EDIYOR</span>';
 }
-
 function primColor(p){ return p>=100?'#4ade80':p>=75?'#a5c893':p>=50?'#facc15':'#64748b'; }
+
+/* ── DÖNEM FİLTRELEME ── */
+function extractPeriods(raw){
+  const periods = new Set();
+  if(raw.tumSatislar && Array.isArray(raw.tumSatislar)){
+    raw.tumSatislar.forEach(s=>{ if(s.donem) periods.add(String(s.donem).trim()); });
+  } else if(raw.periods && Array.isArray(raw.periods)){
+    raw.periods.forEach(p=>periods.add(p));
+  }
+  return Array.from(periods).sort();
+}
+
+function buildPeriodsFromTeams(raw){
+  // Fallback: eğer API doğrudan dönem listesi vermiyorsa teams içinden çıkar
+  const periods = new Set();
+  if(raw.teams) raw.teams.forEach(t=>(t.members||[]).forEach(m=>{
+    if(m.donem) periods.add(String(m.donem).trim());
+  }));
+  return Array.from(periods).sort();
+}
+
+function updatePeriodDropdown(periods){
+  const sel = document.getElementById('period-select');
+  const cur = sel.value;
+  sel.innerHTML = '';
+  periods.forEach(p=>{
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    sel.appendChild(o);
+  });
+  if(periods.includes(cur)) sel.value = cur;
+  else if(periods.length) sel.value = periods[periods.length-1]; // en son dönem varsayılan
+  currentPeriod = sel.value;
+}
+
+function filterByPeriod(raw, period){
+  if(!period) return raw;
+  // API dönem filtresini destekliyorsa zaten filtrelenmiş gelir
+  // Desteklemiyorsa client-side filtrele
+  if(!raw.tumSatislar) return raw;
+
+  const salesFiltered = raw.tumSatislar.filter(s=>String(s.donem||'').trim()===period);
+
+  // personelMap'ten satış sayılarını yeniden hesapla
+  const satisMap = {};
+  salesFiltered.forEach(s=>{
+    const ad = String(s.personel||'').trim();
+    if(!ad) return;
+    if(!satisMap[ad]) satisMap[ad]={P3:0,P6:0,P12:0};
+    const tip = String(s.paketTipi||'').trim();
+    if(tip==='ProStart-3')  satisMap[ad].P3++;
+    if(tip==='ProStart-6')  satisMap[ad].P6++;
+    if(tip==='ProStart-12') satisMap[ad].P12++;
+  });
+
+  // teams'i güncelle
+  const newTeams = (raw.teams||[]).map(team=>({
+    ...team,
+    members: (team.members||[]).map(m=>{
+      const s = satisMap[m.name]||{P3:0,P6:0,P12:0};
+      const score = calcScore(s);
+      return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, primPct:undefined};
+    })
+  }));
+
+  return {...raw, teams: newTeams};
+}
 
 function processData(raw){
   const teams={}, all=[];
@@ -232,9 +379,9 @@ function processData(raw){
     }));
     members.sort((a,b)=>b.score-a.score);
 
-    const total  = t.toplamPuan!==undefined ? t.toplamPuan : Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
+    const total  = Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
     const hedef  = t.hedef || members.length*TGT;
-    const teamOK = t.hedefGecildi!==undefined ? t.hedefGecildi : total>=hedef;
+    const teamOK = total >= hedef;
 
     members.forEach((r,i)=>{
       if(r.primPct===undefined) r.primPct = calcPrim(r.score, i===0, i===1, teamOK);
@@ -247,14 +394,46 @@ function processData(raw){
   return {teams, all};
 }
 
+/* ── MODAL ── */
+function openModal(rep){
+  const av = document.getElementById('m-av');
+  const i2 = ini2(rep.name);
+  if(rep.photo && rep.photo.trim()){
+    av.innerHTML=`<img src="${rep.photo.trim()}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%"
+      onerror="this.outerHTML='<div style=\\'width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13\\'>${i2}</div>'">`; 
+  } else {
+    av.innerHTML=`<div class="modal-av-init">${i2}</div>`;
+  }
+  document.getElementById('m-name').textContent = rep.name||'—';
+  document.getElementById('m-sub').textContent  = (rep.teamName||'') + (currentPeriod?' — '+currentPeriod:'');
+  document.getElementById('m-p3').textContent   = rep.P3||0;
+  document.getElementById('m-p6').textContent   = rep.P6||0;
+  document.getElementById('m-p12').textContent  = rep.P12||0;
+  document.getElementById('m-score').textContent= fmt(rep.score);
+  const pc = rep.primPct||0;
+  const pel= document.getElementById('m-prim');
+  pel.textContent = pc>0 ? '%'+pc+' Prim' : 'Prim Yok';
+  pel.style.color = primColor(pc);
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(e, force){
+  if(force || !e || e.target===document.getElementById('modal-bg')){
+    document.getElementById('modal-bg').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(null,'force'); });
+
+/* ── RENDER HERO ── */
 function renderHero(all){
   const top = all[0]||{};
   const pct = top.score>=TGT ? '&#10003; TAMAMLANDI' : fmt((top.score/TGT)*100,0)+'%';
   document.getElementById('s-hero').innerHTML=`
     <div class="hero">
       <div class="av-wrap">
-        <div class="av-ring">${avatar(top.photo, top.name, 94)}</div>
-        <div class="av-badge">Liderin<br>Performansı</div>
+        <div class="av-ring">${heroAvatar(top.photo, top.name)}</div>
+        <div class="av-badge">Liderin<br>Performansi</div>
       </div>
       <div class="hero-info">
         <h1>${top.name||'—'}</h1>
@@ -338,7 +517,8 @@ function renderTeams(teams){
             ${members.map((r,i)=>{
               const col = i===0?'#ec5b13':i===1?'#a5c893':'';
               const pc  = primColor(r.primPct||0);
-              return `<tr>
+              const rid = encodeURIComponent(r.name||'');
+              return `<tr class="clickable" onclick="handleRowClick('${rid}')">
                 <td><div class="nc">
                   ${rowAvatar(r.photo, r.name, col)}
                   <span class="nm" style="${col?'color:'+col:''}">${r.name||'—'}</span>
@@ -358,6 +538,14 @@ function renderTeams(teams){
   });
   h+='</div>';
   document.getElementById('s-teams').innerHTML=h;
+}
+
+let currentAll = [];
+
+function handleRowClick(encodedName){
+  const name = decodeURIComponent(encodedName);
+  const rep  = currentAll.find(r=>r.name===name);
+  if(rep) openModal(rep);
 }
 
 function renderCharts(all){
@@ -421,6 +609,24 @@ function renderTicker(all){
   document.getElementById('tk-b').innerHTML = content;
 }
 
+function renderDashboard(raw, period){
+  const filtered = filterByPeriod(raw, period);
+  const {teams, all} = processData(filtered);
+  currentAll = all;
+  renderHero(all);
+  renderLegend();
+  renderProgress(teams);
+  renderTeams(teams);
+  renderCharts(all);
+  renderTicker(all);
+}
+
+function onPeriodChange(){
+  currentPeriod = document.getElementById('period-select').value;
+  document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+  if(rawCache) renderDashboard(rawCache, currentPeriod);
+}
+
 function startCountdown(){
   if(cTimer) clearInterval(cTimer);
   let v = AUTO_SEC;
@@ -428,7 +634,7 @@ function startCountdown(){
   cTimer = setInterval(()=>{
     v--;
     if(v>0) document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
-    else { document.getElementById('countdown').textContent = 'Guncelleniyor...'; clearInterval(cTimer); }
+    else { document.getElementById('countdown').textContent='Guncelleniyor...'; clearInterval(cTimer); }
   }, 1000);
 }
 
@@ -447,19 +653,28 @@ async function fetchData(manual=false){
     const res  = await fetch(API + '?t=' + Date.now(), opts);
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const raw  = await res.json();
-    const {teams, all} = processData(raw);
+    rawCache   = raw;
 
-    renderHero(all);
-    renderLegend();
-    renderProgress(teams);
-    renderTeams(teams);
-    renderCharts(all);
-    renderTicker(all);
+    // Dönem listesini çıkar ve dropdown'ı güncelle
+    let periods = extractPeriods(raw);
+    if(!periods.length) periods = buildPeriodsFromTeams(raw);
+
+    // Eğer API zaten dönem içeriyorsa (tek dönem modu)
+    if(!periods.length && raw.teams){
+      // Dönem bilgisi yoksa "Guncel" olarak ata
+      periods = ['Guncel'];
+      raw.tumSatislar = null;
+    }
+
+    updatePeriodDropdown(periods);
+    currentPeriod = document.getElementById('period-select').value;
+    document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+
+    renderDashboard(raw, currentPeriod);
 
     const now = new Date();
     document.getElementById('last-upd').textContent =
       now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
-    if(raw.title) document.getElementById('dash-title').textContent = raw.title;
 
     document.getElementById('sdot').className = 'sdot';
     document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
