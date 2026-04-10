@@ -649,48 +649,73 @@ async function fetchData(manual=false){
   if(rTimer) clearInterval(rTimer);
   if(cTimer) clearInterval(cTimer);
 
-  try {
-    const opts = manual ? {cache:'no-cache'} : {};
-    const res  = await fetch(API + '?t=' + Date.now(), opts);
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const raw  = await res.json();
-    rawCache   = raw;
+  const cbName = 'cb_' + Date.now();
+  const url = API + '&callback=' + cbName + '&t=' + Date.now();
 
-    // Dönem listesini çıkar ve dropdown'ı güncelle
-    let periods = extractPeriods(raw);
-    if(!periods.length) periods = buildPeriodsFromTeams(raw);
-
-    // Eğer API zaten dönem içeriyorsa (tek dönem modu)
-    if(!periods.length && raw.teams){
-      // Dönem bilgisi yoksa "Guncel" olarak ata
-      periods = ['Guncel'];
-      raw.tumSatislar = null;
-    }
-
-    updatePeriodDropdown(periods);
-    currentPeriod = document.getElementById('period-select').value;
-    document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
-
-    renderDashboard(raw, currentPeriod);
-
-    const now = new Date();
-    document.getElementById('last-upd').textContent =
-      now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
-
-    document.getElementById('sdot').className = 'sdot';
-    document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
-    startCountdown();
-    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
-
-  } catch(e) {
+  const timeout = setTimeout(()=>{
+    cleanup();
     document.getElementById('sdot').className = 'sdot error';
-    document.getElementById('smsg').textContent = 'Veri alinamadi: ' + e.message;
+    document.getElementById('smsg').textContent = 'Veri alinamadi: zaman asimi';
     rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
-  } finally {
     const ic = document.getElementById('rico');
     if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
     btn.disabled = false;
+  }, 15000);
+
+  function cleanup(){
+    clearTimeout(timeout);
+    delete window[cbName];
+    const s = document.getElementById('jsonp-' + cbName);
+    if(s) s.remove();
   }
+
+  window[cbName] = function(raw){
+    cleanup();
+    try {
+      rawCache = raw;
+      let periods = raw.periods || [];
+      if(!periods.length) periods = extractPeriods(raw);
+      if(!periods.length) periods = buildPeriodsFromTeams(raw);
+      if(!periods.length){ periods = ['Guncel']; raw.tumSatislar = null; }
+
+      updatePeriodDropdown(periods);
+      currentPeriod = document.getElementById('period-select').value;
+      document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+
+      renderDashboard(raw, currentPeriod);
+
+      const now = new Date();
+      document.getElementById('last-upd').textContent =
+        now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
+
+      document.getElementById('sdot').className = 'sdot';
+      document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
+      startCountdown();
+      rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+    } catch(err) {
+      document.getElementById('sdot').className = 'sdot error';
+      document.getElementById('smsg').textContent = 'Isleme hatasi: ' + err.message;
+      rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+    } finally {
+      const ic = document.getElementById('rico');
+      if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
+      btn.disabled = false;
+    }
+  };
+
+  const script = document.createElement('script');
+  script.id = 'jsonp-' + cbName;
+  script.src = url;
+  script.onerror = function(){
+    cleanup();
+    document.getElementById('sdot').className = 'sdot error';
+    document.getElementById('smsg').textContent = 'Veri alinamadi: baglanti hatasi';
+    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+    const ic = document.getElementById('rico');
+    if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
+    btn.disabled = false;
+  };
+  document.head.appendChild(script);
 }
 
 fetchData(false);
