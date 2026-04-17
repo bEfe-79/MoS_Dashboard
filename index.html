@@ -225,7 +225,7 @@ tr.clickable:hover td{background:rgba(236,91,19,.06)}
 </div>
 
 <script>
-const API      = 'https://script.google.com/macros/s/AKfycbybanAt2-av_sYFWGKd6gxKoyrOWuHhZ4KlYHiAgy90DELuRkSlfbEgaKtTifqZHahFyA/exec?token=MjpBZABmztjrcdifT.42xUxGQs';
+const API      = 'https://mos-proxy.efeburhan79.workers.dev/';
 const TGT      = 10;
 const AUTO_SEC = 60;
 let rTimer = null, cTimer = null;
@@ -649,73 +649,42 @@ async function fetchData(manual=false){
   if(rTimer) clearInterval(rTimer);
   if(cTimer) clearInterval(cTimer);
 
-  const cbName = 'cb_' + Date.now();
-  const url = API + '&callback=' + cbName + '&t=' + Date.now();
+  try {
+    const opts = manual ? {cache:'no-cache'} : {};
+    const res  = await fetch(API + '?t=' + Date.now(), opts);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const raw  = await res.json();
+    rawCache   = raw;
 
-  const timeout = setTimeout(()=>{
-    cleanup();
-    document.getElementById('sdot').className = 'sdot error';
-    document.getElementById('smsg').textContent = 'Veri alinamadi: zaman asimi';
+    let periods = raw.periods || [];
+    if(!periods.length) periods = extractPeriods(raw);
+    if(!periods.length) periods = buildPeriodsFromTeams(raw);
+    if(!periods.length){ periods = ['Guncel']; raw.tumSatislar = null; }
+
+    updatePeriodDropdown(periods);
+    currentPeriod = document.getElementById('period-select').value;
+    document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+
+    renderDashboard(raw, currentPeriod);
+
+    const now = new Date();
+    document.getElementById('last-upd').textContent =
+      now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
+
+    document.getElementById('sdot').className = 'sdot';
+    document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
+    startCountdown();
     rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+
+  } catch(e) {
+    document.getElementById('sdot').className = 'sdot error';
+    document.getElementById('smsg').textContent = 'Veri alinamadi: ' + e.message;
+    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
+  } finally {
     const ic = document.getElementById('rico');
     if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
     btn.disabled = false;
-  }, 15000);
-
-  function cleanup(){
-    clearTimeout(timeout);
-    delete window[cbName];
-    const s = document.getElementById('jsonp-' + cbName);
-    if(s) s.remove();
   }
-
-  window[cbName] = function(raw){
-    cleanup();
-    try {
-      rawCache = raw;
-      let periods = raw.periods || [];
-      if(!periods.length) periods = extractPeriods(raw);
-      if(!periods.length) periods = buildPeriodsFromTeams(raw);
-      if(!periods.length){ periods = ['Guncel']; raw.tumSatislar = null; }
-
-      updatePeriodDropdown(periods);
-      currentPeriod = document.getElementById('period-select').value;
-      document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
-
-      renderDashboard(raw, currentPeriod);
-
-      const now = new Date();
-      document.getElementById('last-upd').textContent =
-        now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
-
-      document.getElementById('sdot').className = 'sdot';
-      document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
-      startCountdown();
-      rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
-    } catch(err) {
-      document.getElementById('sdot').className = 'sdot error';
-      document.getElementById('smsg').textContent = 'Isleme hatasi: ' + err.message;
-      rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
-    } finally {
-      const ic = document.getElementById('rico');
-      if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
-      btn.disabled = false;
-    }
-  };
-
-  const script = document.createElement('script');
-  script.id = 'jsonp-' + cbName;
-  script.src = url;
-  script.onerror = function(){
-    cleanup();
-    document.getElementById('sdot').className = 'sdot error';
-    document.getElementById('smsg').textContent = 'Veri alinamadi: baglanti hatasi';
-    rTimer = setInterval(()=>fetchData(false), AUTO_SEC*1000);
-    const ic = document.getElementById('rico');
-    if(ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
-    btn.disabled = false;
-  };
-  document.head.appendChild(script);
 }
 
 fetchData(false);
