@@ -569,7 +569,7 @@ function handleRowClick(encodedName){
   if(rep) openModal(rep);
 }
 
-function renderCharts(all){
+function renderCharts(all, teams){
   const p3=all.reduce((s,r)=>s+(r.P3||0),0);
   const p6=all.reduce((s,r)=>s+(r.P6||0),0);
   const p12=all.reduce((s,r)=>s+(r.P12||0),0);
@@ -578,7 +578,10 @@ function renderCharts(all){
   const pp6 =pt>0?Math.round(p6/pt*100):33;
   const pp12=pt>0?Math.round(p12/pt*100):34;
   const tot =all.reduce((s,r)=>s+r.score,0);
-  const tgt =all.length*TGT;
+  // Hedefi teams'den al — her takımın hedefinin toplamı
+  const tgt = teams
+    ? Object.values(teams).reduce((s,t)=>s+t.hedef,0)
+    : all.reduce((s,r)=>s+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0),0);
   const tpct=tgt>0?Math.min(100,(tot/tgt)*100):0;
   const t5  =all.slice(0,5);
   const mx  =t5.length?t5[0].score:1;
@@ -606,7 +609,7 @@ function renderCharts(all){
           </div>`).join('')}
       </div>
       <div class="cc grn">
-        <div class="ctit">Toplam Ekip Puani</div>
+        <div class="ctit">Toplam Ekip Puanı</div>
         <div class="tnum">${fmt(tot)}</div>
         <div class="tsub">Hedef: ${fmt(tgt,0)} puan</div>
         <div class="tbar"><div class="tbf" style="width:${fmt(tpct,1)}%"></div></div>
@@ -620,7 +623,7 @@ function renderTicker(all){
   const top  = all[0];
   const rank = all.map((r,i)=>`${i+1}. ${r.name||'?'} (${fmt(r.score)})`).join(' | ');
   const tot  = all.reduce((s,r)=>s+r.score,0);
-  const tgt  = all.length*TGT;
+  const tgt  = all.reduce((s,r)=>s+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0),0);
   const pct  = tgt>0?fmt(Math.min(100,tot/tgt*100),1):'0.0';
   const content = `
     <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name||'—'} — ${fmt(top.score)} puan | Prim: %${top.primPct||0}${top.score>=15?' | ★ Zirve Bonusu':''}</span>
@@ -638,7 +641,7 @@ function renderDashboard(raw, period){
   renderLegend();
   renderProgress(teams);
   renderTeams(teams);
-  renderCharts(all);
+  renderCharts(all, teams);
   renderTicker(all);
 }
 
