@@ -362,15 +362,23 @@ function filterByPeriod(raw, period){
   });
 
   // teams'i güncelle
-  const newTeams = (raw.teams||[]).map(team=>({
-    ...team,
-    members: (team.members||[]).map(m=>{
+  const newTeams = (raw.teams||[]).map(team=>{
+    const newMembers = (team.members||[]).map(m=>{
       const s = satisMap[m.name]||{P3:0,P6:0,P12:0};
       const score = calcScore(s);
       const toplamSatis = s.P3 + s.P6 + s.P12;
       return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, toplamSatis, primPct:undefined};
-    })
-  }));
+    });
+    const newToplamPuan = Math.round(newMembers.reduce((s,r)=>s+r.score,0)*100)/100;
+    const newHedef = newMembers.reduce((s,r)=>s+(r.hedef||10),0);
+    return {
+      ...team,
+      members: newMembers,
+      toplamPuan: newToplamPuan,
+      hedef: newHedef,
+      hedefGecildi: newToplamPuan >= newHedef
+    };
+  });
 
   return {...raw, teams: newTeams};
 }
