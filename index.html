@@ -243,15 +243,22 @@ function calcScore(r){
   return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100;
 }
 
-function calcPrim(puan, is1, is2, teamOK){
-  if(puan < 6) return 0;
-  let b = puan<7?50:puan<8?60:puan<9?75:puan<10?85:100;
-  if(puan >= 10){
+function calcPrim(puan, toplamSatis, is1, is2, teamOK){
+  let efektif = 0;
+  if      (puan >= 10 && toplamSatis >= 6) efektif = puan;
+  else if (puan >= 9  && toplamSatis >= 5) efektif = Math.min(puan, 9.99);
+  else if (puan >= 8  && toplamSatis >= 5) efektif = Math.min(puan, 8.99);
+  else if (puan >= 7  && toplamSatis >= 4) efektif = Math.min(puan, 7.99);
+  else if (puan >= 6  && toplamSatis >= 4) efektif = Math.min(puan, 6.99);
+  else return 0;
+  let b = efektif<7?50:efektif<8?60:efektif<9?75:efektif<10?85:100;
+  if(efektif >= 10){
     const ex = puan - 10;
     b += Math.floor(ex)*5 + Math.floor(ex/3)*15;
   }
   if(is1 && puan >= 15) b += 20;
   else if(teamOK){ if(is1) b+=20; else if(is2) b+=10; }
+  else { if(is1) b+=10; else if(is2) b+=5; }
   return Math.round(b);
 }
 
@@ -359,7 +366,8 @@ function filterByPeriod(raw, period){
     members: (team.members||[]).map(m=>{
       const s = satisMap[m.name]||{P3:0,P6:0,P12:0};
       const score = calcScore(s);
-      return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, primPct:undefined};
+      const toplamSatis = s.P3 + s.P6 + s.P12;
+      return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, toplamSatis, primPct:undefined};
     })
   }));
 
@@ -385,7 +393,10 @@ function processData(raw){
     const teamOK = total >= hedef;
 
     members.forEach((r,i)=>{
-      if(r.primPct===undefined) r.primPct = calcPrim(r.score, i===0, i===1, teamOK);
+      if(r.primPct===undefined){
+        const ts = (r.toplamSatis !== undefined) ? r.toplamSatis : (r.P3||0)+(r.P6||0)+(r.P12||0);
+        r.primPct = calcPrim(r.score, ts, i===0, i===1, teamOK);
+      }
       all.push(r);
     });
     teams[nm] = {total, hedef, teamOK, members};
