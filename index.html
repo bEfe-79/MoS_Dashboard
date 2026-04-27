@@ -370,7 +370,7 @@ function filterByPeriod(raw, period){
       return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, toplamSatis, primPct:undefined};
     });
     const newToplamPuan = Math.round(newMembers.reduce((s,r)=>s+r.score,0)*100)/100;
-    const newHedef = newMembers.reduce((s,r)=>s+(r.hedef||10),0);
+    const newHedef = newMembers.reduce((s,r)=>s+(r.hedef!==null && r.hedef!==undefined ? r.hedef : 0),0);
     return {
       ...team,
       members: newMembers,
