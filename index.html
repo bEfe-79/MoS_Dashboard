@@ -257,10 +257,9 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK){
     const ex = puan - 10;
     b += Math.floor(ex)*5 + Math.floor(ex/3)*15;
   }
-  // Ekip bonusu — sadece kota karşılandıysa uygulanır
+  // Ekip bonusu: sadece 15+ puan VEYA ekip hedefi geçildiyse
   if(is1 && puan >= 15) b += 20;
   else if(teamOK){ if(is1) b+=20; else if(is2) b+=10; }
-  else { if(is1) b+=10; else if(is2) b+=5; }
   return Math.round(b);
 }
 
