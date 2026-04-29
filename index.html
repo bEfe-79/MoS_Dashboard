@@ -395,7 +395,7 @@ function processData(raw){
       teamName: nm,
       photo: r.photo||''
     }));
-    members.sort((a,b)=>b.score-a.score);
+    members.sort((a,b)=>(b.primPct||0)-(a.primPct||0) || b.score-a.score);
 
     const total  = Math.round(members.reduce((s,r)=>s+r.score,0)*100)/100;
     const hedef  = (t.hedef !== null && t.hedef !== undefined) ? t.hedef : members.reduce((s,r)=>s+(r.hedef||0),0);
@@ -411,7 +411,7 @@ function processData(raw){
     teams[nm] = {total, hedef, teamOK, members};
   });
 
-  all.sort((a,b)=>b.score-a.score);
+  all.sort((a,b)=>(b.primPct||0)-(a.primPct||0) || b.score-a.score);
   return {teams, all};
 }
 
