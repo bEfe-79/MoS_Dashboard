@@ -459,16 +459,15 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(null,'
 /* ── RENDER HERO ── */
 function renderHero(all, teams){
   const top = all[0]||{};
-  const topHedef = top.hedef !== null && top.hedef !== undefined ? top.hedef : TGT;
-  const hboVal = topHedef > 0 ? Math.min(100, (top.score / topHedef) * 100) : 0;
-  const hboFmt = fmt(hboVal, 1) + '%';
-  const hedefTamamlandi = top.score >= topHedef && topHedef > 0;
 
   // Toplam ekip puanı
   const tot = all.reduce((s,r)=>s+r.score,0);
   const tgt = teams ? Object.values(teams).reduce((s,t)=>s+t.hedef,0)
     : all.reduce((s,r)=>s+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0),0);
   const tpct = tgt>0?Math.min(100,(tot/tgt)*100):0;
+  const tpctFmt = '%' + fmt(tpct,1);
+  const ekipHedefTamamlandi = tgt>0 && tot >= tgt;
+  const tpctColor = ekipHedefTamamlandi ? '#4ade80' : '#ec5b13';
 
   document.getElementById('s-hero').innerHTML=`
     <div style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch">
@@ -484,11 +483,6 @@ function renderHero(all, teams){
             ${(top.primPct||0)>0?`<span class="tag or">Prim: %${top.primPct}</span>`:''}
             ${top.score>=15?`<span class="tag or">&#9733; Zirve Bonusu</span>`:''}
           </div>
-          <div style="margin-bottom:10px">
-            <div style="font-size:10px;color:#a5c893;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Hedef Basari Orani</div>
-            <div style="font-size:42px;font-weight:900;color:${hedefTamamlandi?'#4ade80':'#ec5b13'};line-height:1;font-family:monospace">${hboFmt}</div>
-            <div style="font-size:10px;color:#64748b;margin-top:2px">${fmt(top.score)} / ${fmt(topHedef,0)} puan</div>
-          </div>
           <div class="hstats">
             <div class="sm"><div class="sl">ProStart-3</div><div class="sv">${top.P3||0}</div></div>
             <div class="sm"><div class="sl">ProStart-6</div><div class="sv">${top.P6||0}</div></div>
@@ -496,16 +490,15 @@ function renderHero(all, teams){
           </div>
         </div>
       </div>
-      <div class="cc grn" style="min-width:200px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
-        <div class="ctit">Toplam Ekip Puanı</div>
-        <div class="tnum">${fmt(tot)}</div>
-        <div class="tsub">Hedef: ${fmt(tgt,0)} puan</div>
-        <div class="tbar"><div class="tbf" style="width:${fmt(tpct,1)}%"></div></div>
-        <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(tpct,1)} tamamlandı</div>
+      <div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
+        <div class="ctit">Hedef Başarı Oranı</div>
+        <div style="font-size:42px;font-weight:900;line-height:1;color:${tpctColor};font-family:monospace">${tpctFmt}</div>
+        <div style="font-size:11px;color:#a5c893;margin-top:6px">${fmt(tot)} / ${fmt(tgt,0)} puan</div>
+        <div class="tbar" style="margin-top:12px"><div class="tbf" style="width:${fmt(tpct,1)}%;background:${tpctColor}"></div></div>
       </div>
     </div>`;
 
-  if(hedefTamamlandi) launchConfetti();
+  if(ekipHedefTamamlandi) launchConfetti();
 }
 
 function renderLegend(){
