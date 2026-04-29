@@ -102,6 +102,10 @@ td:last-child{text-align:right}
 .tsub{font-size:11px;color:#a5c893;margin-top:6px}
 .tbar{background:rgba(0,0,0,.3);border-radius:99px;height:6px;margin-top:12px;overflow:hidden}
 .tbf{height:100%;background:#fff;border-radius:99px;transition:width .6s ease}
+/* ── CONFETTI ── */
+.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;overflow:hidden}
+.cp{position:absolute;top:-12px;opacity:0;animation:cffall linear forwards}
+@keyframes cffall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(105vh) rotate(720deg) scale(.5)}}
 /* ── MODAL ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
@@ -453,32 +457,55 @@ function closeModal(e, force){
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(null,'force'); });
 
 /* ── RENDER HERO ── */
-function renderHero(all){
+function renderHero(all, teams){
   const top = all[0]||{};
-  const pct = top.score>=TGT ? '&#10003; TAMAMLANDI' : fmt((top.score/TGT)*100,0)+'%';
+  const topHedef = top.hedef !== null && top.hedef !== undefined ? top.hedef : TGT;
+  const hboVal = topHedef > 0 ? Math.min(100, (top.score / topHedef) * 100) : 0;
+  const hboFmt = fmt(hboVal, 1) + '%';
+  const hedefTamamlandi = top.score >= topHedef && topHedef > 0;
+
+  // Toplam ekip puanı
+  const tot = all.reduce((s,r)=>s+r.score,0);
+  const tgt = teams ? Object.values(teams).reduce((s,t)=>s+t.hedef,0)
+    : all.reduce((s,r)=>s+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0),0);
+  const tpct = tgt>0?Math.min(100,(tot/tgt)*100):0;
+
   document.getElementById('s-hero').innerHTML=`
-    <div class="hero">
-      <div class="av-wrap">
-        <div class="av-ring">${heroAvatar(top.photo, top.name)}</div>
-        <div class="av-badge">Liderin<br>Performansi</div>
-      </div>
-      <div class="hero-info">
-        <h1>${top.name||'—'}</h1>
-        <div class="hero-tags">
-          <span class="tag or">${fmt(top.score)} Toplam Puan</span>
-          <span class="tag">#1 Genel Siralama</span>
-          <span class="tag">Hedef: ${pct}</span>
-          ${(top.primPct||0)>0?`<span class="tag or">Prim: %${top.primPct}</span>`:''}
-          ${top.score>=15?`<span class="tag or">&#9733; Zirve Bonusu Aktif</span>`:''}
+    <div style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch">
+      <div class="hero" style="margin:0">
+        <div class="av-wrap">
+          <div class="av-ring">${heroAvatar(top.photo, top.name)}</div>
+          <div class="av-badge">Liderin<br>Performansi</div>
         </div>
-        <div class="hstats">
-          <div class="sm"><div class="sl">ProStart-3</div><div class="sv">${top.P3||0}</div></div>
-          <div class="sm"><div class="sl">ProStart-6</div><div class="sv">${top.P6||0}</div></div>
-          <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
+        <div class="hero-info">
+          <h1>${top.name||'—'}</h1>
+          <div class="hero-tags">
+            <span class="tag">#1 Genel Siralama</span>
+            ${(top.primPct||0)>0?`<span class="tag or">Prim: %${top.primPct}</span>`:''}
+            ${top.score>=15?`<span class="tag or">&#9733; Zirve Bonusu</span>`:''}
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="font-size:10px;color:#a5c893;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Hedef Basari Orani</div>
+            <div style="font-size:42px;font-weight:900;color:${hedefTamamlandi?'#4ade80':'#ec5b13'};line-height:1;font-family:monospace">${hboFmt}</div>
+            <div style="font-size:10px;color:#64748b;margin-top:2px">${fmt(top.score)} / ${fmt(topHedef,0)} puan</div>
+          </div>
+          <div class="hstats">
+            <div class="sm"><div class="sl">ProStart-3</div><div class="sv">${top.P3||0}</div></div>
+            <div class="sm"><div class="sl">ProStart-6</div><div class="sv">${top.P6||0}</div></div>
+            <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
+          </div>
         </div>
       </div>
-      <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>
+      <div class="cc grn" style="min-width:200px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
+        <div class="ctit">Toplam Ekip Puanı</div>
+        <div class="tnum">${fmt(tot)}</div>
+        <div class="tsub">Hedef: ${fmt(tgt,0)} puan</div>
+        <div class="tbar"><div class="tbf" style="width:${fmt(tpct,1)}%"></div></div>
+        <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(tpct,1)} tamamlandı</div>
+      </div>
     </div>`;
+
+  if(hedefTamamlandi) launchConfetti();
 }
 
 function renderLegend(){
@@ -593,8 +620,8 @@ function renderCharts(all, teams){
   const mx  =t5.length?t5[0].score:1;
 
   document.getElementById('s-charts').innerHTML=`
-    <div class="crow">
-      <div class="cc">
+    <div style="display:flex;gap:12px;justify-content:center">
+      <div class="cc" style="flex:1;max-width:480px">
         <div class="ctit">Urun Dagilimi</div>
         <div class="drow"><span>ProStart-3</span><span>${pp3}%</span></div>
         <div class="dbw"><div class="dbf" style="width:${pp3}%;background:#ec5b13"></div></div>
@@ -603,7 +630,7 @@ function renderCharts(all, teams){
         <div class="drow"><span>ProStart-12</span><span>${pp12}%</span></div>
         <div class="dbw"><div class="dbf" style="width:${pp12}%;background:#60a5fa"></div></div>
       </div>
-      <div class="cc">
+      <div class="cc" style="flex:1;max-width:480px">
         <div class="ctit">Genel Siralama (Top ${t5.length})</div>
         ${t5.map((r,i)=>`
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
@@ -613,13 +640,6 @@ function renderCharts(all, teams){
           <div style="width:100%;background:rgba(255,255,255,.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">
             <div style="width:${fmt(Math.min(100,r.score/mx*100),1)}%;height:100%;background:${i===0?'#ec5b13':'#304724'};border-radius:99px"></div>
           </div>`).join('')}
-      </div>
-      <div class="cc grn">
-        <div class="ctit">Toplam Ekip Puanı</div>
-        <div class="tnum">${fmt(tot)}</div>
-        <div class="tsub">Hedef: ${fmt(tgt,0)} puan</div>
-        <div class="tbar"><div class="tbf" style="width:${fmt(tpct,1)}%"></div></div>
-        <div style="font-size:10px;color:#a5c893;margin-top:8px">%${fmt(tpct,1)} tamamlandi</div>
       </div>
     </div>`;
 }
@@ -639,11 +659,35 @@ function renderTicker(all){
   document.getElementById('tk-b').innerHTML = content;
 }
 
+function launchConfetti(){
+  const colors=['#ec5b13','#f59e0b','#4ade80','#60a5fa','#a78bfa','#f472b6','#fff'];
+  const wrap = document.createElement('div');
+  wrap.className = 'confetti-wrap';
+  document.body.appendChild(wrap);
+  for(let i=0;i<120;i++){
+    const p = document.createElement('div');
+    p.className = 'cp';
+    const size = 6+Math.random()*8;
+    const isRect = Math.random()>0.5;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${size}px;
+      height:${isRect?size*0.4:size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${isRect?'2px':'50%'};
+      animation-duration:${2+Math.random()*3}s;
+      animation-delay:${Math.random()*2}s;
+    `;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.remove(), 6000);
+}
+
 function renderDashboard(raw, period){
   const filtered = filterByPeriod(raw, period);
   const {teams, all} = processData(filtered);
   currentAll = all;
-  renderHero(all);
+  renderHero(all, teams);
   renderLegend();
   renderProgress(teams);
   renderTeams(teams);
