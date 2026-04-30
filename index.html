@@ -305,9 +305,15 @@ function rowAvatar(photo, name, col){
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
 
 function statusBadge(score, toplamSatis, hedef){
-  const h = (hedef !== null && hedef !== undefined) ? hedef : TGT;
-  const puanTamam = score >= h && h > 0;
-  const kotaTamam = toplamSatis >= 6;
+  const h = (hedef !== null && hedef !== undefined && hedef > 0) ? hedef : TGT;
+  const puanTamam = score >= h;
+
+  // Kota eşiği puana göre belirlenir
+  let kotaEsigi = 0;
+  if      (score >= 10) kotaEsigi = 6;
+  else if (score >= 8)  kotaEsigi = 5;
+  else if (score >= 6)  kotaEsigi = 4;
+  const kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
 
   if(puanTamam && kotaTamam)  return '<span class="bdg bg-g">🏆 HEDEFİ AŞTI</span>';
   if(puanTamam && !kotaTamam) return '<span class="bdg bg-y">⚡ PUAN TAMAM, SATIŞA DEVAM</span>';
@@ -494,7 +500,7 @@ function renderHero(all, teams){
             <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
           </div>
         </div>
-        <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">SATIŞ DASHBOARD v4.0</div></div>
+        <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>
       </div>
       <div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
         <div class="ctit">Hedef Başarı Oranı</div>
