@@ -304,10 +304,15 @@ function rowAvatar(photo, name, col){
 
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
 
-function statusBadge(s){
-  if(s>=TGT)     return '<span class="bdg bg-g">HEDEF TAMAMLANDI</span>';
-  if(s>=TGT*.85) return '<span class="bdg bg-y">HEDEFE YAKIN</span>';
-  return '<span class="bdg bg-r">DEVAM EDIYOR</span>';
+function statusBadge(score, toplamSatis, hedef){
+  const h = (hedef !== null && hedef !== undefined) ? hedef : TGT;
+  const puanTamam = score >= h && h > 0;
+  const kotaTamam = toplamSatis >= 6;
+
+  if(puanTamam && kotaTamam)  return '<span class="bdg bg-g">🏆 HEDEFİ AŞTI</span>';
+  if(puanTamam && !kotaTamam) return '<span class="bdg bg-y">⚡ PUAN TAMAM, SATIŞA DEVAM</span>';
+  if(!puanTamam && kotaTamam) return '<span class="bdg bg-y">📈 HEDEFE YAKLAŞIYOR</span>';
+  return '<span class="bdg bg-r">🚀 HEDEFE KOŞUYOR</span>';
 }
 function primColor(p){ return p>=100?'#4ade80':p>=75?'#a5c893':p>=50?'#facc15':'#64748b'; }
 
@@ -471,7 +476,7 @@ function renderHero(all, teams){
 
   document.getElementById('s-hero').innerHTML=`
     <div style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch">
-      <div class="hero" style="margin:0">
+      <div class="hero" style="margin:0;position:relative;overflow:hidden">
         <div class="av-wrap">
           <div class="av-ring">${heroAvatar(top.photo, top.name)}</div>
           <div class="av-badge">Liderin<br>Performansi</div>
@@ -489,6 +494,7 @@ function renderHero(all, teams){
             <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12||0}</div></div>
           </div>
         </div>
+        <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>
       </div>
       <div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
         <div class="ctit">Hedef Başarı Oranı</div>
@@ -517,8 +523,8 @@ function renderProgress(teams){
     const t=teams[nm];
     const pct=t.hedef>0?Math.min(100,(t.total/t.hedef)*100):0;
     const b=t.teamOK
-      ?'<span class="bdg bg-g">HEDEF ASILDI</span>'
-      :'<span class="bdg bg-y">DEVAM EDIYOR</span>';
+      ?'<span class="bdg bg-g">🏆 HEDEFİ AŞTI</span>'
+      :'<span class="bdg bg-y">🚀 HEDEFE KOŞUYOR</span>';
     h+=`<div class="tprow">
       <div class="tphdr">
         <div style="display:flex;align-items:center">
@@ -575,7 +581,7 @@ function renderTeams(teams){
                 <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct||0)>0?pc:'#64748b'}">
                   ${(r.primPct||0)>0?'%'+r.primPct:'—'}
                 </td>
-                <td>${statusBadge(r.score)}</td>
+                <td>${statusBadge(r.score, (r.toplamSatis !== undefined ? r.toplamSatis : (r.P3||0)+(r.P6||0)+(r.P12||0)), r.hedef)}</td>
               </tr>`;
             }).join('')}
           </tbody>
