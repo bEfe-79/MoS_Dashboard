@@ -160,17 +160,18 @@ tr.clickable:hover td{background:rgba(236,91,19,.06)}
   .logo{flex:1;min-width:0}
   .hdr-r{flex-wrap:wrap;gap:6px}
   .upd-box{display:none}
-  table{font-size:11px}
-  th,td{padding:6px 7px}
-  .nm{max-width:80px}
+  .nm{max-width:70px;font-size:11px}
+  .pval{font-size:11px}
   .tpscore{font-size:18px}
+  .col-level{display:none}
+  th,td{padding:7px 6px}
+  .bdg{font-size:7px;padding:2px 6px}
 }
 @media(max-width:500px){
   .main{padding:10px 10px 80px}
   .hero-info h1{font-size:18px}
   .lgrid{grid-template-columns:1fr 1fr}
   .sm .sv{font-size:16px}
-  .bdg{font-size:7px;padding:2px 5px}
   .lights .lt{width:10px;height:10px}
 }
 </style>
@@ -597,11 +598,11 @@ function renderTeams(teams){
       <div class="twrap">
         <table>
           <colgroup>
-            <col style="width:28%"><col style="width:13%"><col style="width:22%">
-            <col style="width:15%"><col style="width:22%">
+            <col style="width:30%"><col style="width:14%"><col class="col-level" style="width:20%">
+            <col style="width:14%"><col style="width:22%">
           </colgroup>
           <thead><tr>
-            <th>Isim</th><th>Puan</th><th>Level</th><th>Prim</th>
+            <th>Isim</th><th>Puan</th><th class="col-level">Level</th><th>Prim</th>
             <th style="text-align:right">Durum</th>
           </tr></thead>
           <tbody>
@@ -615,7 +616,7 @@ function renderTeams(teams){
                   <span class="nm" style="${col?'color:'+col:''}">${r.name||'—'}</span>
                 </div></td>
                 <td class="pval" style="${col?'color:'+col:''}">${fmt(r.score)}</td>
-                <td>${levelLights(r.score)}</td>
+                <td class="col-level">${levelLights(r.score)}</td>
                 <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct||0)>0?pc:'#64748b'}">
                   ${(r.primPct||0)>0?'%'+r.primPct:'—'}
                 </td>
