@@ -87,6 +87,7 @@ td:last-child{text-align:right}
 .bg-g{background:rgba(34,197,94,.2);color:#4ade80}
 .bg-y{background:rgba(234,179,8,.2);color:#facc15}
 .bg-r{background:rgba(239,68,68,.2);color:#f87171}
+.bg-teal{background:linear-gradient(90deg,rgba(234,179,8,.2),rgba(34,197,94,.2));color:#86efac}
 .lights{display:flex;gap:3px;align-items:center}
 .lt{width:12px;height:12px;border-radius:50%;background:#1e293b;border:1px solid rgba(255,255,255,.1);flex-shrink:0;transition:all .3s}
 .lt.on{background:#ec5b13;border-color:#ec5b13;box-shadow:0 0 6px rgba(236,91,19,.85)}
@@ -139,8 +140,39 @@ td:last-child{text-align:right}
 /* ── ROW CLICKABLE ── */
 tr.clickable{cursor:pointer}
 tr.clickable:hover td{background:rgba(236,91,19,.06)}
-@media(max-width:960px){.tgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr}.lgrid{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;text-align:center}.hero-tags{justify-content:center}.hstats{margin:0 auto}.hero-deco{display:none}}
-@media(max-width:500px){.main{padding:12px 12px 80px}.hero-info h1{font-size:20px}.lgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:1100px){
+  .tgrid{grid-template-columns:1fr}
+}
+@media(max-width:960px){
+  .tgrid{grid-template-columns:1fr}
+  .crow{grid-template-columns:1fr}
+  .lgrid{grid-template-columns:repeat(2,1fr)}
+  #s-hero > div{grid-template-columns:1fr !important}
+  .hero-deco{display:none}
+  .hstats{max-width:100%}
+}
+@media(max-width:700px){
+  .lgrid{grid-template-columns:1fr 1fr}
+  .hero{flex-direction:column;text-align:center}
+  .hero-tags{justify-content:center}
+  .hstats{margin:0 auto}
+  .header{flex-wrap:wrap;gap:8px;padding:10px 12px}
+  .logo{flex:1;min-width:0}
+  .hdr-r{flex-wrap:wrap;gap:6px}
+  .upd-box{display:none}
+  table{font-size:11px}
+  th,td{padding:6px 7px}
+  .nm{max-width:80px}
+  .tpscore{font-size:18px}
+}
+@media(max-width:500px){
+  .main{padding:10px 10px 80px}
+  .hero-info h1{font-size:18px}
+  .lgrid{grid-template-columns:1fr 1fr}
+  .sm .sv{font-size:16px}
+  .bdg{font-size:7px;padding:2px 5px}
+  .lights .lt{width:10px;height:10px}
+}
 </style>
 </head>
 <body>
@@ -316,7 +348,7 @@ function statusBadge(score, toplamSatis, hedef){
   const kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
 
   if(puanTamam && kotaTamam)  return '<span class="bdg bg-g">🏆 HEDEFİ AŞTI</span>';
-  if(puanTamam && !kotaTamam) return '<span class="bdg bg-y">⚡ PUAN TAMAM, SATIŞA DEVAM</span>';
+  if(puanTamam && !kotaTamam) return '<span class="bdg bg-teal">⚡ PUAN TAMAM, SATIŞA DEVAM</span>';
   if(!puanTamam && kotaTamam) return '<span class="bdg bg-y">📈 HEDEFE YAKLAŞIYOR</span>';
   return '<span class="bdg bg-r">🚀 HEDEFE KOŞUYOR</span>';
 }
