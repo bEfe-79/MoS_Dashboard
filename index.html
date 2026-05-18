@@ -357,13 +357,22 @@ function primColor(p){ return p>=100?'#4ade80':p>=75?'#a5c893':p>=50?'#facc15':'
 
 /* ── DÖNEM FİLTRELEME ── */
 function extractPeriods(raw){
-  const periods = new Set();
-  if(raw.tumSatislar && Array.isArray(raw.tumSatislar)){
-    raw.tumSatislar.forEach(s=>{ if(s.donem) periods.add(String(s.donem).trim()); });
-  } else if(raw.periods && Array.isArray(raw.periods)){
-    raw.periods.forEach(p=>periods.add(p));
+  // raw.periods varsa direkt kullan (API sırası korunur)
+  if(raw.periods && Array.isArray(raw.periods) && raw.periods.length){
+    return raw.periods;
   }
-  return Array.from(periods).sort();
+  // Fallback: tumSatislar'dan çıkar
+  const seen = new Set();
+  const periods = [];
+  if(raw.tumSatislar && Array.isArray(raw.tumSatislar)){
+    raw.tumSatislar.forEach(s=>{
+      if(s.donem && !seen.has(s.donem)){
+        seen.add(s.donem);
+        periods.push(String(s.donem).trim());
+      }
+    });
+  }
+  return periods;
 }
 
 function buildPeriodsFromTeams(raw){
@@ -384,9 +393,9 @@ function updatePeriodDropdown(periods){
     o.value = p; o.textContent = p;
     sel.appendChild(o);
   });
-  // Eğer mevcut seçim listede varsa koru, yoksa en son dönemi seç
+  // Eğer mevcut seçim listede varsa koru, yoksa ilk dönemi seç (API sırası: en güncel önce)
   if(cur && periods.includes(cur)) sel.value = cur;
-  else sel.value = periods[periods.length-1] || '';
+  else sel.value = periods[0] || '';
   currentPeriod = sel.value;
 }
 
@@ -409,7 +418,14 @@ function filterByPeriod(raw, period){
 
   const newTeams = (raw.teams||[]).map(team=>{
     const newMembers = (team.members||[])
-      // hedef null veya 0 olan üyeyi bu dönemde gösterme
+      .map(m=>{
+        // O döneme ait hedefi tumHedefler'den al
+        const donemHedef = (m.tumHedefler && m.tumHedefler[period] !== undefined)
+          ? m.tumHedefler[period]
+          : m.hedef;
+        return {...m, hedef: donemHedef};
+      })
+      // Dönem hedefi null veya 0 olan üyeyi gösterme
       .filter(m => m.hedef !== null && m.hedef !== undefined && m.hedef > 0)
       .map(m=>{
         const s = satisMap[m.name]||{P3:0,P6:0,P12:0};
@@ -417,8 +433,8 @@ function filterByPeriod(raw, period){
         const toplamSatis = s.P3 + s.P6 + s.P12;
         return {...m, P3:s.P3, P6:s.P6, P12:s.P12, score, toplamSatis, primPct:undefined};
       });
+
     const newToplamPuan = Math.round(newMembers.reduce((s,r)=>s+r.score,0)*100)/100;
-    // Hedef: sadece hedefi olan üyelerin toplamı
     const newHedef = newMembers.reduce((s,r)=>s+(r.hedef>0?r.hedef:0),0);
     return {
       ...team,
@@ -770,8 +786,7 @@ async function fetchData(manual=false){
     const raw  = await res.json();
     rawCache   = raw;
 
-    let periods = raw.periods || [];
-    if(!periods.length) periods = extractPeriods(raw);
+    let periods = (raw.periods && raw.periods.length) ? raw.periods : extractPeriods(raw);
     if(!periods.length) periods = buildPeriodsFromTeams(raw);
     if(!periods.length){ periods = ['Guncel']; raw.tumSatislar = null; }
 
