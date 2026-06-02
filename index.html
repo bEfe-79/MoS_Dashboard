@@ -280,22 +280,42 @@ function calcScore(r){
   return Math.round(((r.P3||0)*1+(r.P6||0)*1.7+(r.P12||0)*2.5)*100)/100;
 }
 
-function calcPrim(puan, toplamSatis, is1, is2, teamOK){
-  let efektif = 0;
-  if      (puan >= 10 && toplamSatis >= 6) efektif = puan;
-  else if (puan >= 9  && toplamSatis >= 5) efektif = Math.min(puan, 9.99);
-  else if (puan >= 8  && toplamSatis >= 5) efektif = Math.min(puan, 8.99);
-  else if (puan >= 7  && toplamSatis >= 4) efektif = Math.min(puan, 7.99);
-  else if (puan >= 6  && toplamSatis >= 4) efektif = Math.min(puan, 6.99);
-  else return 0; // Kota karşılanmadı — prim yok, bonus yok
+function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef){
+  const h = (hedef && hedef > 0) ? hedef : 10;
+  // Oransal eşikler — hedefin yüzdesi
+  const p60 = h * 0.60;
+  const p70 = h * 0.70;
+  const p80 = h * 0.80;
+  const p90 = h * 0.90;
+  const p100 = h;
+  // Zirve istisnası eşiği: hedefin %150'si
+  const zirveEsigi = h * 1.50;
 
-  let b = efektif<7?50:efektif<8?60:efektif<9?75:efektif<10?85:100;
-  if(efektif >= 10){
-    const ex = puan - 10;
+  // Sabit adet kotaları
+  let efektif = 0;
+  if      (puan >= p100 && toplamSatis >= 6) efektif = puan;
+  else if (puan >= p90  && toplamSatis >= 5) efektif = Math.min(puan, p100 - 0.01);
+  else if (puan >= p80  && toplamSatis >= 5) efektif = Math.min(puan, p90 - 0.01);
+  else if (puan >= p70  && toplamSatis >= 4) efektif = Math.min(puan, p80 - 0.01);
+  else if (puan >= p60  && toplamSatis >= 4) efektif = Math.min(puan, p70 - 0.01);
+  else return 0;
+
+  // Baz prim
+  let b = 0;
+  if      (efektif >= p100) b = 100;
+  else if (efektif >= p90)  b = 85;
+  else if (efektif >= p80)  b = 75;
+  else if (efektif >= p70)  b = 60;
+  else                      b = 50;
+
+  // Hedef üzeri bonus
+  if(efektif >= p100){
+    const ex = puan - p100;
     b += Math.floor(ex)*5 + Math.floor(ex/3)*15;
   }
-  // Ekip bonusu: sadece 15+ puan VEYA ekip hedefi geçildiyse
-  if(is1 && puan >= 15) b += 20;
+
+  // Ekip bonusu: zirve istisnası VEYA ekip hedefi geçildiyse
+  if(is1 && puan >= zirveEsigi) b += 20;
   else if(teamOK){ if(is1) b+=20; else if(is2) b+=10; }
   return Math.round(b);
 }
@@ -338,14 +358,14 @@ function rowAvatar(photo, name, col){
 function fmt(n,d=1){ return parseFloat(n||0).toFixed(d); }
 
 function statusBadge(score, toplamSatis, hedef){
-  const h = (hedef !== null && hedef !== undefined && hedef > 0) ? hedef : TGT;
+  const h = (hedef && hedef > 0) ? hedef : 10;
   const puanTamam = score >= h;
 
-  // Kota eşiği puana göre belirlenir
+  // Kota eşiği puana göre belirlenir (sabit adet kotaları)
   let kotaEsigi = 0;
-  if      (score >= 10) kotaEsigi = 6;
-  else if (score >= 8)  kotaEsigi = 5;
-  else if (score >= 6)  kotaEsigi = 4;
+  if      (score >= h * 1.00) kotaEsigi = 6;
+  else if (score >= h * 0.80) kotaEsigi = 5;
+  else if (score >= h * 0.60) kotaEsigi = 4;
   const kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
 
   if(puanTamam && kotaTamam)  return '<span class="bdg bg-g">🏆 HEDEFİ AŞTI</span>';
@@ -473,7 +493,7 @@ function processData(raw){
     members.forEach((r,i)=>{
       if(r.primPct===undefined){
         const ts = (r.toplamSatis !== undefined) ? r.toplamSatis : (r.P3||0)+(r.P6||0)+(r.P12||0);
-        r.primPct = calcPrim(r.score, ts, i===0, i===1, teamOK);
+        r.primPct = calcPrim(r.score, ts, i===0, i===1, teamOK, r.hedef);
       }
       all.push(r);
     });
@@ -571,7 +591,7 @@ function renderLegend(){
       <div class="lcard"><div class="lico"><span class="ms">stars</span></div><div><div class="llbl">ProStart-3</div><div class="lpts">1.0 Puan</div></div></div>
       <div class="lcard"><div class="lico"><span class="ms">rocket_launch</span></div><div><div class="llbl">ProStart-6</div><div class="lpts">1.7 Puan</div></div></div>
       <div class="lcard"><div class="lico"><span class="ms">workspace_premium</span></div><div><div class="llbl">ProStart-12</div><div class="lpts">2.5 Puan</div></div></div>
-      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylık Hedef</div><div class="lpts">20 Puan / Kisi</div></div></div>
+      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">10 Puan / Kisi</div></div></div>
     </div>`;
 }
 
