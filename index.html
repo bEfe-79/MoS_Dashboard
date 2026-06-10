@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoS TEAM — Basari Tablosu</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 
 *,*::before,*::after {
@@ -1035,6 +1035,15 @@ tr.clickable:hover td {
 </div>
 </div>
 </div>
+<div id="m-breakdown" style="margin-top:12px;border:1px solid rgba(236,91,19,.25);border-radius:14px;padding:14px;background:rgba(236,91,19,.05);display:none;">
+<div style="font-size:9px;font-weight:700;color:#ec5b13;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Prim Dökümü</div>
+<div id="m-breakdown-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
+<div style="height:1px;background:rgba(236,91,19,.3);margin:10px 0 8px;"></div>
+<div style="display:flex;align-items:center;justify-content:space-between;">
+<span style="font-size:11px;font-weight:700;color:#a5c893;text-transform:uppercase;letter-spacing:.06em;">Toplam Prim</span>
+<span id="m-breakdown-total" style="font-size:22px;font-weight:900;color:#4ade80;font-family:monospace;">%0</span>
+</div>
+</div>
 </div>
 </div>
 <div class="tkwrap">
@@ -1108,6 +1117,94 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
   if (is1 && puan >= zirveEsigi) b += 20;
   else if (teamOK) { if (is1) b += 20; else if (is2) b += 10; }
   return Math.round(b);
+}
+
+/* ── PRİM DÖKÜM OBJESİ ── */
+function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
+  const h = (hedef && hedef > 0) ? hedef : 10;
+  const p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
+  const zirveEsigi = h * 1.50;
+
+  let efektif = 0;
+  let kotaEngel = false;
+
+  if (kotaAktif) {
+    if      (puan >= p100 && toplamSatis >= 6) efektif = puan;
+    else if (puan >= p90  && toplamSatis >= 5) efektif = Math.min(puan, p100 - 0.01);
+    else if (puan >= p80  && toplamSatis >= 5) efektif = Math.min(puan, p90 - 0.01);
+    else if (puan >= p70  && toplamSatis >= 4) efektif = Math.min(puan, p80 - 0.01);
+    else if (puan >= p60  && toplamSatis >= 4) efektif = Math.min(puan, p70 - 0.01);
+    else {
+      // Puan eşiğine göre kota karşılandı mı kontrol et
+      const puanEsigi = puan >= p60;
+      kotaEngel = puanEsigi; // puan yeterli ama kota yetersiz
+      return {
+        bazPrim: 0, bazAciklama: kotaEngel ? `${fmt(puan,1)} puan / Kota karşılanmadı (${toplamSatis} satış)` : `${fmt(puan,1)} puan — %60 eşiği altı`,
+        hedefUstuBonus: 0, hedefUstuAciklama: '—',
+        ekipBonus: 0, ekipAciklama: '—',
+        zirveBonus: 0, zirveAciklama: `Eşik: ${fmt(zirveEsigi,1)} puan`,
+        toplam: 0, kotaEngel
+      };
+    }
+  } else {
+    if      (puan >= p100) efektif = puan;
+    else if (puan >= p90)  efektif = Math.min(puan, p100 - 0.01);
+    else if (puan >= p80)  efektif = Math.min(puan, p90 - 0.01);
+    else if (puan >= p70)  efektif = Math.min(puan, p80 - 0.01);
+    else if (puan >= p60)  efektif = Math.min(puan, p70 - 0.01);
+    else return {
+      bazPrim: 0, bazAciklama: `${fmt(puan,1)} puan — %60 eşiği altı`,
+      hedefUstuBonus: 0, hedefUstuAciklama: '—',
+      ekipBonus: 0, ekipAciklama: '—',
+      zirveBonus: 0, zirveAciklama: `Eşik: ${fmt(zirveEsigi,1)} puan`,
+      toplam: 0, kotaEngel: false
+    };
+  }
+
+  // Baz prim
+  let baz = 0;
+  let esikAdi = '';
+  if      (efektif >= p100) { baz = 100; esikAdi = '%100+ eşiği'; }
+  else if (efektif >= p90)  { baz = 85;  esikAdi = '%90–99 eşiği'; }
+  else if (efektif >= p80)  { baz = 75;  esikAdi = '%80–89 eşiği'; }
+  else if (efektif >= p70)  { baz = 60;  esikAdi = '%70–79 eşiği'; }
+  else                      { baz = 50;  esikAdi = '%60–69 eşiği'; }
+
+  const kotaSuffix = kotaAktif ? ` / ${toplamSatis} satış ✓` : '';
+  const bazAciklama = `${fmt(puan,1)} puan → ${esikAdi}${kotaSuffix}`;
+
+  // Hedef üstü bonus
+  let hedefUstuBonus = 0;
+  let hedefUstuAciklama = 'Hedef aşılmadı';
+  if (efektif >= p100) {
+    const ex = puan - p100;
+    hedefUstuBonus = Math.floor(ex) * 5 + Math.floor(ex / 3) * 15;
+    hedefUstuAciklama = ex > 0
+      ? `+${fmt(ex,1)} puan × %5${Math.floor(ex/3)>0?' + '+Math.floor(ex/3)+'×%15':''}`
+      : 'Tam hedefe ulaşıldı';
+  }
+
+  // Ekip & zirve bonusu
+  let ekipBonus = 0, ekipAciklama = '';
+  let zirveBonus = 0, zirveAciklama = '';
+
+  if (is1 && puan >= zirveEsigi) {
+    zirveBonus = 20;
+    zirveAciklama = `${fmt(puan,1)} puan ≥ ${fmt(zirveEsigi,1)} ✓`;
+    ekipAciklama = 'Zirve istisnası aktif';
+  } else {
+    zirveAciklama = puan >= zirveEsigi ? 'Aktif (ekip bonusuna gerek yok)' : `Eşik: ${fmt(zirveEsigi,1)} puan`;
+    if (teamOK) {
+      if (is1)      { ekipBonus = 20; ekipAciklama = 'Ekip lideri — ekip hedefi geçildi'; }
+      else if (is2) { ekipBonus = 10; ekipAciklama = '2. sıra — ekip hedefi geçildi'; }
+      else          { ekipAciklama = 'Ekip hedefi geçildi (3. sıra+)'; }
+    } else {
+      ekipAciklama = 'Ekip hedefi geçilmedi';
+    }
+  }
+
+  const toplam = Math.round(baz + hedefUstuBonus + ekipBonus + zirveBonus);
+  return { bazPrim: baz, bazAciklama, hedefUstuBonus, hedefUstuAciklama, ekipBonus, ekipAciklama, zirveBonus, zirveAciklama, toplam, kotaEngel: false };
 }
 
 function levelLights(s) {
@@ -1308,7 +1405,75 @@ function openModal(rep) {
   const pel = document.getElementById('m-prim');
   pel.textContent = pc > 0 ? '%' + pc + ' Prim' : 'Prim Yok';
   pel.style.color = primColor(pc);
+
+  // Prim dökümü
+  renderPrimBreakdown(rep);
+
   document.getElementById('modal-bg').classList.add('open');
+}
+
+function renderPrimBreakdown(rep) {
+  const bd = document.getElementById('m-breakdown');
+  const rows = document.getElementById('m-breakdown-rows');
+  const totalEl = document.getElementById('m-breakdown-total');
+  if (!bd || !rows) return;
+
+  const ts = (rep.toplamSatis !== undefined) ? rep.toplamSatis : (rep.P3 || 0) + (rep.P6 || 0) + (rep.P12 || 0);
+  // processData'da sıralamaya göre is1/is2 bilgisi rep'te yok, primPct'den reverse-hesap yerine
+  // currentAll içindeki sıra pozisyonunu kullan
+  const teamMembers = currentAll.filter(r => r.teamName === rep.teamName);
+  teamMembers.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
+  const pos = teamMembers.findIndex(r => r.name === rep.name);
+  const is1 = pos === 0, is2 = pos === 1;
+  const teamOK = teamMembers.some(r => r.primPct > 0) &&
+    (() => {
+      const tot = teamMembers.reduce((s, r) => s + r.score, 0);
+      const hedefTot = teamMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
+      return hedefTot > 0 && tot >= hedefTot;
+    })();
+
+  const d = calcPrimDetay(rep.score, ts, is1, is2, teamOK, rep.hedef, rep.kotaAktif || false);
+
+  const items = [
+    {
+      icon: 'ti-target', color: '#4ade80', bg: 'rgba(74,222,128,.15)',
+      label: 'Satış Puanı', aciklama: d.bazAciklama,
+      deger: d.bazPrim, aktif: d.bazPrim > 0
+    },
+    {
+      icon: 'ti-trending-up', color: '#facc15', bg: 'rgba(250,204,21,.1)',
+      label: 'Hedef Üstü Bonus', aciklama: d.hedefUstuAciklama,
+      deger: d.hedefUstuBonus, aktif: d.hedefUstuBonus > 0
+    },
+    {
+      icon: 'ti-crown', color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
+      label: 'Ekip Liderliği', aciklama: d.ekipAciklama,
+      deger: d.ekipBonus, aktif: d.ekipBonus > 0
+    },
+    {
+      icon: 'ti-medal', color: '#a78bfa', bg: 'rgba(167,139,250,.1)',
+      label: 'Zirve İstisnası', aciklama: d.zirveAciklama,
+      deger: d.zirveBonus, aktif: d.zirveBonus > 0
+    }
+  ];
+
+  rows.innerHTML = items.map((item, i) => `
+    <div style="display:flex;align-items:center;gap:10px;${!item.aktif ? 'opacity:0.4;' : ''}">
+      <div style="width:28px;height:28px;border-radius:8px;background:${item.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ${item.icon}" style="font-size:14px;color:${item.color};" aria-hidden="true"></i>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:11px;font-weight:700;color:#e2e8f0;">${item.label}</div>
+        <div style="font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.aciklama}</div>
+      </div>
+      <div style="font-size:15px;font-weight:900;color:${item.aktif ? item.color : '#64748b'};font-family:monospace;flex-shrink:0;">%${item.deger}</div>
+    </div>
+    ${i < items.length - 1 ? '<div style="height:1px;background:rgba(255,255,255,.06);"></div>' : ''}
+  `).join('');
+
+  totalEl.textContent = '%' + d.toplam;
+  totalEl.style.color = primColor(d.toplam);
+  bd.style.display = d.toplam > 0 || d.kotaEngel ? 'block' : 'none';
 }
 
 function closeModal(e, force) {
@@ -1368,7 +1533,7 @@ function renderLegend() {
       <div class="lcard"><div class="lico"><span class="ms">stars</span></div><div><div class="llbl">ProStart-3</div><div class="lpts">1.0 Puan</div></div></div>
       <div class="lcard"><div class="lico"><span class="ms">rocket_launch</span></div><div><div class="llbl">ProStart-6</div><div class="lpts">1.7 Puan</div></div></div>
       <div class="lcard"><div class="lico"><span class="ms">workspace_premium</span></div><div><div class="llbl">ProStart-12</div><div class="lpts">2.5 Puan</div></div></div>
-      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">15 Puan / Kisi</div></div></div>
+      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">20 Puan / Kisi</div></div></div>
     </div>`;
 }
 
