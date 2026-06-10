@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoS TEAM — Basari Tablosu</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
 <style>
 
 *,*::before,*::after {
@@ -655,7 +655,8 @@ td:last-child {
   min-width:320px;
   max-width:440px;
   width:90%;
-  position:relative
+  position:relative;
+  overflow:hidden
 }
 .modal-close {
   position:absolute;
@@ -1035,9 +1036,9 @@ tr.clickable:hover td {
 </div>
 </div>
 </div>
-<div id="m-breakdown" style="margin-top:12px;border:1px solid rgba(236,91,19,.25);border-radius:14px;padding:14px;background:rgba(236,91,19,.05);display:none;">
+<div id="m-breakdown" style="margin-top:12px;border:1px solid rgba(236,91,19,.25);border-radius:14px;padding:16px;background:rgba(236,91,19,.05);display:none;overflow:hidden;">
 <div style="font-size:9px;font-weight:700;color:#ec5b13;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Prim Dökümü</div>
-<div id="m-breakdown-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
+<div id="m-breakdown-rows" style="display:flex;flex-direction:column;gap:8px;box-sizing:border-box;width:100%;"></div>
 <div style="height:1px;background:rgba(236,91,19,.3);margin:10px 0 8px;"></div>
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span style="font-size:11px;font-weight:700;color:#a5c893;text-transform:uppercase;letter-spacing:.06em;">Toplam Prim</span>
@@ -1436,31 +1437,31 @@ function renderPrimBreakdown(rep) {
 
   const items = [
     {
-      icon: 'ti-target', color: '#4ade80', bg: 'rgba(74,222,128,.15)',
+      icon: 'target', color: '#4ade80', bg: 'rgba(74,222,128,.15)',
       label: 'Satış Puanı', aciklama: d.bazAciklama,
       deger: d.bazPrim, aktif: d.bazPrim > 0
     },
     {
-      icon: 'ti-trending-up', color: '#facc15', bg: 'rgba(250,204,21,.1)',
+      icon: 'trending_up', color: '#facc15', bg: 'rgba(250,204,21,.1)',
       label: 'Hedef Üstü Bonus', aciklama: d.hedefUstuAciklama,
       deger: d.hedefUstuBonus, aktif: d.hedefUstuBonus > 0
     },
     {
-      icon: 'ti-crown', color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
+      icon: 'emoji_events', color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
       label: 'Ekip Liderliği', aciklama: d.ekipAciklama,
       deger: d.ekipBonus, aktif: d.ekipBonus > 0
     },
     {
-      icon: 'ti-medal', color: '#a78bfa', bg: 'rgba(167,139,250,.1)',
+      icon: 'workspace_premium', color: '#a78bfa', bg: 'rgba(167,139,250,.1)',
       label: 'Zirve İstisnası', aciklama: d.zirveAciklama,
       deger: d.zirveBonus, aktif: d.zirveBonus > 0
     }
   ];
 
   rows.innerHTML = items.map((item, i) => `
-    <div style="display:flex;align-items:center;gap:10px;${!item.aktif ? 'opacity:0.4;' : ''}">
-      <div style="width:28px;height:28px;border-radius:8px;background:${item.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <i class="ti ${item.icon}" style="font-size:14px;color:${item.color};" aria-hidden="true"></i>
+    <div style="display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;${!item.aktif ? 'opacity:0.4;' : ''}">
+      <div style="min-width:28px;width:28px;height:28px;border-radius:8px;background:${item.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:content-box;">
+        <span class="ms" style="font-size:16px;color:${item.color};line-height:1;">${item.icon}</span>
       </div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:11px;font-weight:700;color:#e2e8f0;">${item.label}</div>
