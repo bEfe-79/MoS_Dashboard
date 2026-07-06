@@ -1624,6 +1624,7 @@ function startCountdown() {
 }
 
 async function fetchData(manual = false) {
+  console.log('[MoS] fetchData çağrıldı, manual:', manual);
   const btn = document.getElementById('rbtn');
   btn.disabled = true;
   document.getElementById('rico').outerHTML = '<span class="spin" id="rico"></span>';
@@ -1653,8 +1654,9 @@ async function fetchData(manual = false) {
     startCountdown();
     rTimer = setInterval(() => fetchData(false), AUTO_SEC * 1000);
   } catch (e) {
+    console.error('[MoS] fetchData hatası:', e.message, e);
     document.getElementById('sdot').className = 'sdot error';
-    document.getElementById('smsg').textContent = 'Veri alinamadi: ' + e.message;
+    document.getElementById('smsg').textContent = 'Hata: ' + e.message + ' (console F12)';
     rTimer = setInterval(() => fetchData(false), AUTO_SEC * 1000);
   } finally {
     const ic = document.getElementById('rico');
