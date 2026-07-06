@@ -1,974 +1,798 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
+<!DOCTYPE html><html lang="tr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoS TEAM — Basari Tablosu</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,1&display=swap" rel="stylesheet">
 <style>
-
 *,*::before,*::after {
-  box-sizing:border-box;
-  margin:0;
-  padding:0
-}
+    box-sizing:border-box;
+    margin:0;
+    padding:0}
 body {
-  background:#0a1128;
-  color:#fff;
-  font-family:'Public Sans',sans-serif;
-  font-size:14px;
-  -webkit-font-smoothing:antialiased;
-  min-height:100vh
-}
+    background:#0a1128;
+    color:#fff;
+    font-family:'Public Sans',sans-serif;
+    font-size:14px;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh}
 .ms {
-  font-family:'Material Symbols Outlined',sans-serif;
-  font-size:16px;
-  font-variation-settings:'FILL' 1;
-  display:inline-block;
-  vertical-align:middle;
-  line-height:1
-}
+    font-family:'Material Symbols Outlined',sans-serif;
+    font-size:16px;
+    font-variation-settings:'FILL' 1;
+    display:inline-block;
+    vertical-align:middle;
+    line-height:1}
 .header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 20px;
-  background:rgba(10,17,40,0.97);
-  border-bottom:1px solid #304724;
-  position:sticky;
-  top:0;
-  z-index:100
-}
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 20px;
+    background:rgba(10,17,40,0.97);
+    border-bottom:1px solid #304724;
+    position:sticky;
+    top:0;
+    z-index:100}
 .logo {
-  display:flex;
-  align-items:center;
-  gap:10px
-}
+    display:flex;
+    align-items:center;
+    gap:10px}
 .logo svg {
-  color:#ec5b13;
-  width:26px;
-  height:26px;
-  flex-shrink:0
-}
+    color:#ec5b13;
+    width:26px;
+    height:26px;
+    flex-shrink:0}
 .logo h2 {
-  font-size:14px;
-  font-weight:900;
-  letter-spacing:-0.04em
-}
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:-0.04em}
 .hdr-r {
-  display:flex;
-  align-items:center;
-  gap:10px
-}
+    display:flex;
+    align-items:center;
+    gap:10px}
 .upd-lbl {
-  font-size:9px;
-  color:#a5c893;
-  text-transform:uppercase;
-  font-weight:700;
-  letter-spacing:0.08em;
-  text-align:right
-}
+    font-size:9px;
+    color:#a5c893;
+    text-transform:uppercase;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-align:right}
 .upd-val {
-  font-size:11px;
-  font-family:monospace;
-  text-align:right
-}
+    font-size:11px;
+    font-family:monospace;
+    text-align:right}
 .btn {
-  background:#304724;
-  border:none;
-  color:#fff;
-  padding:7px 13px;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:11px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:5px;
-  font-family:inherit;
-  transition:background .15s
-}
+    background:#304724;
+    border:none;
+    color:#fff;
+    padding:7px 13px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-family:inherit;
+    transition:background .15s}
 .btn:hover {
-  background:#3d5a2d
-}
+    background:#3d5a2d}
 .btn:disabled {
-  opacity:.5;
-  cursor:default
-}
+    opacity:.5;
+    cursor:default}
 .btn-p {
-  background:#ec5b13!important
-}
+    background:#ec5b13!important}
 .btn-p:hover {
-  background:#d44f0f!important
-}
+    background:#d44f0f!important}
 .period-select {
-  background:#1a2a4a;
-  border:1px solid #304724;
-  color:#fff;
-  padding:6px 12px;
-  border-radius:10px;
-  font-size:11px;
-  font-weight:700;
-  font-family:inherit;
-  cursor:pointer;
-  outline:none
-}
+    background:#1a2a4a;
+    border:1px solid #304724;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    outline:none}
 .period-select:focus {
-  border-color:#ec5b13
-}
+    border-color:#ec5b13}
 .spin {
-  width:12px;
-  height:12px;
-  border:2px solid rgba(255,255,255,.3);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .6s linear infinite;
-  display:inline-block;
-  vertical-align:middle
-}
+    width:12px;
+    height:12px;
+    border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .6s linear infinite;
+    display:inline-block;
+    vertical-align:middle}
 @keyframes spin {
-  to {
-  transform:rotate(360deg)
-}
-
+    to {
+    transform:rotate(360deg)}
 }
 @keyframes pulse {
-  0%,100% {
-  opacity:1
-}
+    0%,100% {
+    opacity:1}
 50% {
-  opacity:.4
-}
-
+    opacity:.4}
 }
 .main {
-  padding:16px 20px 80px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  max-width:1600px;
-  margin:0 auto
-}
+    padding:16px 20px 80px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:1600px;
+    margin:0 auto}
 .sbar {
-  background:#1a2a4a;
-  border:1px solid #304724;
-  border-radius:12px;
-  padding:10px 16px;
-  font-size:11px;
-  color:#a5c893;
-  display:flex;
-  align-items:center;
-  gap:8px
-}
+    background:#1a2a4a;
+    border:1px solid #304724;
+    border-radius:12px;
+    padding:10px 16px;
+    font-size:11px;
+    color:#a5c893;
+    display:flex;
+    align-items:center;
+    gap:8px}
 .sdot {
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#4ade80;
-  flex-shrink:0;
-  transition:background .3s
-}
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#4ade80;
+    flex-shrink:0;
+    transition:background .3s}
 .sdot.loading {
-  background:#facc15;
-  animation:pulse 1s infinite
-}
+    background:#facc15;
+    animation:pulse 1s infinite}
 .sdot.error {
-  background:#f87171
-}
+    background:#f87171}
 #countdown {
-  margin-left:auto;
-  font-family:monospace;
-  font-size:10px;
-  color:#64748b
-}
+    margin-left:auto;
+    font-family:monospace;
+    font-size:10px;
+    color:#64748b}
 .hero {
-  background:#111d3a;
-  border:1px solid #304724;
-  border-radius:20px;
-  padding:24px;
-  display:flex;
-  gap:24px;
-  align-items:center;
-  position:relative;
-  overflow:hidden
-}
+    background:#111d3a;
+    border:1px solid #304724;
+    border-radius:20px;
+    padding:24px;
+    display:flex;
+    gap:24px;
+    align-items:center;
+    position:relative;
+    overflow:hidden}
 .hero::after {
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  width:50%;
-  height:100%;
-  background:radial-gradient(circle at 70% 50%,rgba(236,91,19,.1) 0%,transparent 70%);
-  pointer-events:none
-}
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    width:50%;
+    height:100%;
+    background:radial-gradient(circle at 70% 50%,rgba(236,91,19,.1) 0%,transparent 70%);
+    pointer-events:none}
 .av-wrap {
-  flex-shrink:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  position:relative;
-  z-index:1
-}
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    position:relative;
+    z-index:1}
 .av-ring {
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  border:3px solid #ec5b13;
-  padding:3px;
-  overflow:hidden;
-  flex-shrink:0
-}
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    border:3px solid #ec5b13;
+    padding:3px;
+    overflow:hidden;
+    flex-shrink:0}
 .av-ring img {
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-  display:block
-}
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block}
 .av-init {
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:#1a2a4a;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  font-weight:900;
-  color:#ec5b13
-}
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:#1a2a4a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    font-weight:900;
+    color:#ec5b13}
 .av-badge {
-  background:#ec5b13;
-  color:#fff;
-  font-size:8px;
-  font-weight:700;
-  padding:4px 12px;
-  border-radius:20px;
-  white-space:nowrap;
-  text-align:center;
-  line-height:1.5;
-  letter-spacing:.02em
-}
+    background:#ec5b13;
+    color:#fff;
+    font-size:8px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:20px;
+    white-space:nowrap;
+    text-align:center;
+    line-height:1.5;
+    letter-spacing:.02em}
 .hero-info {
-  flex:1;
-  position:relative;
-  z-index:1
-}
+    flex:1;
+    position:relative;
+    z-index:1}
 .hero-info h1 {
-  font-size:26px;
-  font-weight:900;
-  letter-spacing:-0.04em;
-  margin-bottom:8px
-}
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:-0.04em;
+    margin-bottom:8px}
 .hero-tags {
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-bottom:12px
-}
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:12px}
 .tag {
-  background:#304724;
-  color:#a5c893;
-  font-size:9px;
-  font-weight:700;
-  padding:3px 10px;
-  border-radius:20px
-}
+    background:#304724;
+    color:#a5c893;
+    font-size:9px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px}
 .tag.or {
-  background:rgba(236,91,19,.2);
-  color:#ec5b13
-}
+    background:rgba(236,91,19,.2);
+    color:#ec5b13}
 .hstats {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  max-width:320px
-}
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    max-width:320px}
 .sm {
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;
-  padding:10px 12px
-}
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    padding:10px 12px}
 .sm .sl {
-  font-size:9px;
-  color:#94a3b8;
-  margin-bottom:3px
-}
+    font-size:9px;
+    color:#94a3b8;
+    margin-bottom:3px}
 .sm .sv {
-  font-size:20px;
-  font-weight:900
-}
+    font-size:20px;
+    font-weight:900}
 .hero-deco {
-  opacity:.18;
-  text-align:right;
-  flex-shrink:0;
-  position:relative;
-  z-index:1
-}
+    opacity:.18;
+    text-align:right;
+    flex-shrink:0;
+    position:relative;
+    z-index:1}
 .hero-deco .dt {
-  font-size:40px;
-  font-weight:900;
-  color:#ec5b13;
-  font-style:italic;
-  line-height:1
-}
+    font-size:40px;
+    font-weight:900;
+    color:#ec5b13;
+    font-style:italic;
+    line-height:1}
 .hero-deco .ds {
-  font-size:9px;
-  color:#a5c893;
-  font-weight:700;
-  letter-spacing:.1em;
-  margin-top:4px
-}
+    font-size:9px;
+    color:#a5c893;
+    font-weight:700;
+    letter-spacing:.1em;
+    margin-top:4px}
 .lgrid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px
-}
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px}
 .lcard {
-  background:#1a2a4a;
-  border:1px solid #304724;
-  border-radius:12px;
-  padding:12px 14px;
-  display:flex;
-  align-items:center;
-  gap:10px
-}
+    background:#1a2a4a;
+    border:1px solid #304724;
+    border-radius:12px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px}
 .lcard.acc {
-  background:#304724;
-  border-color:#ec5b13
-}
+    background:#304724;
+    border-color:#ec5b13}
 .lico {
-  background:rgba(236,91,19,.2);
-  color:#ec5b13;
-  padding:8px;
-  border-radius:8px;
-  display:flex
-}
+    background:rgba(236,91,19,.2);
+    color:#ec5b13;
+    padding:8px;
+    border-radius:8px;
+    display:flex}
 .lico.wh {
-  background:rgba(255,255,255,.2)
-}
+    background:rgba(255,255,255,.2)}
 .llbl {
-  font-size:10px;
-  color:#94a3b8
-}
+    font-size:10px;
+    color:#94a3b8}
 .lcard.acc .llbl {
-  color:#a5c893
-}
+    color:#a5c893}
 .lpts {
-  font-size:13px;
-  font-weight:700
-}
+    font-size:13px;
+    font-weight:700}
 .tpsec {
-  display:flex;
-  flex-direction:column;
-  gap:8px
-}
+    display:flex;
+    flex-direction:column;
+    gap:8px}
 .tprow {
-  background:#1a2a4a;
-  border:1px solid #304724;
-  border-radius:12px;
-  padding:12px 16px
-}
+    background:#1a2a4a;
+    border:1px solid #304724;
+    border-radius:12px;
+    padding:12px 16px}
 .tphdr {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:8px
-}
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px}
 .tpscore {
-  font-size:24px;
-  font-weight:900;
-  color:#ec5b13;
-  font-family:monospace;
-  margin-right:12px;
-  flex-shrink:0;
-  line-height:1
-}
+    font-size:24px;
+    font-weight:900;
+    color:#ec5b13;
+    font-family:monospace;
+    margin-right:12px;
+    flex-shrink:0;
+    line-height:1}
 .tpname {
-  font-size:13px;
-  font-weight:900
-}
+    font-size:13px;
+    font-weight:900}
 .tpmeta {
-  font-size:10px;
-  color:#a5c893;
-  margin-top:2px
-}
+    font-size:10px;
+    color:#a5c893;
+    margin-top:2px}
 .tpbw {
-  width:100%;
-  background:rgba(255,255,255,.07);
-  height:8px;
-  border-radius:99px;
-  overflow:hidden
-}
+    width:100%;
+    background:rgba(255,255,255,.07);
+    height:8px;
+    border-radius:99px;
+    overflow:hidden}
 .tpbf {
-  height:100%;
-  background:#ec5b13;
-  border-radius:99px;
-  transition:width .6s ease
-}
+    height:100%;
+    background:#ec5b13;
+    border-radius:99px;
+    transition:width .6s ease}
 .tgrid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px
-}
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px}
 .tsec .th {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:10px
-}
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px}
 .tac {
-  width:4px;
-  height:28px;
-  background:#ec5b13;
-  border-radius:2px;
-  flex-shrink:0
-}
+    width:4px;
+    height:28px;
+    background:#ec5b13;
+    border-radius:2px;
+    flex-shrink:0}
 .tsec h3 {
-  font-size:16px;
-  font-weight:900;
-  margin:0
-}
+    font-size:16px;
+    font-weight:900;
+    margin:0}
 .tavg {
-  font-family:monospace;
-  font-size:11px;
-  color:#a5c893;
-  margin-left:auto
-}
+    font-family:monospace;
+    font-size:11px;
+    color:#a5c893;
+    margin-left:auto}
 .twrap {
-  border:1px solid #304724;
-  border-radius:14px;
-  overflow:hidden;
-  background:rgba(26,42,74,.4)
-}
+    border:1px solid #304724;
+    border-radius:14px;
+    overflow:hidden;
+    background:rgba(26,42,74,.4)}
 table {
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed
-}
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed}
 thead tr {
-  background:rgba(48,71,36,.5)
-}
+    background:rgba(48,71,36,.5)}
 th {
-  padding:9px 10px;
-  font-size:8px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  color:#a5c893;
-  font-weight:700;
-  text-align:left
-}
+    padding:9px 10px;
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#a5c893;
+    font-weight:700;
+    text-align:left}
 th:last-child {
-  text-align:right
-}
+    text-align:right}
 td {
-  padding:8px 10px;
-  border-top:1px solid rgba(255,255,255,.05);
-  vertical-align:middle
-}
+    padding:8px 10px;
+    border-top:1px solid rgba(255,255,255,.05);
+    vertical-align:middle}
 td:last-child {
-  text-align:right
-}
+    text-align:right}
 .nc {
-  display:flex;
-  align-items:center;
-  gap:8px
-}
+    display:flex;
+    align-items:center;
+    gap:8px}
 .nm {
-  font-weight:700;
-  font-size:12px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis
-}
+    font-weight:700;
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis}
 .pval {
-  font-family:monospace;
-  font-size:13px;
-  font-weight:900
-}
+    font-family:monospace;
+    font-size:13px;
+    font-weight:900}
 .bdg {
-  font-size:8px;
-  font-weight:700;
-  padding:3px 7px;
-  border-radius:20px;
-  white-space:nowrap
-}
+    font-size:8px;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:20px;
+    white-space:nowrap}
 .bg-g {
-  background:rgba(34,197,94,.2);
-  color:#4ade80
-}
+    background:rgba(34,197,94,.2);
+    color:#4ade80}
 .bg-y {
-  background:rgba(234,179,8,.2);
-  color:#facc15
-}
+    background:rgba(234,179,8,.2);
+    color:#facc15}
 .bg-r {
-  background:rgba(239,68,68,.2);
-  color:#f87171
-}
+    background:rgba(239,68,68,.2);
+    color:#f87171}
 .bg-teal {
-  background:linear-gradient(90deg,rgba(234,179,8,.2),rgba(34,197,94,.2));
-  color:#86efac
-}
+    background:linear-gradient(90deg,rgba(234,179,8,.2),rgba(34,197,94,.2));
+    color:#86efac}
 .lights {
-  display:flex;
-  gap:3px;
-  align-items:center
-}
+    display:flex;
+    gap:3px;
+    align-items:center}
 .lt {
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  background:#1e293b;
-  border:1px solid rgba(255,255,255,.1);
-  flex-shrink:0;
-  transition:all .3s
-}
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:#1e293b;
+    border:1px solid rgba(255,255,255,.1);
+    flex-shrink:0;
+    transition:all .3s}
 .lt.on {
-  background:#ec5b13;
-  border-color:#ec5b13;
-  box-shadow:0 0 6px rgba(236,91,19,.85)
-}
+    background:#ec5b13;
+    border-color:#ec5b13;
+    box-shadow:0 0 6px rgba(236,91,19,.85)}
 .lt-lbl {
-  font-size:8px;
-  color:#64748b;
-  margin-left:4px;
-  font-family:monospace;
-  min-width:20px
-}
+    font-size:8px;
+    color:#64748b;
+    margin-left:4px;
+    font-family:monospace;
+    min-width:20px}
 .crow {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:12px
-}
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px}
 .cc {
-  background:#111d3a;
-  border:1px solid #304724;
-  border-radius:14px;
-  padding:16px
-}
+    background:#111d3a;
+    border:1px solid #304724;
+    border-radius:14px;
+    padding:16px}
 .cc.grn {
-  background:linear-gradient(135deg,#304724 0%,#1a2a4a 100%);
-  border-color:#ec5b13;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  justify-content:center
-}
+    background:linear-gradient(135deg,#304724 0%,#1a2a4a 100%);
+    border-color:#ec5b13;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center}
 .ctit {
-  font-size:9px;
-  color:#a5c893;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:12px
-}
+    font-size:9px;
+    color:#a5c893;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:12px}
 .drow {
-  display:flex;
-  justify-content:space-between;
-  font-size:10px;
-  font-weight:700;
-  margin-bottom:4px
-}
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    font-weight:700;
+    margin-bottom:4px}
 .dbw {
-  width:100%;
-  background:rgba(255,255,255,.06);
-  height:6px;
-  border-radius:99px;
-  overflow:hidden;
-  margin-bottom:8px
-}
+    width:100%;
+    background:rgba(255,255,255,.06);
+    height:6px;
+    border-radius:99px;
+    overflow:hidden;
+    margin-bottom:8px}
 .dbf {
-  height:100%;
-  border-radius:99px
-}
+    height:100%;
+    border-radius:99px}
 .tnum {
-  font-size:42px;
-  font-weight:900;
-  line-height:1
-}
+    font-size:42px;
+    font-weight:900;
+    line-height:1}
 .tsub {
-  font-size:11px;
-  color:#a5c893;
-  margin-top:6px
-}
+    font-size:11px;
+    color:#a5c893;
+    margin-top:6px}
 .tbar {
-  background:rgba(0,0,0,.3);
-  border-radius:99px;
-  height:6px;
-  margin-top:12px;
-  overflow:hidden
-}
+    background:rgba(0,0,0,.3);
+    border-radius:99px;
+    height:6px;
+    margin-top:12px;
+    overflow:hidden}
 .tbf {
-  height:100%;
-  background:#fff;
-  border-radius:99px;
-  transition:width .6s ease
-}
+    height:100%;
+    background:#fff;
+    border-radius:99px;
+    transition:width .6s ease}
 /* ── CONFETTI ── */.confetti-wrap {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index:998;
-  overflow:hidden
-}
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:998;
+    overflow:hidden}
 .cp {
-  position:absolute;
-  top:-12px;
-  opacity:0;
-  animation:cffall linear forwards
-}
+    position:absolute;
+    top:-12px;
+    opacity:0;
+    animation:cffall linear forwards}
 @keyframes cffall {
-  0% {
-  opacity:1;
-  transform:translateY(0) rotate(0deg) scale(1)
-}
+    0% {
+    opacity:1;
+    transform:translateY(0) rotate(0deg) scale(1)}
 100% {
-  opacity:0;
-  transform:translateY(105vh) rotate(720deg) scale(.5)
-}
-
+    opacity:0;
+    transform:translateY(105vh) rotate(720deg) scale(.5)}
 }
 /* ── MODAL ── */.modal-bg {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  z-index:200;
-  align-items:center;
-  justify-content:center
-}
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    z-index:200;
+    align-items:center;
+    justify-content:center}
 .modal-bg.open {
-  display:flex
-}
+    display:flex}
 .modal {
-  background:#111d3a;
-  border:1px solid #304724;
-  border-radius:20px;
-  padding:28px;
-  min-width:320px;
-  max-width:440px;
-  width:90%;
-  position:relative;
-  overflow:hidden
-}
+    background:#111d3a;
+    border:1px solid #304724;
+    border-radius:20px;
+    padding:28px;
+    min-width:320px;
+    max-width:440px;
+    width:90%;
+    position:relative;
+    overflow:hidden}
 .modal-close {
-  position:absolute;
-  top:14px;
-  right:14px;
-  background:none;
-  border:none;
-  color:#64748b;
-  cursor:pointer;
-  font-size:20px;
-  line-height:1;
-  padding:4px
-}
+    position:absolute;
+    top:14px;
+    right:14px;
+    background:none;
+    border:none;
+    color:#64748b;
+    cursor:pointer;
+    font-size:20px;
+    line-height:1;
+    padding:4px}
 .modal-close:hover {
-  color:#fff
-}
+    color:#fff}
 .modal-head {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:20px
-}
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px}
 .modal-av {
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  border:2px solid #ec5b13;
-  overflow:hidden;
-  flex-shrink:0
-}
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    border:2px solid #ec5b13;
+    overflow:hidden;
+    flex-shrink:0}
 .modal-av img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  border-radius:50%
-}
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    border-radius:50%}
 .modal-av-init {
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:#1a2a4a;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  font-weight:900;
-  color:#ec5b13
-}
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:#1a2a4a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:900;
+    color:#ec5b13}
 .modal-name {
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:-0.03em
-}
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-0.03em}
 .modal-sub {
-  font-size:10px;
-  color:#a5c893;
-  margin-top:2px
-}
+    font-size:10px;
+    color:#a5c893;
+    margin-top:2px}
 .modal-cards {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-bottom:16px
-}
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:16px}
 .mc {
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  padding:12px;
-  text-align:center
-}
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    padding:12px;
+    text-align:center}
 .mc-lbl {
-  font-size:9px;
-  color:#94a3b8;
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:.06em
-}
+    font-size:9px;
+    color:#94a3b8;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:.06em}
 .mc-val {
-  font-size:28px;
-  font-weight:900;
-  line-height:1
-}
+    font-size:28px;
+    font-weight:900;
+    line-height:1}
 .mc-pts {
-  font-size:9px;
-  color:#64748b;
-  margin-top:3px
-}
+    font-size:9px;
+    color:#64748b;
+    margin-top:3px}
 .modal-score {
-  background:rgba(236,91,19,.1);
-  border:1px solid rgba(236,91,19,.3);
-  border-radius:12px;
-  padding:14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between
-}
+    background:rgba(236,91,19,.1);
+    border:1px solid rgba(236,91,19,.3);
+    border-radius:12px;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between}
 .modal-score-lbl {
-  font-size:10px;
-  color:#a5c893;
-  font-weight:700
-}
+    font-size:10px;
+    color:#a5c893;
+    font-weight:700}
 .modal-score-val {
-  font-size:28px;
-  font-weight:900;
-  color:#ec5b13;
-  font-family:monospace
-}
+    font-size:28px;
+    font-weight:900;
+    color:#ec5b13;
+    font-family:monospace}
 .modal-prim {
-  font-size:11px;
-  color:#4ade80;
-  font-weight:700
-}
+    font-size:11px;
+    color:#4ade80;
+    font-weight:700}
 /* ── TICKER ── */.tkwrap {
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:46px;
-  background:rgba(10,17,40,.98);
-  border-top:1px solid #304724;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  z-index:100
-}
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:46px;
+    background:rgba(10,17,40,.98);
+    border-top:1px solid #304724;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    z-index:100}
 .tk-track {
-  display:flex;
-  align-items:center;
-  white-space:nowrap;
-  animation:tick 50s linear infinite
-}
+    display:flex;
+    align-items:center;
+    white-space:nowrap;
+    animation:tick 50s linear infinite}
 .tk-copy {
-  display:inline-flex;
-  align-items:center;
-  font-size:11px;
-  font-weight:700;
-  flex-shrink:0
-}
+    display:inline-flex;
+    align-items:center;
+    font-size:11px;
+    font-weight:700;
+    flex-shrink:0}
 .tk-sep {
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:0 28px;
-  color:#f59e0b;
-  flex-shrink:0;
-  user-select:none;
-  font-family:'Material Symbols Outlined',sans-serif;
-  font-size:18px;
-  font-variation-settings:'FILL' 1;
-  line-height:1
-}
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:0 28px;
+    color:#f59e0b;
+    flex-shrink:0;
+    user-select:none;
+    font-family:'Material Symbols Outlined',sans-serif;
+    font-size:18px;
+    font-variation-settings:'FILL' 1;
+    line-height:1}
 @keyframes tick {
-  0% {
-  transform:translateX(0)
-}
+    0% {
+    transform:translateX(0)}
 100% {
-  transform:translateX(-50%)
-}
-
+    transform:translateX(-50%)}
 }
 .ti {
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-right:48px
-}
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-right:48px}
 .tor {
-  color:#ec5b13
-}
+    color:#ec5b13}
 .tgr {
-  color:#a5c893
-}
+    color:#a5c893}
 /* ── ROW CLICKABLE ── */tr.clickable {
-  cursor:pointer
-}
+    cursor:pointer}
 tr.clickable:hover td {
-  background:rgba(236,91,19,.06)
-}
+    background:rgba(236,91,19,.06)}
 @media(max-width:1100px) {
-    .tgrid {
-  grid-template-columns:1fr
-}
-
+      .tgrid {
+    grid-template-columns:1fr}
 }
 @media(max-width:960px) {
-    .tgrid {
-  grid-template-columns:1fr
-}
+      .tgrid {
+    grid-template-columns:1fr}
   .crow {
-  grid-template-columns:1fr
-}
+    grid-template-columns:1fr}
   .lgrid {
-  grid-template-columns:repeat(2,1fr)
-}
+    grid-template-columns:repeat(2,1fr)}
   #s-hero > div {
-  grid-template-columns:1fr !important
-}
+    grid-template-columns:1fr !important}
   .hero-deco {
-  display:none
-}
+    display:none}
   .hstats {
-  max-width:100%
-}
-
+    max-width:100%}
 }
 @media(max-width:700px) {
-    .lgrid {
-  grid-template-columns:1fr 1fr
-}
+      .lgrid {
+    grid-template-columns:1fr 1fr}
   .hero {
-  flex-direction:column;
-  text-align:center
-}
+    flex-direction:column;
+    text-align:center}
   .hero-tags {
-  justify-content:center
-}
+    justify-content:center}
   .hstats {
-  margin:0 auto
-}
+    margin:0 auto}
   .header {
-  flex-wrap:wrap;
-  gap:8px;
-  padding:10px 12px
-}
+    flex-wrap:wrap;
+    gap:8px;
+    padding:10px 12px}
   .logo {
-  flex:1;
-  min-width:0
-}
+    flex:1;
+    min-width:0}
   .hdr-r {
-  flex-wrap:wrap;
-  gap:6px
-}
+    flex-wrap:wrap;
+    gap:6px}
   .upd-box {
-  display:none
-}
+    display:none}
   .nm {
-  max-width:70px;
-  font-size:11px
-}
+    max-width:70px;
+    font-size:11px}
   .pval {
-  font-size:11px
-}
+    font-size:11px}
   .tpscore {
-  font-size:18px
-}
+    font-size:18px}
   .col-level {
-  display:none
-}
+    display:none}
   th,td {
-  padding:7px 6px
-}
+    padding:7px 6px}
   .bdg {
-  font-size:7px;
-  padding:2px 6px
-}
-
+    font-size:7px;
+    padding:2px 6px}
 }
 @media(max-width:500px) {
-    .main {
-  padding:10px 10px 80px
-}
+      .main {
+    padding:10px 10px 80px}
   .hero-info h1 {
-  font-size:18px
-}
+    font-size:18px}
   .lgrid {
-  grid-template-columns:1fr 1fr
-}
+    grid-template-columns:1fr 1fr}
   .sm .sv {
-  font-size:16px
-}
+    font-size:16px}
   .lights .lt {
-  width:10px;
-  height:10px
-}
-
+    width:10px;
+    height:10px}
 }
 
 </style>
 </head>
+
 <body>
 <header class="header">
-<div class="logo">
-<svg viewBox="0 0 48 48" fill="none">
-<path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/>
-</svg>
+<div class="logo"><svg viewBox="0 0 48 48" fill="none"><path d="M24 4C25.78 14.22 33.78 22.22 44 24C33.78 25.78 25.78 33.78 24 44C22.22 33.78 14.22 25.78 4 24C14.22 22.18 22.22 14.22 24 4Z" fill="currentColor"/></svg>
 <h2 id="dash-title">MoS Team</h2>
 <div style="width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 2px;flex-shrink:0">
 </div>
 <select class="period-select" id="period-select" onchange="onPeriodChange()">
-<option value="">Yukleniyor...</option>
-</select>
+<option value="">Yukleniyor...</option></select>
 </div>
 <div class="hdr-r">
 <div>
-<div class="upd-lbl">Son Guncelleme
-</div>
-<div class="upd-val" id="last-upd">—
-</div>
+<div class="upd-lbl">Son Guncelleme</div>
+<div class="upd-val" id="last-upd">—</div>
 </div>
 <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
 <span id="rico" class="ms">refresh</span> Guncelle    </button>
-</div>
-</header>
+</div></header>
 <div class="main">
 <div class="sbar">
 <div class="sdot loading" id="sdot">
 </div>
 <span id="smsg">Veriler yukleniyor...</span>
-<span id="countdown">
-</span>
+<span id="countdown"></span>
 </div>
 <div id="s-hero">
 </div>
@@ -979,10 +803,8 @@ tr.clickable:hover td {
 <div id="s-teams">
 </div>
 <div id="s-charts">
-</div>
-</div>
-<!-- MODAL 
--->
+</div></div>
+<!-- MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
 <div class="modal" id="modal">
 <button class="modal-close" onclick="closeModal(null,'force')">&#10005;</button>
@@ -990,80 +812,58 @@ tr.clickable:hover td {
 <div class="modal-av" id="m-av">
 </div>
 <div>
-<div class="modal-name" id="m-name">—
-</div>
-<div class="modal-sub" id="m-sub">—
-</div>
-</div>
-</div>
+<div class="modal-name" id="m-name">—</div>
+<div class="modal-sub" id="m-sub">—</div>
+</div></div>
 <div class="modal-cards">
 <div class="mc">
-<div class="mc-lbl">ProStart-3
-</div>
-<div class="mc-val" id="m-p3">0
-</div>
-<div class="mc-pts">× 1.0 puan
-</div>
+<div class="mc-lbl">ProStart-3</div>
+<div class="mc-val" id="m-p3">0</div>
+<div class="mc-pts">× 1.0 puan</div>
 </div>
 <div class="mc">
-<div class="mc-lbl">ProStart-6
-</div>
-<div class="mc-val" id="m-p6">0
-</div>
-<div class="mc-pts">× 1.7 puan
-</div>
+<div class="mc-lbl">ProStart-6</div>
+<div class="mc-val" id="m-p6">0</div>
+<div class="mc-pts">× 1.7 puan</div>
 </div>
 <div class="mc">
-<div class="mc-lbl">ProStart-12
-</div>
-<div class="mc-val" id="m-p12">0
-</div>
-<div class="mc-pts">× 2.5 puan
-</div>
-</div>
-</div>
+<div class="mc-lbl">ProStart-12</div>
+<div class="mc-val" id="m-p12">0</div>
+<div class="mc-pts">× 2.5 puan</div>
+</div></div>
 <div class="modal-score">
 <div>
-<div class="modal-score-lbl">TOPLAM PUAN
-</div>
-<div class="modal-score-val" id="m-score">0.0
-</div>
+<div class="modal-score-lbl">TOPLAM PUAN</div>
+<div class="modal-score-val" id="m-score">0.0</div>
 </div>
 <div style="text-align:right">
-<div class="modal-score-lbl">PRİM
-</div>
-<div class="modal-prim" id="m-prim">—
-</div>
-</div>
-</div>
+<div class="modal-score-lbl">PRİM</div>
+<div class="modal-prim" id="m-prim">—</div>
+</div></div>
 <div id="m-breakdown" style="margin-top:12px;border:1px solid rgba(236,91,19,.25);border-radius:14px;padding:16px;background:rgba(236,91,19,.05);display:none;overflow:hidden;">
 <div style="font-size:9px;font-weight:700;color:#ec5b13;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Prim Dökümü</div>
-<div id="m-breakdown-rows" style="display:flex;flex-direction:column;gap:8px;box-sizing:border-box;width:100%;"></div>
-<div style="height:1px;background:rgba(236,91,19,.3);margin:10px 0 8px;"></div>
+<div id="m-breakdown-rows" style="display:flex;flex-direction:column;gap:8px;box-sizing:border-box;width:100%;">
+</div>
+<div style="height:1px;background:rgba(236,91,19,.3);margin:10px 0 8px;">
+</div>
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span style="font-size:11px;font-weight:700;color:#a5c893;text-transform:uppercase;letter-spacing:.06em;">Toplam Prim</span>
 <span id="m-breakdown-total" style="font-size:22px;font-weight:900;color:#4ade80;font-family:monospace;">%0</span>
-</div>
-</div>
-</div>
-</div>
+</div></div>
+</div></div>
 <div class="tkwrap">
 <div class="tk-track" id="tk-track">
 <div class="tk-copy" id="tk-a">
 <span class="ti tor">
 <span class="ms">bolt</span>Veriler yukleniyor...</span>
 </div>
-<div class="tk-sep">emoji_events emoji_events emoji_events
-</div>
+<div class="tk-sep">emoji_events emoji_events emoji_events</div>
 <div class="tk-copy" id="tk-b">
 <span class="ti tor">
 <span class="ms">bolt</span>Veriler yukleniyor...</span>
 </div>
-<div class="tk-sep">emoji_events emoji_events emoji_events
-</div>
-</div>
-</div>
-<script>
+<div class="tk-sep">emoji_events emoji_events emoji_events</div>
+</div></div><script>
 const API = 'https://mos-proxy.efeburhan79.workers.dev/';
 const TGT = 10;
 const AUTO_SEC = 60;
@@ -1089,7 +889,6 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
   const zirveEsigi = h * 1.50;
   let efektif = 0;
   if (kotaAktif) {
-    // KOTA AKTİF: puan + adet kotası birlikte
     if      (puan >= p100 && toplamSatis >= 6) efektif = puan;
     else if (puan >= p90  && toplamSatis >= 5) efektif = Math.min(puan, p100 - 0.01);
     else if (puan >= p80  && toplamSatis >= 5) efektif = Math.min(puan, p90 - 0.01);
@@ -1097,7 +896,6 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p60  && toplamSatis >= 4) efektif = Math.min(puan, p70 - 0.01);
     else return 0;
   } else {
-    // KOTA PASİF: sadece puan eşiği
     if      (puan >= p100) efektif = puan;
     else if (puan >= p90)  efektif = Math.min(puan, p100 - 0.01);
     else if (puan >= p80)  efektif = Math.min(puan, p90 - 0.01);
@@ -1125,7 +923,6 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
   const h = (hedef && hedef > 0) ? hedef : 10;
   const p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
   const zirveEsigi = h * 1.50;
-
   let efektif = 0;
   let kotaEngel = false;
 
@@ -1136,14 +933,16 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p70  && toplamSatis >= 4) efektif = Math.min(puan, p80 - 0.01);
     else if (puan >= p60  && toplamSatis >= 4) efektif = Math.min(puan, p70 - 0.01);
     else {
-      // Puan eşiğine göre kota karşılandı mı kontrol et
       const puanEsigi = puan >= p60;
-      kotaEngel = puanEsigi; // puan yeterli ama kota yetersiz
+      kotaEngel = puanEsigi;
       return {
-        bazPrim: 0, bazAciklama: kotaEngel ? `${fmt(puan,1)} puan / Kota karşılanmadı (${toplamSatis} satış)` : `${fmt(puan,1)} puan — %60 eşiği altı`,
-        hedefUstuBonus: 0, hedefUstuAciklama: '—',
-        ekipBonus: 0, ekipAciklama: '—',
-        zirveBonus: 0, zirveAciklama: `Eşik: ${fmt(zirveEsigi,1)} puan`,
+        bazPrim: 0,
+        bazAciklama: kotaEngel
+          ? `${fmt(puan,1)} puan / Kota karsilanmadi (${toplamSatis} satis)`
+          : `${fmt(puan,1)} puan - %60 esigi alti`,
+        hedefUstuBonus: 0, hedefUstuAciklama: '-',
+        ekipBonus: 0, ekipAciklama: '-',
+        zirveBonus: 0, zirveAciklama: `Esik: ${fmt(zirveEsigi,1)} puan`,
         toplam: 0, kotaEngel
       };
     }
@@ -1154,65 +953,74 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p70)  efektif = Math.min(puan, p80 - 0.01);
     else if (puan >= p60)  efektif = Math.min(puan, p70 - 0.01);
     else return {
-      bazPrim: 0, bazAciklama: `${fmt(puan,1)} puan — %60 eşiği altı`,
-      hedefUstuBonus: 0, hedefUstuAciklama: '—',
-      ekipBonus: 0, ekipAciklama: '—',
-      zirveBonus: 0, zirveAciklama: `Eşik: ${fmt(zirveEsigi,1)} puan`,
+      bazPrim: 0,
+      bazAciklama: `${fmt(puan,1)} puan - %60 esigi alti`,
+      hedefUstuBonus: 0, hedefUstuAciklama: '-',
+      ekipBonus: 0, ekipAciklama: '-',
+      zirveBonus: 0, zirveAciklama: `Esik: ${fmt(zirveEsigi,1)} puan`,
       toplam: 0, kotaEngel: false
     };
   }
 
-  // Baz prim
-  let baz = 0;
-  let esikAdi = '';
-  if      (efektif >= p100) { baz = 100; esikAdi = '%100+ eşiği'; }
-  else if (efektif >= p90)  { baz = 85;  esikAdi = '%90–99 eşiği'; }
-  else if (efektif >= p80)  { baz = 75;  esikAdi = '%80–89 eşiği'; }
-  else if (efektif >= p70)  { baz = 60;  esikAdi = '%70–79 eşiği'; }
-  else                      { baz = 50;  esikAdi = '%60–69 eşiği'; }
+  let baz = 0, esikAdi = '';
+  if      (efektif >= p100) { baz = 100; esikAdi = '%100+ esigi'; }
+  else if (efektif >= p90)  { baz = 85;  esikAdi = '%90-99 esigi'; }
+  else if (efektif >= p80)  { baz = 75;  esikAdi = '%80-89 esigi'; }
+  else if (efektif >= p70)  { baz = 60;  esikAdi = '%70-79 esigi'; }
+  else                      { baz = 50;  esikAdi = '%60-69 esigi'; }
 
-  const kotaSuffix = kotaAktif ? ` / ${toplamSatis} satış ✓` : '';
-  const bazAciklama = `${fmt(puan,1)} puan → ${esikAdi}${kotaSuffix}`;
+  const kotaSuffix = kotaAktif ? ` / ${toplamSatis} satis \u2713` : '';
+  const bazAciklama = `${fmt(puan,1)} puan \u2192 ${esikAdi}${kotaSuffix}`;
 
-  // Hedef üstü bonus
   let hedefUstuBonus = 0;
-  let hedefUstuAciklama = 'Hedef aşılmadı';
+  let hedefUstuAciklama = 'Hedef asilmadi';
   if (efektif >= p100) {
     const ex = puan - p100;
     hedefUstuBonus = Math.floor(ex) * 5 + Math.floor(ex / 3) * 15;
     hedefUstuAciklama = ex > 0
-      ? `+${fmt(ex,1)} puan × %5${Math.floor(ex/3)>0?' + '+Math.floor(ex/3)+'×%15':''}`
-      : 'Tam hedefe ulaşıldı';
+      ? `+${fmt(ex,1)} puan x %5${Math.floor(ex/3) > 0 ? ' + ' + Math.floor(ex/3) + 'x%15' : ''}`
+      : 'Tam hedefe ulasildi';
   }
 
-  // Ekip & zirve bonusu
   let ekipBonus = 0, ekipAciklama = '';
   let zirveBonus = 0, zirveAciklama = '';
 
   if (is1 && puan >= zirveEsigi) {
     zirveBonus = 20;
-    zirveAciklama = `${fmt(puan,1)} puan ≥ ${fmt(zirveEsigi,1)} ✓`;
-    ekipAciklama = 'Zirve istisnası aktif';
+    zirveAciklama = `${fmt(puan,1)} puan >= ${fmt(zirveEsigi,1)} \u2713`;
+    ekipAciklama = 'Zirve istisnasi aktif';
   } else {
-    zirveAciklama = puan >= zirveEsigi ? 'Aktif (ekip bonusuna gerek yok)' : `Eşik: ${fmt(zirveEsigi,1)} puan`;
+    zirveAciklama = puan >= zirveEsigi
+      ? 'Aktif (ekip bonusuna gerek yok)'
+      : `Esik: ${fmt(zirveEsigi,1)} puan`;
     if (teamOK) {
-      if (is1)      { ekipBonus = 20; ekipAciklama = 'Ekip lideri — ekip hedefi geçildi'; }
-      else if (is2) { ekipBonus = 10; ekipAciklama = '2. sıra — ekip hedefi geçildi'; }
-      else          { ekipAciklama = 'Ekip hedefi geçildi (3. sıra+)'; }
+      if (is1)      { ekipBonus = 20; ekipAciklama = 'Ekip lideri - ekip hedefi gecildi'; }
+      else if (is2) { ekipBonus = 10; ekipAciklama = '2. sira - ekip hedefi gecildi'; }
+      else          { ekipAciklama = 'Ekip hedefi gecildi (3. sira+)'; }
     } else {
-      ekipAciklama = 'Ekip hedefi geçilmedi';
+      ekipAciklama = 'Ekip hedefi gecilmedi';
     }
   }
 
   const toplam = Math.round(baz + hedefUstuBonus + ekipBonus + zirveBonus);
-  return { bazPrim: baz, bazAciklama, hedefUstuBonus, hedefUstuAciklama, ekipBonus, ekipAciklama, zirveBonus, zirveAciklama, toplam, kotaEngel: false };
+  return {
+    bazPrim: baz, bazAciklama,
+    hedefUstuBonus, hedefUstuAciklama,
+    ekipBonus, ekipAciklama,
+    zirveBonus, zirveAciklama,
+    toplam, kotaEngel: false
+  };
 }
 
 function levelLights(s) {
-  const dots = [6, 7, 8, 9, 10].map(t => `<div class="lt${s >= t ? ' on' : ''}"></div>`).join('');
+  const dots = [6, 7, 8, 9, 10].map(t =>
+    `<div class="lt${s >= t ? ' on' : ''}">
+</div>`
+  ).join('');
   const last = [6, 7, 8, 9, 10].filter(t => s >= t);
-  const lbl = last.length ? last[last.length - 1] + '+' : '—';
-  return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span></div>`;
+  const lbl = last.length ? last[last.length - 1] + '+' : '-';
+  return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span>
+</div>`;
 }
 
 function heroAvatar(photo, name) {
@@ -1231,7 +1039,7 @@ function heroAvatar(photo, name) {
 function rowAvatar(photo, name, col) {
   const i2 = ini2(name);
   const bdr = col || '#304724';
-  const tc = col || '#fff';
+  const tc  = col || '#fff';
   if (photo && photo.trim()) {
     return `<img src="${photo.trim()}" alt="${name || ''}"
       style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${bdr};flex-shrink:0"
@@ -1255,19 +1063,20 @@ function statusBadge(score, toplamSatis, hedef, kotaAktif) {
     else if (score >= h * 0.80) kotaEsigi = 5;
     else if (score >= h * 0.60) kotaEsigi = 4;
     const kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
-    if (puanTamam && kotaTamam)  return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFİ AŞTI</span>';
-    if (puanTamam && !kotaTamam) return '<span class="bdg bg-teal">⚡ PUAN TAMAM, SATIŞA DEVAM</span>';
-    if (!puanTamam && kotaTamam) return '<span class="bdg bg-y">📈 HEDEFE YAKLAŞIYOR</span>';
-    return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOŞUYOR</span>';
+    if (puanTamam && kotaTamam)  return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>';
+    if (puanTamam && !kotaTamam) return '<span class="bdg bg-teal">\u26A1 PUAN TAMAM, SATISA DEVAM</span>';
+    if (!puanTamam && kotaTamam) return '<span class="bdg bg-y">\uD83D\uDCC8 HEDEFE YAKLASIYOR</span>';
+    return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
   } else {
-    // Kota pasif: sadece puana göre rozet
-    if (puanTamam)            return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFİ AŞTI</span>';
-    if (score >= h * 0.70)    return '<span class="bdg bg-y">📈 HEDEFE YAKLAŞIYOR</span>';
-    return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOŞUYOR</span>';
+    if (puanTamam)          return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>';
+    if (score >= h * 0.70)  return '<span class="bdg bg-y">\uD83D\uDCC8 HEDEFE YAKLASIYOR</span>';
+    return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
   }
 }
 
-function primColor(p) { return p >= 100 ? '#4ade80' : p >= 75 ? '#a5c893' : p >= 50 ? '#facc15' : '#64748b'; }
+function primColor(p) {
+  return p >= 100 ? '#4ade80' : p >= 75 ? '#a5c893' : p >= 50 ? '#facc15' : '#64748b';
+}
 
 /* ── DÖNEM FİLTRELEME ── */
 function extractPeriods(raw) {
@@ -1318,7 +1127,7 @@ function filterByPeriod(raw, period) {
   salesFiltered.forEach(s => {
     const ad = String(s.personel || '').trim();
     if (!ad) return;
-    if (!satisMap[ad]) satisMap[ad] = {P3: 0, P6: 0, P12: 0};
+    if (!satisMap[ad]) satisMap[ad] = { P3: 0, P6: 0, P12: 0 };
     const tip = String(s.paketTipi || '').trim();
     if (tip === 'ProStart-3')  satisMap[ad].P3++;
     if (tip === 'ProStart-6')  satisMap[ad].P6++;
@@ -1330,17 +1139,17 @@ function filterByPeriod(raw, period) {
         const donemHedef = (m.tumHedefler && m.tumHedefler[period] !== undefined)
           ? m.tumHedefler[period]
           : m.hedef;
-        return {...m, hedef: donemHedef};
+        return { ...m, hedef: donemHedef };
       })
       .filter(m => m.hedef !== null && m.hedef !== undefined && m.hedef > 0)
       .map(m => {
-        const s = satisMap[m.name] || {P3: 0, P6: 0, P12: 0};
+        const s = satisMap[m.name] || { P3: 0, P6: 0, P12: 0 };
         const score = calcScore(s);
         const toplamSatis = s.P3 + s.P6 + s.P12;
         const donemKota = (m.tumKotalar && m.tumKotalar[period] !== undefined)
           ? m.tumKotalar[period]
           : (m.kotaAktif || false);
-        return {...m, P3: s.P3, P6: s.P6, P12: s.P12, score, toplamSatis, primPct: undefined, kotaAktif: donemKota};
+        return { ...m, P3: s.P3, P6: s.P6, P12: s.P12, score, toplamSatis, primPct: undefined, kotaAktif: donemKota };
       });
     const newToplamPuan = Math.round(newMembers.reduce((s, r) => s + r.score, 0) * 100) / 100;
     const newHedef = newMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
@@ -1352,12 +1161,12 @@ function filterByPeriod(raw, period) {
       hedefGecildi: newHedef > 0 && newToplamPuan >= newHedef
     };
   });
-  return {...raw, teams: newTeams};
+  return { ...raw, teams: newTeams };
 }
 
 function processData(raw) {
   const teams = {}, all = [];
-  if (!raw.teams || !Array.isArray(raw.teams)) return {teams, all};
+  if (!raw.teams || !Array.isArray(raw.teams)) return { teams, all };
   raw.teams.forEach((t, ti) => {
     const nm = t.name || ('MoS TEAM ' + (ti + 1));
     const members = (t.members || [])
@@ -1369,21 +1178,25 @@ function processData(raw) {
         photo: r.photo || ''
       }));
     const total = Math.round(members.reduce((s, r) => s + r.score, 0) * 100) / 100;
-    const hedef = (t.hedef !== null && t.hedef !== undefined) ? t.hedef : members.reduce((s, r) => s + (r.hedef || 0), 0);
+    const hedef = (t.hedef !== null && t.hedef !== undefined)
+      ? t.hedef
+      : members.reduce((s, r) => s + (r.hedef || 0), 0);
     const teamOK = total >= hedef;
     members.sort((a, b) => b.score - a.score);
     members.forEach((r, i) => {
       if (r.primPct === undefined) {
-        const ts = (r.toplamSatis !== undefined) ? r.toplamSatis : (r.P3 || 0) + (r.P6 || 0) + (r.P12 || 0);
+        const ts = (r.toplamSatis !== undefined)
+          ? r.toplamSatis
+          : (r.P3 || 0) + (r.P6 || 0) + (r.P12 || 0);
         r.primPct = calcPrim(r.score, ts, i === 0, i === 1, teamOK, r.hedef, r.kotaAktif || false);
       }
       all.push(r);
     });
     members.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
-    teams[nm] = {total, hedef, teamOK, members};
+    teams[nm] = { total, hedef, teamOK, members };
   });
   all.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
-  return {teams, all};
+  return { teams, all };
 }
 
 /* ── MODAL ── */
@@ -1391,75 +1204,74 @@ function openModal(rep) {
   const av = document.getElementById('m-av');
   const i2 = ini2(rep.name);
   if (rep.photo && rep.photo.trim()) {
-    av.innerHTML = `<img src="${rep.photo.trim()}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%"
-      onerror="this.outerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13\'>${i2}</div>'">`;
+    av.innerHTML = `<img src="${rep.photo.trim()}"
+      style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%"
+      onerror="this.outerHTML='<div style=\\'width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13\\'>${i2}</div>'">`;
   } else {
     av.innerHTML = `<div class="modal-av-init">${i2}</div>`;
   }
-  document.getElementById('m-name').textContent = rep.name || '—';
-  document.getElementById('m-sub').textContent = (rep.teamName || '') + (currentPeriod ? ' — ' + currentPeriod : '');
-  document.getElementById('m-p3').textContent = rep.P3 || 0;
-  document.getElementById('m-p6').textContent = rep.P6 || 0;
+  document.getElementById('m-name').textContent = rep.name || '-';
+  document.getElementById('m-sub').textContent =
+    (rep.teamName || '') + (currentPeriod ? ' - ' + currentPeriod : '');
+  document.getElementById('m-p3').textContent  = rep.P3  || 0;
+  document.getElementById('m-p6').textContent  = rep.P6  || 0;
   document.getElementById('m-p12').textContent = rep.P12 || 0;
   document.getElementById('m-score').textContent = fmt(rep.score);
-  const pc = rep.primPct || 0;
+  const pc  = rep.primPct || 0;
   const pel = document.getElementById('m-prim');
   pel.textContent = pc > 0 ? '%' + pc + ' Prim' : 'Prim Yok';
   pel.style.color = primColor(pc);
-
-  // Prim dökümü
   renderPrimBreakdown(rep);
-
   document.getElementById('modal-bg').classList.add('open');
 }
 
 function renderPrimBreakdown(rep) {
-  const bd = document.getElementById('m-breakdown');
-  const rows = document.getElementById('m-breakdown-rows');
+  const bd      = document.getElementById('m-breakdown');
+  const rows    = document.getElementById('m-breakdown-rows');
   const totalEl = document.getElementById('m-breakdown-total');
   if (!bd || !rows) return;
 
-  const ts = (rep.toplamSatis !== undefined) ? rep.toplamSatis : (rep.P3 || 0) + (rep.P6 || 0) + (rep.P12 || 0);
-  // processData'da sıralamaya göre is1/is2 bilgisi rep'te yok, primPct'den reverse-hesap yerine
-  // currentAll içindeki sıra pozisyonunu kullan
+  const ts = (rep.toplamSatis !== undefined)
+    ? rep.toplamSatis
+    : (rep.P3 || 0) + (rep.P6 || 0) + (rep.P12 || 0);
+
   const teamMembers = currentAll.filter(r => r.teamName === rep.teamName);
   teamMembers.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
   const pos = teamMembers.findIndex(r => r.name === rep.name);
   const is1 = pos === 0, is2 = pos === 1;
-  const teamOK = teamMembers.some(r => r.primPct > 0) &&
-    (() => {
-      const tot = teamMembers.reduce((s, r) => s + r.score, 0);
-      const hedefTot = teamMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
-      return hedefTot > 0 && tot >= hedefTot;
-    })();
+  const teamOK = (() => {
+    const tot     = teamMembers.reduce((s, r) => s + r.score, 0);
+    const hedefTot = teamMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
+    return hedefTot > 0 && tot >= hedefTot;
+  })();
 
   const d = calcPrimDetay(rep.score, ts, is1, is2, teamOK, rep.hedef, rep.kotaAktif || false);
 
   const items = [
     {
-      icon: 'target', color: '#4ade80', bg: 'rgba(74,222,128,.15)',
-      label: 'Satış Puanı', aciklama: d.bazAciklama,
-      deger: d.bazPrim, aktif: d.bazPrim > 0
+      icon: 'target',            color: '#4ade80', bg: 'rgba(74,222,128,.15)',
+      label: 'Satis Puani',      aciklama: d.bazAciklama,
+      deger: d.bazPrim,          aktif: d.bazPrim > 0
     },
     {
-      icon: 'trending_up', color: '#facc15', bg: 'rgba(250,204,21,.1)',
-      label: 'Hedef Üstü Bonus', aciklama: d.hedefUstuAciklama,
-      deger: d.hedefUstuBonus, aktif: d.hedefUstuBonus > 0
+      icon: 'trending_up',       color: '#facc15', bg: 'rgba(250,204,21,.1)',
+      label: 'Hedef Ustu Bonus', aciklama: d.hedefUstuAciklama,
+      deger: d.hedefUstuBonus,   aktif: d.hedefUstuBonus > 0
     },
     {
-      icon: 'emoji_events', color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
-      label: 'Ekip Liderliği', aciklama: d.ekipAciklama,
-      deger: d.ekipBonus, aktif: d.ekipBonus > 0
+      icon: 'emoji_events',      color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
+      label: 'Ekip Liderligi',   aciklama: d.ekipAciklama,
+      deger: d.ekipBonus,        aktif: d.ekipBonus > 0
     },
     {
       icon: 'workspace_premium', color: '#a78bfa', bg: 'rgba(167,139,250,.1)',
-      label: 'Zirve İstisnası', aciklama: d.zirveAciklama,
-      deger: d.zirveBonus, aktif: d.zirveBonus > 0
+      label: 'Zirve Istisnasi',  aciklama: d.zirveAciklama,
+      deger: d.zirveBonus,       aktif: d.zirveBonus > 0
     }
   ];
 
-  rows.innerHTML = items.map((item, i) => `
-    <div style="display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;${!item.aktif ? 'opacity:0.4;' : ''}">
+  rows.innerHTML = items.map((item, i) =>
+    `<div style="display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;${!item.aktif ? 'opacity:0.4;' : ''}">
       <div style="min-width:28px;width:28px;height:28px;border-radius:8px;background:${item.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:content-box;">
         <span class="ms" style="font-size:16px;color:${item.color};line-height:1;">${item.icon}</span>
       </div>
@@ -1468,13 +1280,13 @@ function renderPrimBreakdown(rep) {
         <div style="font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.aciklama}</div>
       </div>
       <div style="font-size:15px;font-weight:900;color:${item.aktif ? item.color : '#64748b'};font-family:monospace;flex-shrink:0;">%${item.deger}</div>
-    </div>
-    ${i < items.length - 1 ? '<div style="height:1px;background:rgba(255,255,255,.06);"></div>' : ''}
-  `).join('');
+    </div>${i < items.length - 1 ? '<div style="height:1px;background:rgba(255,255,255,.06);">
+</div>' : ''}`
+  ).join('\n');
 
   totalEl.textContent = '%' + d.toplam;
   totalEl.style.color = primColor(d.toplam);
-  bd.style.display = d.toplam > 0 || d.kotaEngel ? 'block' : 'none';
+  bd.style.display = (d.toplam > 0 || d.kotaEngel) ? 'block' : 'none';
 }
 
 function closeModal(e, force) {
@@ -1483,7 +1295,9 @@ function closeModal(e, force) {
   }
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(null, 'force'); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal(null, 'force');
+});
 
 /* ── RENDER HERO ── */
 function renderHero(all, teams) {
@@ -1504,25 +1318,40 @@ function renderHero(all, teams) {
           <div class="av-badge">Liderin<br>Performansi</div>
         </div>
         <div class="hero-info">
-          <h1>${top.name || '—'}</h1>
+          <h1>${top.name || '-'}</h1>
           <div class="hero-tags">
             <span class="tag">#1 Genel Siralama</span>
             ${(top.primPct || 0) > 0 ? `<span class="tag or">Prim: %${top.primPct}</span>` : ''}
             ${top.score >= 15 ? `<span class="tag or">&#9733; Zirve Bonusu</span>` : ''}
           </div>
           <div class="hstats">
-            <div class="sm"><div class="sl">ProStart-3</div><div class="sv">${top.P3 || 0}</div></div>
-            <div class="sm"><div class="sl">ProStart-6</div><div class="sv">${top.P6 || 0}</div></div>
-            <div class="sm"><div class="sl">ProStart-12</div><div class="sv">${top.P12 || 0}</div></div>
+            <div class="sm">
+<div class="sl">ProStart-3</div>
+<div class="sv">${top.P3 || 0}</div>
+</div>
+            <div class="sm">
+<div class="sl">ProStart-6</div>
+<div class="sv">${top.P6 || 0}</div>
+</div>
+            <div class="sm">
+<div class="sl">ProStart-12</div>
+<div class="sv">${top.P12 || 0}</div>
+</div>
           </div>
         </div>
-        <div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>
+        <div class="hero-deco">
+          <div class="dt">MoS<br>TEAM</div>
+          <div class="ds">KURUMSAL SATIS v4.0</div>
+        </div>
       </div>
       <div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
-        <div class="ctit">Hedef Başarı Oranı</div>
+        <div class="ctit">Hedef Basari Orani</div>
         <div style="font-size:42px;font-weight:900;line-height:1;color:${tpctColor};font-family:monospace">${tpctFmt}</div>
-        <div style="font-size:11px;color:#a5c893;margin-top:6px">${fmt(tot)} / ${fmt(tgt, 0)} puan</div>
-        <div class="tbar" style="margin-top:12px"><div class="tbf" style="width:${fmt(tpct, 1)}%;background:${tpctColor}"></div></div>
+        <div style="font-size:11px;color:#a5c893;margin-top:6px">${fmt(tot)} / ${fmt(tgt, 1)} puan</div>
+        <div class="tbar" style="margin-top:12px">
+          <div class="tbf" style="width:${fmt(tpct, 1)}%;background:${tpctColor}">
+</div>
+        </div>
       </div>
     </div>`;
   if (ekipHedefTamamlandi) launchConfetti();
@@ -1531,33 +1360,64 @@ function renderHero(all, teams) {
 function renderLegend() {
   document.getElementById('s-legend').innerHTML = `
     <div class="lgrid">
-      <div class="lcard"><div class="lico"><span class="ms">stars</span></div><div><div class="llbl">ProStart-3</div><div class="lpts">1.0 Puan</div></div></div>
-      <div class="lcard"><div class="lico"><span class="ms">rocket_launch</span></div><div><div class="llbl">ProStart-6</div><div class="lpts">1.7 Puan</div></div></div>
-      <div class="lcard"><div class="lico"><span class="ms">workspace_premium</span></div><div><div class="llbl">ProStart-12</div><div class="lpts">2.5 Puan</div></div></div>
-      <div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">15 Puan / Kisi</div></div></div>
+      <div class="lcard">
+<div class="lico">
+<span class="ms">stars</span>
+</div>
+<div>
+<div class="llbl">ProStart-3</div>
+<div class="lpts">1.0 Puan</div>
+</div></div>
+      <div class="lcard">
+<div class="lico">
+<span class="ms">rocket_launch</span>
+</div>
+<div>
+<div class="llbl">ProStart-6</div>
+<div class="lpts">1.7 Puan</div>
+</div></div>
+      <div class="lcard">
+<div class="lico">
+<span class="ms">workspace_premium</span>
+</div>
+<div>
+<div class="llbl">ProStart-12</div>
+<div class="lpts">2.5 Puan</div>
+</div></div>
+      <div class="lcard acc">
+<div class="lico wh">
+<span class="ms">target</span>
+</div>
+<div>
+<div class="llbl">Aylik Hedef</div>
+<div class="lpts">15 Puan / Kisi</div>
+</div></div>
     </div>`;
 }
 
 function renderProgress(teams) {
   let h = '<div class="tpsec">';
   Object.keys(teams).forEach(nm => {
-    const t = teams[nm];
+    const t   = teams[nm];
     const pct = t.hedef > 0 ? Math.min(100, (t.total / t.hedef) * 100) : 0;
-    const b = t.teamOK
-      ? '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFİ AŞTI</span>'
-      : '<span class="bdg bg-y">\uD83D\uDE80 HEDEFE KOŞUYOR</span>';
-    h += `<div class="tprow">
+    const b   = t.teamOK
+      ? '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>'
+      : '<span class="bdg bg-y">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
+    h += `
+    <div class="tprow">
       <div class="tphdr">
         <div style="display:flex;align-items:center">
           <span class="tpscore">${fmt(t.total)}</span>
           <div>
             <div class="tpname">${nm} &nbsp;${b}</div>
-            <div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef, 0)} puan</div>
+            <div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef, 1)} puan</div>
           </div>
         </div>
         <span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%${fmt(pct, 1)}</span>
       </div>
-      <div class="tpbw"><div class="tpbf" style="width:${fmt(pct, 1)}%"></div></div>
+      <div class="tpbw">
+<div class="tpbf" style="width:${fmt(pct, 1)}%">
+</div></div>
     </div>`;
   });
   h += '</div>';
@@ -1569,42 +1429,50 @@ function renderTeams(teams) {
   if (!nms.length) { document.getElementById('s-teams').innerHTML = ''; return; }
   let h = '<div class="tgrid">';
   nms.forEach(nm => {
-    const {members, teamOK} = teams[nm];
-    const avg = members.length ? fmt(members.reduce((s, r) => s + r.score, 0) / members.length) : '0.0';
-    h += `<div class="tsec">
+    const { members, teamOK } = teams[nm];
+    const avg = members.length
+      ? fmt(members.reduce((s, r) => s + r.score, 0) / members.length)
+      : '0.0';
+    h += `
+    <div class="tsec">
       <div class="th">
-        <div class="tac"></div>
+        <div class="tac">
+</div>
         <h3>${nm}</h3>
         <span class="tavg">Ort: ${avg} ${teamOK ? '<span style="color:#4ade80">&#10003;</span>' : ''}</span>
       </div>
       <div class="twrap">
         <table>
           <colgroup>
-            <col style="width:30%"><col style="width:14%"><col class="col-level" style="width:20%">
+            <col style="width:30%"><col style="width:14%">
+            <col class="col-level" style="width:20%">
             <col style="width:14%"><col style="width:22%">
           </colgroup>
           <thead><tr>
-            <th>Isim</th><th>Puan</th><th class="col-level">Level</th><th>Prim</th>
+            <th>Isim</th><th>Puan</th>
+            <th class="col-level">Level</th>
+            <th>Prim</th>
             <th style="text-align:right">Durum</th>
           </tr></thead>
           <tbody>
             ${members.map((r, i) => {
               const col = i === 0 ? '#ec5b13' : i === 1 ? '#a5c893' : '';
-              const pc = primColor(r.primPct || 0);
+              const pc  = primColor(r.primPct || 0);
               const rid = encodeURIComponent(r.name || '');
               return `<tr class="clickable" onclick="handleRowClick('${rid}')">
-                <td><div class="nc">
+                <td>
+<div class="nc">
                   ${rowAvatar(r.photo, r.name, col)}
-                  <span class="nm" style="${col ? 'color:' + col : ''}">${r.name || '—'}</span>
+                  <span class="nm" style="${col ? 'color:' + col : ''}">${r.name || '-'}</span>
                 </div></td>
                 <td class="pval" style="${col ? 'color:' + col : ''}">${fmt(r.score)}</td>
                 <td class="col-level">${levelLights(r.score)}</td>
                 <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct || 0) > 0 ? pc : '#64748b'}">
-                  ${(r.primPct || 0) > 0 ? '%' + r.primPct : '—'}
+                  ${(r.primPct || 0) > 0 ? '%' + r.primPct : '-'}
                 </td>
                 <td>${statusBadge(r.score, (r.toplamSatis !== undefined ? r.toplamSatis : (r.P3 || 0) + (r.P6 || 0) + (r.P12 || 0)), r.hedef, r.kotaAktif || false)}</td>
               </tr>`;
-            }).join('')}
+            }).join('\n')}
           </tbody>
         </table>
       </div>
@@ -1618,17 +1486,17 @@ let currentAll = [];
 
 function handleRowClick(encodedName) {
   const name = decodeURIComponent(encodedName);
-  const rep = currentAll.find(r => r.name === name);
+  const rep  = currentAll.find(r => r.name === name);
   if (rep) openModal(rep);
 }
 
 function renderCharts(all, teams) {
-  const p3 = all.reduce((s, r) => s + (r.P3 || 0), 0);
-  const p6 = all.reduce((s, r) => s + (r.P6 || 0), 0);
+  const p3  = all.reduce((s, r) => s + (r.P3  || 0), 0);
+  const p6  = all.reduce((s, r) => s + (r.P6  || 0), 0);
   const p12 = all.reduce((s, r) => s + (r.P12 || 0), 0);
-  const pt = p3 + p6 + p12;
-  const pp3 = pt > 0 ? Math.round(p3 / pt * 100) : 33;
-  const pp6 = pt > 0 ? Math.round(p6 / pt * 100) : 33;
+  const pt  = p3 + p6 + p12;
+  const pp3  = pt > 0 ? Math.round(p3  / pt * 100) : 33;
+  const pp6  = pt > 0 ? Math.round(p6  / pt * 100) : 33;
   const pp12 = pt > 0 ? Math.round(p12 / pt * 100) : 34;
   const tot = all.reduce((s, r) => s + r.score, 0);
   const tgt = teams
@@ -1641,22 +1509,38 @@ function renderCharts(all, teams) {
     <div style="display:flex;gap:12px;justify-content:center">
       <div class="cc" style="flex:1;max-width:480px">
         <div class="ctit">Urun Dagilimi</div>
-        <div class="drow"><span>ProStart-3</span><span>${pp3}%</span></div>
-        <div class="dbw"><div class="dbf" style="width:${pp3}%;background:#ec5b13"></div></div>
-        <div class="drow"><span>ProStart-6</span><span>${pp6}%</span></div>
-        <div class="dbw"><div class="dbf" style="width:${pp6}%;background:#a5c893"></div></div>
-        <div class="drow"><span>ProStart-12</span><span>${pp12}%</span></div>
-        <div class="dbw"><div class="dbf" style="width:${pp12}%;background:#60a5fa"></div></div>
+        <div class="drow">
+<span>ProStart-3</span>
+<span>${pp3}%</span>
+</div>
+        <div class="dbw">
+<div class="dbf" style="width:${pp3}%;background:#ec5b13">
+</div></div>
+        <div class="drow">
+<span>ProStart-6</span>
+<span>${pp6}%</span>
+</div>
+        <div class="dbw">
+<div class="dbf" style="width:${pp6}%;background:#a5c893">
+</div></div>
+        <div class="drow">
+<span>ProStart-12</span>
+<span>${pp12}%</span>
+</div>
+        <div class="dbw">
+<div class="dbf" style="width:${pp12}%;background:#60a5fa">
+</div></div>
       </div>
       <div class="cc" style="flex:1;max-width:480px">
         <div class="ctit">Genel Siralama (Top ${t5.length})</div>
         ${t5.map((r, i) => `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:11px;font-weight:700;color:${i === 0 ? '#ec5b13' : i === 1 ? '#a5c893' : '#fff'}">${i + 1}. ${r.name || '—'}</span>
+            <span style="font-size:11px;font-weight:700;color:${i === 0 ? '#ec5b13' : i === 1 ? '#a5c893' : '#fff'}">${i + 1}. ${r.name || '-'}</span>
             <span style="font-family:monospace;font-size:10px;color:#a5c893">${fmt(r.score)}</span>
           </div>
           <div style="width:100%;background:rgba(255,255,255,.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">
-            <div style="width:${fmt(Math.min(100, r.score / mx * 100), 1)}%;height:100%;background:${i === 0 ? '#ec5b13' : '#304724'};border-radius:99px"></div>
+            <div style="width:${fmt(Math.min(100, r.score / mx * 100), 1)}%;height:100%;background:${i === 0 ? '#ec5b13' : '#304724'};border-radius:99px">
+</div>
           </div>`).join('')}
       </div>
     </div>`;
@@ -1664,15 +1548,18 @@ function renderCharts(all, teams) {
 
 function renderTicker(all) {
   if (!all.length) return;
-  const top = all[0];
+  const top  = all[0];
   const rank = all.map((r, i) => `${i + 1}. ${r.name || '?'} (${fmt(r.score)})`).join(' | ');
-  const tot = all.reduce((s, r) => s + r.score, 0);
-  const tgt = all.reduce((s, r) => s + (r.hedef !== null && r.hedef !== undefined ? r.hedef : 0), 0);
-  const pct = tgt > 0 ? fmt(Math.min(100, tot / tgt * 100), 1) : '0.0';
+  const tot  = all.reduce((s, r) => s + r.score, 0);
+  const tgt  = all.reduce((s, r) => s + (r.hedef !== null && r.hedef !== undefined ? r.hedef : 0), 0);
+  const pct  = tgt > 0 ? fmt(Math.min(100, tot / tgt * 100), 1) : '0.0';
   const content = `
-    <span class="ti tor"><span class="ms">bolt</span>ZİRVE: ${top.name || '—'} — ${fmt(top.score)} puan | Prim: %${top.primPct || 0}${top.score >= 15 ? ' | ★ Zirve Bonusu' : ''}</span>
-    <span class="ti"><span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>
-    <span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(tot)} / ${fmt(tgt, 0)} puan (%${pct})</span>`;
+    <span class="ti tor">
+<span class="ms">bolt</span>ZİRVE: ${top.name || '-'} - ${fmt(top.score)} puan | Prim: %${top.primPct || 0}${top.score >= 15 ? ' | \u2605 Zirve Bonusu' : ''}</span>
+    <span class="ti">
+<span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>
+    <span class="ti tgr">
+<span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(tot)} / ${fmt(tgt, 1)} puan (%${pct})</span>`;
   document.getElementById('tk-a').innerHTML = content;
   document.getElementById('tk-b').innerHTML = content;
 }
@@ -1685,7 +1572,7 @@ function launchConfetti() {
   for (let i = 0; i < 120; i++) {
     const p = document.createElement('div');
     p.className = 'cp';
-    const size = 6 + Math.random() * 8;
+    const size   = 6 + Math.random() * 8;
     const isRect = Math.random() > 0.5;
     p.style.cssText = `
       left:${Math.random() * 100}%;
@@ -1703,7 +1590,7 @@ function launchConfetti() {
 
 function renderDashboard(raw, period) {
   const filtered = filterByPeriod(raw, period);
-  const {teams, all} = processData(filtered);
+  const { teams, all } = processData(filtered);
   currentAll = all;
   renderHero(all, teams);
   renderLegend();
@@ -1715,7 +1602,7 @@ function renderDashboard(raw, period) {
 
 function onPeriodChange() {
   currentPeriod = document.getElementById('period-select').value;
-  document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+  document.getElementById('dash-title').textContent = 'MoS Team - ' + currentPeriod;
   if (rawCache) renderDashboard(rawCache, currentPeriod);
 }
 
@@ -1726,7 +1613,10 @@ function startCountdown() {
   cTimer = setInterval(() => {
     v--;
     if (v > 0) document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
-    else { document.getElementById('countdown').textContent = 'Guncelleniyor...'; clearInterval(cTimer); }
+    else {
+      document.getElementById('countdown').textContent = 'Guncelleniyor...';
+      clearInterval(cTimer);
+    }
   }, 1000);
 }
 
@@ -1740,17 +1630,17 @@ async function fetchData(manual = false) {
   if (rTimer) clearInterval(rTimer);
   if (cTimer) clearInterval(cTimer);
   try {
-    const opts = manual ? {cache: 'no-cache'} : {};
-    const res = await fetch(API + '?t=' + Date.now(), opts);
+    const opts = manual ? { cache: 'no-cache' } : {};
+    const res  = await fetch(API + '?t=' + Date.now(), opts);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    const raw = await res.json();
+    const raw  = await res.json();
     rawCache = raw;
     let periods = (raw.periods && raw.periods.length) ? raw.periods : extractPeriods(raw);
     if (!periods.length) periods = buildPeriodsFromTeams(raw);
     if (!periods.length) { periods = ['Guncel']; raw.tumSatislar = null; }
     updatePeriodDropdown(periods);
     currentPeriod = document.getElementById('period-select').value;
-    document.getElementById('dash-title').textContent = 'MoS Team — ' + currentPeriod;
+    document.getElementById('dash-title').textContent = 'MoS Team - ' + currentPeriod;
     renderDashboard(raw, currentPeriod);
     const now = new Date();
     document.getElementById('last-upd').textContent =
@@ -1773,4 +1663,5 @@ async function fetchData(manual = false) {
 fetchData(false);
 </script>
 </body>
+
 </html>
