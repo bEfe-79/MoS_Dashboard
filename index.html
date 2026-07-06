@@ -1270,23 +1270,24 @@ function renderPrimBreakdown(rep) {
     }
   ];
 
-  const SEP = '<div style="height:1px;background:rgba(255,255,255,.06);"></div>';
+  const SEP = "<div style='height:1px;background:rgba(255,255,255,.06);'></div>";
   rows.innerHTML = items.map(function(item, i) {
-    var opacity = !item.aktif ? 'opacity:0.4;' : '';
-    var color   = item.aktif ? item.color : '#64748b';
-    var html = '<div style="display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;' + opacity + '">';
-    html += '<div style="min-width:28px;width:28px;height:28px;border-radius:8px;background:' + item.bg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:content-box;">';
-    html += '<span class="ms" style="font-size:16px;color:' + item.color + ';line-height:1;">' + item.icon + '</span>';
-    html += '</div>';
-    html += '<div style="flex:1;min-width:0;">';
-    html += '<div style="font-size:11px;font-weight:700;color:#e2e8f0;">' + item.label + '</div>';
-    html += '<div style="font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.aciklama + '</div>';
-    html += '</div>';
-    html += '<div style="font-size:15px;font-weight:900;color:' + color + ';font-family:monospace;flex-shrink:0;">%' + item.deger + '</div>';
-    html += '</div>';
+    var opacity = !item.aktif ? "opacity:0.4;" : "";
+    var color   = item.aktif ? item.color : "#64748b";
+    var html = "<div style='display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;" + opacity + "'>";
+    html += "<div style='min-width:28px;width:28px;height:28px;border-radius:8px;background:" + item.bg + ";display:flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:content-box;'>";
+    html += "<span class='ms' style='font-size:16px;color:" + item.color + ";line-height:1;'>" + item.icon + "</span>";
+    html += "</div>";
+    html += "<div style='flex:1;min-width:0;'>";
+    html += "<div style='font-size:11px;font-weight:700;color:#e2e8f0;'>" + item.label + "</div>";
+    html += "<div style='font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + item.aciklama + "</div>";
+    html += "</div>";
+    html += "<div style='font-size:15px;font-weight:900;color:" + color + ";font-family:monospace;flex-shrink:0;'>%" + item.deger + "</div>";
+    html += "</div>";
     if (i < items.length - 1) html += SEP;
     return html;
-  }).join('');
+  }).join("");
+
   totalEl.textContent = '%' + d.toplam;
   totalEl.style.color = primColor(d.toplam);
   bd.style.display = (d.toplam > 0 || d.kotaEngel) ? 'block' : 'none';
