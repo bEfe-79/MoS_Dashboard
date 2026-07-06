@@ -865,15 +865,13 @@ tr.clickable:hover td {
 <div class="tk-sep">emoji_events emoji_events emoji_events</div>
 </div></div><script>
 const API = 'https://mos-proxy.efeburhan79.workers.dev/';
-const TGT = 10;
 const AUTO_SEC = 60;
 let rTimer = null, cTimer = null;
 let rawCache = null;
 let currentPeriod = '';
 
-/* ── İNİTİALS ── */
 function ini2(name) {
-  const parts = (name || '?').trim().split(/\s+/);
+  var parts = (name || '?').trim().split(/\s+/);
   if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   return parts[0].slice(0, 2).toUpperCase();
 }
@@ -882,12 +880,20 @@ function calcScore(r) {
   return Math.round(((r.P3 || 0) * 1 + (r.P6 || 0) * 1.7 + (r.P12 || 0) * 2.5) * 100) / 100;
 }
 
-/* ── PRİM HESAPLAMA ── */
+function fmt(n, d) {
+  if (d === undefined) d = 1;
+  return parseFloat(n || 0).toFixed(d);
+}
+
+function primColor(p) {
+  return p >= 100 ? '#4ade80' : p >= 75 ? '#a5c893' : p >= 50 ? '#facc15' : '#64748b';
+}
+
 function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
-  const h = (hedef && hedef > 0) ? hedef : 10;
-  const p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
-  const zirveEsigi = h * 1.50;
-  let efektif = 0;
+  var h = (hedef && hedef > 0) ? hedef : 10;
+  var p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
+  var zirveEsigi = h * 1.50;
+  var efektif = 0;
   if (kotaAktif) {
     if      (puan >= p100 && toplamSatis >= 6) efektif = puan;
     else if (puan >= p90  && toplamSatis >= 5) efektif = Math.min(puan, p100 - 0.01);
@@ -903,14 +909,14 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p60)  efektif = Math.min(puan, p70 - 0.01);
     else return 0;
   }
-  let b = 0;
+  var b = 0;
   if      (efektif >= p100) b = 100;
   else if (efektif >= p90)  b = 85;
   else if (efektif >= p80)  b = 75;
   else if (efektif >= p70)  b = 60;
   else                      b = 50;
   if (efektif >= p100) {
-    const ex = puan - p100;
+    var ex = puan - p100;
     b += Math.floor(ex) * 5 + Math.floor(ex / 3) * 15;
   }
   if (is1 && puan >= zirveEsigi) b += 20;
@@ -918,13 +924,12 @@ function calcPrim(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
   return Math.round(b);
 }
 
-/* ── PRİM DÖKÜM OBJESİ ── */
 function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
-  const h = (hedef && hedef > 0) ? hedef : 10;
-  const p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
-  const zirveEsigi = h * 1.50;
-  let efektif = 0;
-  let kotaEngel = false;
+  var h = (hedef && hedef > 0) ? hedef : 10;
+  var p60 = h * 0.60, p70 = h * 0.70, p80 = h * 0.80, p90 = h * 0.90, p100 = h;
+  var zirveEsigi = h * 1.50;
+  var efektif = 0;
+  var kotaEngel = false;
 
   if (kotaAktif) {
     if      (puan >= p100 && toplamSatis >= 6) efektif = puan;
@@ -933,17 +938,16 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p70  && toplamSatis >= 4) efektif = Math.min(puan, p80 - 0.01);
     else if (puan >= p60  && toplamSatis >= 4) efektif = Math.min(puan, p70 - 0.01);
     else {
-      const puanEsigi = puan >= p60;
-      kotaEngel = puanEsigi;
+      kotaEngel = (puan >= p60);
       return {
         bazPrim: 0,
         bazAciklama: kotaEngel
-          ? `${fmt(puan,1)} puan / Kota karsilanmadi (${toplamSatis} satis)`
-          : `${fmt(puan,1)} puan - %60 esigi alti`,
+          ? fmt(puan,1) + ' puan / Kota karsilanmadi (' + toplamSatis + ' satis)'
+          : fmt(puan,1) + ' puan - %60 esigi alti',
         hedefUstuBonus: 0, hedefUstuAciklama: '-',
         ekipBonus: 0, ekipAciklama: '-',
-        zirveBonus: 0, zirveAciklama: `Esik: ${fmt(zirveEsigi,1)} puan`,
-        toplam: 0, kotaEngel
+        zirveBonus: 0, zirveAciklama: 'Esik: ' + fmt(zirveEsigi,1) + ' puan',
+        toplam: 0, kotaEngel: kotaEngel
       };
     }
   } else {
@@ -954,47 +958,47 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     else if (puan >= p60)  efektif = Math.min(puan, p70 - 0.01);
     else return {
       bazPrim: 0,
-      bazAciklama: `${fmt(puan,1)} puan - %60 esigi alti`,
+      bazAciklama: fmt(puan,1) + ' puan - %60 esigi alti',
       hedefUstuBonus: 0, hedefUstuAciklama: '-',
       ekipBonus: 0, ekipAciklama: '-',
-      zirveBonus: 0, zirveAciklama: `Esik: ${fmt(zirveEsigi,1)} puan`,
+      zirveBonus: 0, zirveAciklama: 'Esik: ' + fmt(zirveEsigi,1) + ' puan',
       toplam: 0, kotaEngel: false
     };
   }
 
-  let baz = 0, esikAdi = '';
+  var baz = 0, esikAdi = '';
   if      (efektif >= p100) { baz = 100; esikAdi = '%100+ esigi'; }
   else if (efektif >= p90)  { baz = 85;  esikAdi = '%90-99 esigi'; }
   else if (efektif >= p80)  { baz = 75;  esikAdi = '%80-89 esigi'; }
   else if (efektif >= p70)  { baz = 60;  esikAdi = '%70-79 esigi'; }
   else                      { baz = 50;  esikAdi = '%60-69 esigi'; }
 
-  const kotaSuffix = kotaAktif ? ` / ${toplamSatis} satis \u2713` : '';
-  const bazAciklama = `${fmt(puan,1)} puan \u2192 ${esikAdi}${kotaSuffix}`;
+  var kotaSuffix = kotaAktif ? ' / ' + toplamSatis + ' satis \u2713' : '';
+  var bazAciklama = fmt(puan,1) + ' puan \u2192 ' + esikAdi + kotaSuffix;
 
-  let hedefUstuBonus = 0;
-  let hedefUstuAciklama = 'Hedef asilmadi';
+  var hedefUstuBonus = 0;
+  var hedefUstuAciklama = 'Hedef asilmadi';
   if (efektif >= p100) {
-    const ex = puan - p100;
+    var ex = puan - p100;
     hedefUstuBonus = Math.floor(ex) * 5 + Math.floor(ex / 3) * 15;
-    hedefUstuAciklama = ex > 0
-      ? `+${fmt(ex,1)} puan x %5${Math.floor(ex/3) > 0 ? ' + ' + Math.floor(ex/3) + 'x%15' : ''}`
-      : 'Tam hedefe ulasildi';
+    if (ex > 0) {
+      hedefUstuAciklama = '+' + fmt(ex,1) + ' puan x %5' + (Math.floor(ex/3) > 0 ? ' + ' + Math.floor(ex/3) + 'x%15' : '');
+    } else {
+      hedefUstuAciklama = 'Tam hedefe ulasildi';
+    }
   }
 
-  let ekipBonus = 0, ekipAciklama = '';
-  let zirveBonus = 0, zirveAciklama = '';
+  var ekipBonus = 0, ekipAciklama = '';
+  var zirveBonus = 0, zirveAciklama = '';
 
   if (is1 && puan >= zirveEsigi) {
     zirveBonus = 20;
-    zirveAciklama = `${fmt(puan,1)} puan >= ${fmt(zirveEsigi,1)} \u2713`;
+    zirveAciklama = fmt(puan,1) + ' puan >= ' + fmt(zirveEsigi,1) + ' \u2713';
     ekipAciklama = 'Zirve istisnasi aktif';
   } else {
-    zirveAciklama = puan >= zirveEsigi
-      ? 'Aktif (ekip bonusuna gerek yok)'
-      : `Esik: ${fmt(zirveEsigi,1)} puan`;
+    zirveAciklama = puan >= zirveEsigi ? 'Aktif (ekip bonusuna gerek yok)' : 'Esik: ' + fmt(zirveEsigi,1) + ' puan';
     if (teamOK) {
-      if (is1)      { ekipBonus = 20; ekipAciklama = 'Ekip lideri - ekip hedefi gecildi'; }
+      if      (is1) { ekipBonus = 20; ekipAciklama = 'Ekip lideri - ekip hedefi gecildi'; }
       else if (is2) { ekipBonus = 10; ekipAciklama = '2. sira - ekip hedefi gecildi'; }
       else          { ekipAciklama = 'Ekip hedefi gecildi (3. sira+)'; }
     } else {
@@ -1002,223 +1006,188 @@ function calcPrimDetay(puan, toplamSatis, is1, is2, teamOK, hedef, kotaAktif) {
     }
   }
 
-  const toplam = Math.round(baz + hedefUstuBonus + ekipBonus + zirveBonus);
+  var toplam = Math.round(baz + hedefUstuBonus + ekipBonus + zirveBonus);
   return {
-    bazPrim: baz, bazAciklama,
-    hedefUstuBonus, hedefUstuAciklama,
-    ekipBonus, ekipAciklama,
-    zirveBonus, zirveAciklama,
-    toplam, kotaEngel: false
+    bazPrim: baz, bazAciklama: bazAciklama,
+    hedefUstuBonus: hedefUstuBonus, hedefUstuAciklama: hedefUstuAciklama,
+    ekipBonus: ekipBonus, ekipAciklama: ekipAciklama,
+    zirveBonus: zirveBonus, zirveAciklama: zirveAciklama,
+    toplam: toplam, kotaEngel: false
   };
 }
 
 function levelLights(s) {
-  const dots = [6, 7, 8, 9, 10].map(t =>
-    `<div class="lt${s >= t ? ' on' : ''}">
-</div>`
-  ).join('');
-  const last = [6, 7, 8, 9, 10].filter(t => s >= t);
-  const lbl = last.length ? last[last.length - 1] + '+' : '-';
-  return `<div class="lights">${dots}<span class="lt-lbl">${lbl}</span>
-</div>`;
+  var dots = [6,7,8,9,10].map(function(t) {
+    return '<div class="lt' + (s >= t ? ' on' : '') + '"></div>';
+  }).join('');
+  var last = [6,7,8,9,10].filter(function(t) { return s >= t; });
+  var lbl = last.length ? last[last.length - 1] + '+' : '-';
+  return '<div class="lights">' + dots + '<span class="lt-lbl">' + lbl + '</span></div>';
 }
 
 function heroAvatar(photo, name) {
-  const i2 = ini2(name);
+  var i2 = ini2(name);
   if (photo && photo.trim()) {
-    return `<img src="${photo.trim()}" alt="${name || ''}"
-      style="width:94px;height:94px;border-radius:50%;object-fit:cover;display:block"
-      onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-    <div style="display:none;width:94px;height:94px;border-radius:50%;background:#1a2a4a;
-      align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">${i2}</div>`;
+    return '<img src="' + photo.trim() + '" alt="' + (name || '') + '" style="width:94px;height:94px;border-radius:50%;object-fit:cover;display:block" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+      + '<div style="display:none;width:94px;height:94px;border-radius:50%;background:#1a2a4a;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">' + i2 + '</div>';
   }
-  return `<div style="width:94px;height:94px;border-radius:50%;background:#1a2a4a;display:flex;
-    align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">${i2}</div>`;
+  return '<div style="width:94px;height:94px;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#ec5b13">' + i2 + '</div>';
 }
 
 function rowAvatar(photo, name, col) {
-  const i2 = ini2(name);
-  const bdr = col || '#304724';
-  const tc  = col || '#fff';
+  var i2 = ini2(name);
+  var bdr = col || '#304724';
+  var tc  = col || '#fff';
   if (photo && photo.trim()) {
-    return `<img src="${photo.trim()}" alt="${name || ''}"
-      style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ${bdr};flex-shrink:0"
-      onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-    <div style="display:none;width:30px;height:30px;border-radius:50%;background:#334155;
-      align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${tc};flex-shrink:0">${i2}</div>`;
+    return '<img src="' + photo.trim() + '" alt="' + (name || '') + '" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;border:2px solid ' + bdr + ';flex-shrink:0" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+      + '<div style="display:none;width:30px;height:30px;border-radius:50%;background:#334155;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:' + tc + ';flex-shrink:0">' + i2 + '</div>';
   }
-  return `<div style="width:30px;height:30px;border-radius:50%;background:#334155;flex-shrink:0;display:flex;
-    align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${tc}">${i2}</div>`;
+  return '<div style="width:30px;height:30px;border-radius:50%;background:#334155;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:' + tc + '">' + i2 + '</div>';
 }
 
-function fmt(n, d = 1) { return parseFloat(n || 0).toFixed(d); }
-
-/* ── DURUM ROZETİ ── */
 function statusBadge(score, toplamSatis, hedef, kotaAktif) {
-  const h = (hedef && hedef > 0) ? hedef : 10;
-  const puanTamam = score >= h;
+  var h = (hedef && hedef > 0) ? hedef : 10;
+  var puanTamam = score >= h;
   if (kotaAktif) {
-    let kotaEsigi = 0;
+    var kotaEsigi = 0;
     if      (score >= h * 1.00) kotaEsigi = 6;
     else if (score >= h * 0.80) kotaEsigi = 5;
     else if (score >= h * 0.60) kotaEsigi = 4;
-    const kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
+    var kotaTamam = kotaEsigi > 0 && toplamSatis >= kotaEsigi;
     if (puanTamam && kotaTamam)  return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>';
     if (puanTamam && !kotaTamam) return '<span class="bdg bg-teal">\u26A1 PUAN TAMAM, SATISA DEVAM</span>';
     if (!puanTamam && kotaTamam) return '<span class="bdg bg-y">\uD83D\uDCC8 HEDEFE YAKLASIYOR</span>';
     return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
   } else {
-    if (puanTamam)          return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>';
-    if (score >= h * 0.70)  return '<span class="bdg bg-y">\uD83D\uDCC8 HEDEFE YAKLASIYOR</span>';
+    if (puanTamam)         return '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>';
+    if (score >= h * 0.70) return '<span class="bdg bg-y">\uD83D\uDCC8 HEDEFE YAKLASIYOR</span>';
     return '<span class="bdg bg-r">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
   }
 }
 
-function primColor(p) {
-  return p >= 100 ? '#4ade80' : p >= 75 ? '#a5c893' : p >= 50 ? '#facc15' : '#64748b';
-}
-
-/* ── DÖNEM FİLTRELEME ── */
 function extractPeriods(raw) {
-  if (raw.periods && Array.isArray(raw.periods) && raw.periods.length) {
-    return raw.periods;
-  }
-  const seen = new Set();
-  const periods = [];
+  if (raw.periods && Array.isArray(raw.periods) && raw.periods.length) return raw.periods;
+  var seen = {}, periods = [];
   if (raw.tumSatislar && Array.isArray(raw.tumSatislar)) {
-    raw.tumSatislar.forEach(s => {
-      if (s.donem && !seen.has(s.donem)) {
-        seen.add(s.donem);
-        periods.push(String(s.donem).trim());
-      }
+    raw.tumSatislar.forEach(function(s) {
+      if (s.donem && !seen[s.donem]) { seen[s.donem] = true; periods.push(String(s.donem).trim()); }
     });
   }
   return periods;
 }
 
 function buildPeriodsFromTeams(raw) {
-  const periods = new Set();
-  if (raw.teams) raw.teams.forEach(t => (t.members || []).forEach(m => {
-    if (m.donem) periods.add(String(m.donem).trim());
-  }));
-  return Array.from(periods).sort();
+  var seen = {};
+  if (raw.teams) raw.teams.forEach(function(t) {
+    (t.members || []).forEach(function(m) { if (m.donem) seen[String(m.donem).trim()] = true; });
+  });
+  return Object.keys(seen).sort();
 }
 
 function updatePeriodDropdown(periods) {
-  const sel = document.getElementById('period-select');
-  const cur = sel.value;
+  var sel = document.getElementById('period-select');
+  var cur = sel.value;
   sel.innerHTML = '';
-  periods.forEach(p => {
-    const o = document.createElement('option');
-    o.value = p;
-    o.textContent = p;
+  periods.forEach(function(p) {
+    var o = document.createElement('option');
+    o.value = p; o.textContent = p;
     sel.appendChild(o);
   });
-  if (cur && periods.includes(cur)) sel.value = cur;
+  if (cur && periods.indexOf(cur) >= 0) sel.value = cur;
   else sel.value = periods[0] || '';
   currentPeriod = sel.value;
 }
 
 function filterByPeriod(raw, period) {
-  if (!period) return raw;
-  if (!raw.tumSatislar) return raw;
-  const salesFiltered = raw.tumSatislar.filter(s => String(s.donem || '').trim() === period);
-  const satisMap = {};
-  salesFiltered.forEach(s => {
-    const ad = String(s.personel || '').trim();
-    if (!ad) return;
-    if (!satisMap[ad]) satisMap[ad] = { P3: 0, P6: 0, P12: 0 };
-    const tip = String(s.paketTipi || '').trim();
-    if (tip === 'ProStart-3')  satisMap[ad].P3++;
-    if (tip === 'ProStart-6')  satisMap[ad].P6++;
-    if (tip === 'ProStart-12') satisMap[ad].P12++;
-  });
-  const newTeams = (raw.teams || []).map(team => {
-    const newMembers = (team.members || [])
-      .map(m => {
-        const donemHedef = (m.tumHedefler && m.tumHedefler[period] !== undefined)
-          ? m.tumHedefler[period]
-          : m.hedef;
-        return { ...m, hedef: donemHedef };
+  if (!period || !raw.tumSatislar) return raw;
+  var satisMap = {};
+  raw.tumSatislar.filter(function(s) { return String(s.donem || '').trim() === period; })
+    .forEach(function(s) {
+      var ad = String(s.personel || '').trim();
+      if (!ad) return;
+      if (!satisMap[ad]) satisMap[ad] = {P3:0, P6:0, P12:0};
+      var tip = String(s.paketTipi || '').trim();
+      if (tip === 'ProStart-3')  satisMap[ad].P3++;
+      if (tip === 'ProStart-6')  satisMap[ad].P6++;
+      if (tip === 'ProStart-12') satisMap[ad].P12++;
+    });
+  var newTeams = (raw.teams || []).map(function(team) {
+    var newMembers = (team.members || [])
+      .map(function(m) {
+        var dh = (m.tumHedefler && m.tumHedefler[period] !== undefined) ? m.tumHedefler[period] : m.hedef;
+        return Object.assign({}, m, {hedef: dh});
       })
-      .filter(m => m.hedef !== null && m.hedef !== undefined && m.hedef > 0)
-      .map(m => {
-        const s = satisMap[m.name] || { P3: 0, P6: 0, P12: 0 };
-        const score = calcScore(s);
-        const toplamSatis = s.P3 + s.P6 + s.P12;
-        const donemKota = (m.tumKotalar && m.tumKotalar[period] !== undefined)
-          ? m.tumKotalar[period]
-          : (m.kotaAktif || false);
-        return { ...m, P3: s.P3, P6: s.P6, P12: s.P12, score, toplamSatis, primPct: undefined, kotaAktif: donemKota };
+      .filter(function(m) { return m.hedef !== null && m.hedef !== undefined && m.hedef > 0; })
+      .map(function(m) {
+        var s = satisMap[m.name] || {P3:0, P6:0, P12:0};
+        var score = calcScore(s);
+        var toplamSatis = s.P3 + s.P6 + s.P12;
+        var dk = (m.tumKotalar && m.tumKotalar[period] !== undefined) ? m.tumKotalar[period] : (m.kotaAktif || false);
+        return Object.assign({}, m, {P3:s.P3, P6:s.P6, P12:s.P12, score:score, toplamSatis:toplamSatis, primPct:undefined, kotaAktif:dk});
       });
-    const newToplamPuan = Math.round(newMembers.reduce((s, r) => s + r.score, 0) * 100) / 100;
-    const newHedef = newMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
-    return {
-      ...team,
-      members: newMembers,
-      toplamPuan: newToplamPuan,
-      hedef: newHedef,
-      hedefGecildi: newHedef > 0 && newToplamPuan >= newHedef
-    };
+    var newPuan = Math.round(newMembers.reduce(function(a,r){return a+r.score;},0)*100)/100;
+    var newHedef = newMembers.reduce(function(a,r){return a+(r.hedef>0?r.hedef:0);},0);
+    return Object.assign({}, team, {members:newMembers, toplamPuan:newPuan, hedef:newHedef, hedefGecildi:newHedef>0&&newPuan>=newHedef});
   });
-  return { ...raw, teams: newTeams };
+  return Object.assign({}, raw, {teams: newTeams});
 }
 
 function processData(raw) {
-  const teams = {}, all = [];
-  if (!raw.teams || !Array.isArray(raw.teams)) return { teams, all };
-  raw.teams.forEach((t, ti) => {
-    const nm = t.name || ('MoS TEAM ' + (ti + 1));
-    const members = (t.members || [])
-      .filter(r => r.hedef !== null && r.hedef !== undefined && r.hedef > 0)
-      .map(r => ({
-        ...r,
-        score: r.score !== undefined ? r.score : calcScore(r),
-        teamName: nm,
-        photo: r.photo || ''
-      }));
-    const total = Math.round(members.reduce((s, r) => s + r.score, 0) * 100) / 100;
-    const hedef = (t.hedef !== null && t.hedef !== undefined)
-      ? t.hedef
-      : members.reduce((s, r) => s + (r.hedef || 0), 0);
-    const teamOK = total >= hedef;
-    members.sort((a, b) => b.score - a.score);
-    members.forEach((r, i) => {
+  var teams = {}, all = [];
+  if (!raw.teams || !Array.isArray(raw.teams)) return {teams:teams, all:all};
+  raw.teams.forEach(function(t, ti) {
+    var nm = t.name || ('MoS TEAM ' + (ti + 1));
+    var members = (t.members || [])
+      .filter(function(r) { return r.hedef !== null && r.hedef !== undefined && r.hedef > 0; })
+      .map(function(r) {
+        return Object.assign({}, r, {
+          score: r.score !== undefined ? r.score : calcScore(r),
+          teamName: nm,
+          photo: r.photo || ''
+        });
+      });
+    var total = Math.round(members.reduce(function(a,r){return a+r.score;},0)*100)/100;
+    var hedef = (t.hedef !== null && t.hedef !== undefined) ? t.hedef : members.reduce(function(a,r){return a+(r.hedef||0);},0);
+    var teamOK = total >= hedef;
+    members.sort(function(a,b){return b.score-a.score;});
+    members.forEach(function(r, i) {
       if (r.primPct === undefined) {
-        const ts = (r.toplamSatis !== undefined)
-          ? r.toplamSatis
-          : (r.P3 || 0) + (r.P6 || 0) + (r.P12 || 0);
-        r.primPct = calcPrim(r.score, ts, i === 0, i === 1, teamOK, r.hedef, r.kotaAktif || false);
+        var ts = r.toplamSatis !== undefined ? r.toplamSatis : (r.P3||0)+(r.P6||0)+(r.P12||0);
+        r.primPct = calcPrim(r.score, ts, i===0, i===1, teamOK, r.hedef, r.kotaAktif||false);
       }
       all.push(r);
     });
-    members.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
-    teams[nm] = { total, hedef, teamOK, members };
+    members.sort(function(a,b){return (b.primPct||0)-(a.primPct||0)||b.score-a.score;});
+    teams[nm] = {total:total, hedef:hedef, teamOK:teamOK, members:members};
   });
-  all.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
-  return { teams, all };
+  all.sort(function(a,b){return (b.primPct||0)-(a.primPct||0)||b.score-a.score;});
+  return {teams:teams, all:all};
 }
 
-/* ── MODAL ── */
+var currentAll = [];
+
+function handleRowClick(encodedName) {
+  var name = decodeURIComponent(encodedName);
+  var rep  = currentAll.filter(function(r){return r.name===name;})[0];
+  if (rep) openModal(rep);
+}
+
 function openModal(rep) {
-  const av = document.getElementById('m-av');
-  const i2 = ini2(rep.name);
+  var av = document.getElementById('m-av');
+  var i2 = ini2(rep.name);
   if (rep.photo && rep.photo.trim()) {
-    av.innerHTML = `<img src="${rep.photo.trim()}"
-      style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%"
-      onerror="this.outerHTML='<div style=\\'width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13\\'>${i2}</div>'">`;
+    av.innerHTML = '<img src="' + rep.photo.trim() + '" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%" onerror="this.outerHTML=\'<div style=\\\'width:100%;height:100%;border-radius:50%;background:#1a2a4a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ec5b13\\\'>' + i2 + '</div>\'">';
   } else {
-    av.innerHTML = `<div class="modal-av-init">${i2}</div>`;
+    av.innerHTML = '<div class="modal-av-init">' + i2 + '</div>';
   }
   document.getElementById('m-name').textContent = rep.name || '-';
-  document.getElementById('m-sub').textContent =
-    (rep.teamName || '') + (currentPeriod ? ' - ' + currentPeriod : '');
-  document.getElementById('m-p3').textContent  = rep.P3  || 0;
-  document.getElementById('m-p6').textContent  = rep.P6  || 0;
-  document.getElementById('m-p12').textContent = rep.P12 || 0;
+  document.getElementById('m-sub').textContent  = (rep.teamName || '') + (currentPeriod ? ' - ' + currentPeriod : '');
+  document.getElementById('m-p3').textContent   = rep.P3  || 0;
+  document.getElementById('m-p6').textContent   = rep.P6  || 0;
+  document.getElementById('m-p12').textContent  = rep.P12 || 0;
   document.getElementById('m-score').textContent = fmt(rep.score);
-  const pc  = rep.primPct || 0;
-  const pel = document.getElementById('m-prim');
+  var pc  = rep.primPct || 0;
+  var pel = document.getElementById('m-prim');
   pel.textContent = pc > 0 ? '%' + pc + ' Prim' : 'Prim Yok';
   pel.style.color = primColor(pc);
   renderPrimBreakdown(rep);
@@ -1226,68 +1195,47 @@ function openModal(rep) {
 }
 
 function renderPrimBreakdown(rep) {
-  const bd      = document.getElementById('m-breakdown');
-  const rows    = document.getElementById('m-breakdown-rows');
-  const totalEl = document.getElementById('m-breakdown-total');
+  var bd      = document.getElementById('m-breakdown');
+  var rows    = document.getElementById('m-breakdown-rows');
+  var totalEl = document.getElementById('m-breakdown-total');
   if (!bd || !rows) return;
+  var ts = rep.toplamSatis !== undefined ? rep.toplamSatis : (rep.P3||0)+(rep.P6||0)+(rep.P12||0);
+  var teamMembers = currentAll.filter(function(r){return r.teamName===rep.teamName;});
+  teamMembers.sort(function(a,b){return (b.primPct||0)-(a.primPct||0)||b.score-a.score;});
+  var pos = -1;
+  for (var pi=0;pi<teamMembers.length;pi++){if(teamMembers[pi].name===rep.name){pos=pi;break;}}
+  var is1 = pos===0, is2 = pos===1;
+  var tot2 = teamMembers.reduce(function(a,r){return a+r.score;},0);
+  var ht2  = teamMembers.reduce(function(a,r){return a+(r.hedef>0?r.hedef:0);},0);
+  var teamOK = ht2>0 && tot2>=ht2;
+  var d = calcPrimDetay(rep.score, ts, is1, is2, teamOK, rep.hedef, rep.kotaAktif||false);
 
-  const ts = (rep.toplamSatis !== undefined)
-    ? rep.toplamSatis
-    : (rep.P3 || 0) + (rep.P6 || 0) + (rep.P12 || 0);
-
-  const teamMembers = currentAll.filter(r => r.teamName === rep.teamName);
-  teamMembers.sort((a, b) => (b.primPct || 0) - (a.primPct || 0) || b.score - a.score);
-  const pos = teamMembers.findIndex(r => r.name === rep.name);
-  const is1 = pos === 0, is2 = pos === 1;
-  const teamOK = (() => {
-    const tot     = teamMembers.reduce((s, r) => s + r.score, 0);
-    const hedefTot = teamMembers.reduce((s, r) => s + (r.hedef > 0 ? r.hedef : 0), 0);
-    return hedefTot > 0 && tot >= hedefTot;
-  })();
-
-  const d = calcPrimDetay(rep.score, ts, is1, is2, teamOK, rep.hedef, rep.kotaAktif || false);
-
-  const items = [
-    {
-      icon: 'target',            color: '#4ade80', bg: 'rgba(74,222,128,.15)',
-      label: 'Satis Puani',      aciklama: d.bazAciklama,
-      deger: d.bazPrim,          aktif: d.bazPrim > 0
-    },
-    {
-      icon: 'trending_up',       color: '#facc15', bg: 'rgba(250,204,21,.1)',
-      label: 'Hedef Ustu Bonus', aciklama: d.hedefUstuAciklama,
-      deger: d.hedefUstuBonus,   aktif: d.hedefUstuBonus > 0
-    },
-    {
-      icon: 'emoji_events',      color: '#60a5fa', bg: 'rgba(96,165,250,.1)',
-      label: 'Ekip Liderligi',   aciklama: d.ekipAciklama,
-      deger: d.ekipBonus,        aktif: d.ekipBonus > 0
-    },
-    {
-      icon: 'workspace_premium', color: '#a78bfa', bg: 'rgba(167,139,250,.1)',
-      label: 'Zirve Istisnasi',  aciklama: d.zirveAciklama,
-      deger: d.zirveBonus,       aktif: d.zirveBonus > 0
-    }
+  var items = [
+    {icon:'target',            color:'#4ade80', bg:'rgba(74,222,128,.15)',  label:'Satis Puani',     aciklama:d.bazAciklama,          deger:d.bazPrim,        aktif:d.bazPrim>0},
+    {icon:'trending_up',       color:'#facc15', bg:'rgba(250,204,21,.1)',   label:'Hedef Ustu Bonus',aciklama:d.hedefUstuAciklama,    deger:d.hedefUstuBonus, aktif:d.hedefUstuBonus>0},
+    {icon:'emoji_events',      color:'#60a5fa', bg:'rgba(96,165,250,.1)',   label:'Ekip Liderligi',  aciklama:d.ekipAciklama,         deger:d.ekipBonus,      aktif:d.ekipBonus>0},
+    {icon:'workspace_premium', color:'#a78bfa', bg:'rgba(167,139,250,.1)', label:'Zirve Istisnasi', aciklama:d.zirveAciklama,        deger:d.zirveBonus,     aktif:d.zirveBonus>0}
   ];
 
-  const SEP = "<div style='height:1px;background:rgba(255,255,255,.06);'></div>";
-  rows.innerHTML = items.map(function(item, i) {
-    var opacity = !item.aktif ? "opacity:0.4;" : "";
-    var color   = item.aktif ? item.color : "#64748b";
-    var html = "<div style='display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;" + opacity + "'>";
-    html += "<div style='min-width:28px;width:28px;height:28px;border-radius:8px;background:" + item.bg + ";display:flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:content-box;'>";
-    html += "<span class='ms' style='font-size:16px;color:" + item.color + ";line-height:1;'>" + item.icon + "</span>";
-    html += "</div>";
-    html += "<div style='flex:1;min-width:0;'>";
-    html += "<div style='font-size:11px;font-weight:700;color:#e2e8f0;'>" + item.label + "</div>";
-    html += "<div style='font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + item.aciklama + "</div>";
-    html += "</div>";
-    html += "<div style='font-size:15px;font-weight:900;color:" + color + ";font-family:monospace;flex-shrink:0;'>%" + item.deger + "</div>";
-    html += "</div>";
-    if (i < items.length - 1) html += SEP;
-    return html;
-  }).join("");
-
+  var SEP = '<div style="height:1px;background:rgba(255,255,255,.06);"></div>';
+  var html = '';
+  for (var ii=0; ii<items.length; ii++) {
+    var item = items[ii];
+    var opacity = !item.aktif ? 'opacity:0.4;' : '';
+    var color   = item.aktif ? item.color : '#64748b';
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:2px 0;width:100%;box-sizing:border-box;' + opacity + '">';
+    html += '<div style="min-width:28px;width:28px;height:28px;border-radius:8px;background:' + item.bg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">';
+    html += '<span class="ms" style="font-size:16px;color:' + item.color + ';line-height:1;">' + item.icon + '</span>';
+    html += '</div>';
+    html += '<div style="flex:1;min-width:0;">';
+    html += '<div style="font-size:11px;font-weight:700;color:#e2e8f0;">' + item.label + '</div>';
+    html += '<div style="font-size:9px;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.aciklama + '</div>';
+    html += '</div>';
+    html += '<div style="font-size:15px;font-weight:900;color:' + color + ';font-family:monospace;flex-shrink:0;">%' + item.deger + '</div>';
+    html += '</div>';
+    if (ii < items.length - 1) html += SEP;
+  }
+  rows.innerHTML = html;
   totalEl.textContent = '%' + d.toplam;
   totalEl.style.color = primColor(d.toplam);
   bd.style.display = (d.toplam > 0 || d.kotaEngel) ? 'block' : 'none';
@@ -1299,309 +1247,202 @@ function closeModal(e, force) {
   }
 }
 
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeModal(null, 'force');
 });
 
-/* ── RENDER HERO ── */
 function renderHero(all, teams) {
-  const top = all[0] || {};
-  const tot = all.reduce((s, r) => s + r.score, 0);
-  const tgt = teams
-    ? Object.values(teams).reduce((s, t) => s + t.hedef, 0)
-    : all.reduce((s, r) => s + (r.hedef !== null && r.hedef !== undefined ? r.hedef : 0), 0);
-  const tpct = tgt > 0 ? Math.min(100, (tot / tgt) * 100) : 0;
-  const tpctFmt = '%' + fmt(tpct, 1);
-  const ekipHedefTamamlandi = tgt > 0 && tot >= tgt;
-  const tpctColor = ekipHedefTamamlandi ? '#4ade80' : '#ec5b13';
-  document.getElementById('s-hero').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch">
-      <div class="hero" style="margin:0;position:relative;overflow:hidden">
-        <div class="av-wrap">
-          <div class="av-ring">${heroAvatar(top.photo, top.name)}</div>
-          <div class="av-badge">Liderin<br>Performansi</div>
-        </div>
-        <div class="hero-info">
-          <h1>${top.name || '-'}</h1>
-          <div class="hero-tags">
-            <span class="tag">#1 Genel Siralama</span>
-            ${(top.primPct || 0) > 0 ? `<span class="tag or">Prim: %${top.primPct}</span>` : ''}
-            ${top.score >= 15 ? `<span class="tag or">&#9733; Zirve Bonusu</span>` : ''}
-          </div>
-          <div class="hstats">
-            <div class="sm">
-<div class="sl">ProStart-3</div>
-<div class="sv">${top.P3 || 0}</div>
-</div>
-            <div class="sm">
-<div class="sl">ProStart-6</div>
-<div class="sv">${top.P6 || 0}</div>
-</div>
-            <div class="sm">
-<div class="sl">ProStart-12</div>
-<div class="sv">${top.P12 || 0}</div>
-</div>
-          </div>
-        </div>
-        <div class="hero-deco">
-          <div class="dt">MoS<br>TEAM</div>
-          <div class="ds">KURUMSAL SATIS v4.0</div>
-        </div>
-      </div>
-      <div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">
-        <div class="ctit">Hedef Basari Orani</div>
-        <div style="font-size:42px;font-weight:900;line-height:1;color:${tpctColor};font-family:monospace">${tpctFmt}</div>
-        <div style="font-size:11px;color:#a5c893;margin-top:6px">${fmt(tot)} / ${fmt(tgt, 1)} puan</div>
-        <div class="tbar" style="margin-top:12px">
-          <div class="tbf" style="width:${fmt(tpct, 1)}%;background:${tpctColor}">
-</div>
-        </div>
-      </div>
-    </div>`;
-  if (ekipHedefTamamlandi) launchConfetti();
+  var top = all[0] || {};
+  var tot = all.reduce(function(a,r){return a+r.score;},0);
+  var tgt = teams
+    ? Object.keys(teams).reduce(function(a,k){return a+teams[k].hedef;},0)
+    : all.reduce(function(a,r){return a+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0);},0);
+  var tpct = tgt > 0 ? Math.min(100, (tot/tgt)*100) : 0;
+  var tpctFmt = '%' + fmt(tpct, 1);
+  var done = tgt > 0 && tot >= tgt;
+  var tpctColor = done ? '#4ade80' : '#ec5b13';
+
+  var primTag  = (top.primPct||0)>0 ? '<span class="tag or">Prim: %'+top.primPct+'</span>' : '';
+  var zirveTag = top.score>=15 ? '<span class="tag or">&#9733; Zirve Bonusu</span>' : '';
+
+  var h = '<div style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:stretch">';
+  h += '<div class="hero" style="margin:0;position:relative;overflow:hidden">';
+  h += '<div class="av-wrap"><div class="av-ring">' + heroAvatar(top.photo, top.name) + '</div>';
+  h += '<div class="av-badge">Liderin<br>Performansi</div></div>';
+  h += '<div class="hero-info"><h1>' + (top.name||'-') + '</h1>';
+  h += '<div class="hero-tags"><span class="tag">#1 Genel Siralama</span>' + primTag + zirveTag + '</div>';
+  h += '<div class="hstats">';
+  h += '<div class="sm"><div class="sl">ProStart-3</div><div class="sv">' + (top.P3||0) + '</div></div>';
+  h += '<div class="sm"><div class="sl">ProStart-6</div><div class="sv">' + (top.P6||0) + '</div></div>';
+  h += '<div class="sm"><div class="sl">ProStart-12</div><div class="sv">' + (top.P12||0) + '</div></div>';
+  h += '</div></div>';
+  h += '<div class="hero-deco"><div class="dt">MoS<br>TEAM</div><div class="ds">KURUMSAL SATIS v4.0</div></div>';
+  h += '</div>';
+  h += '<div class="cc grn" style="min-width:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-radius:20px">';
+  h += '<div class="ctit">Hedef Basari Orani</div>';
+  h += '<div style="font-size:42px;font-weight:900;line-height:1;color:'+tpctColor+';font-family:monospace">'+tpctFmt+'</div>';
+  h += '<div style="font-size:11px;color:#a5c893;margin-top:6px">'+fmt(tot)+' / '+fmt(tgt,1)+' puan</div>';
+  h += '<div class="tbar" style="margin-top:12px"><div class="tbf" style="width:'+fmt(tpct,1)+'%;background:'+tpctColor+'"></div></div>';
+  h += '</div></div>';
+  document.getElementById('s-hero').innerHTML = h;
+  if (done) launchConfetti();
 }
 
 function renderLegend() {
-  document.getElementById('s-legend').innerHTML = `
-    <div class="lgrid">
-      <div class="lcard">
-<div class="lico">
-<span class="ms">stars</span>
-</div>
-<div>
-<div class="llbl">ProStart-3</div>
-<div class="lpts">1.0 Puan</div>
-</div></div>
-      <div class="lcard">
-<div class="lico">
-<span class="ms">rocket_launch</span>
-</div>
-<div>
-<div class="llbl">ProStart-6</div>
-<div class="lpts">1.7 Puan</div>
-</div></div>
-      <div class="lcard">
-<div class="lico">
-<span class="ms">workspace_premium</span>
-</div>
-<div>
-<div class="llbl">ProStart-12</div>
-<div class="lpts">2.5 Puan</div>
-</div></div>
-      <div class="lcard acc">
-<div class="lico wh">
-<span class="ms">target</span>
-</div>
-<div>
-<div class="llbl">Aylik Hedef</div>
-<div class="lpts">15 Puan / Kisi</div>
-</div></div>
-    </div>`;
+  var h = '<div class="lgrid">';
+  h += '<div class="lcard"><div class="lico"><span class="ms">stars</span></div><div><div class="llbl">ProStart-3</div><div class="lpts">1.0 Puan</div></div></div>';
+  h += '<div class="lcard"><div class="lico"><span class="ms">rocket_launch</span></div><div><div class="llbl">ProStart-6</div><div class="lpts">1.7 Puan</div></div></div>';
+  h += '<div class="lcard"><div class="lico"><span class="ms">workspace_premium</span></div><div><div class="llbl">ProStart-12</div><div class="lpts">2.5 Puan</div></div></div>';
+  h += '<div class="lcard acc"><div class="lico wh"><span class="ms">target</span></div><div><div class="llbl">Aylik Hedef</div><div class="lpts">15 Puan / Kisi</div></div></div>';
+  h += '</div>';
+  document.getElementById('s-legend').innerHTML = h;
 }
 
 function renderProgress(teams) {
-  let h = '<div class="tpsec">';
-  Object.keys(teams).forEach(nm => {
-    const t   = teams[nm];
-    const pct = t.hedef > 0 ? Math.min(100, (t.total / t.hedef) * 100) : 0;
-    const b   = t.teamOK
+  var h = '<div class="tpsec">';
+  Object.keys(teams).forEach(function(nm) {
+    var t = teams[nm];
+    var pct = t.hedef > 0 ? Math.min(100, (t.total/t.hedef)*100) : 0;
+    var badge = t.teamOK
       ? '<span class="bdg bg-g">\uD83C\uDFC6 HEDEFI ASTI</span>'
       : '<span class="bdg bg-y">\uD83D\uDE80 HEDEFE KOSUYOR</span>';
-    h += `
-    <div class="tprow">
-      <div class="tphdr">
-        <div style="display:flex;align-items:center">
-          <span class="tpscore">${fmt(t.total)}</span>
-          <div>
-            <div class="tpname">${nm} &nbsp;${b}</div>
-            <div class="tpmeta">${t.members.length} uye &nbsp;|&nbsp; Hedef: ${fmt(t.hedef, 1)} puan</div>
-          </div>
-        </div>
-        <span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%${fmt(pct, 1)}</span>
-      </div>
-      <div class="tpbw">
-<div class="tpbf" style="width:${fmt(pct, 1)}%">
-</div></div>
-    </div>`;
+    h += '<div class="tprow">';
+    h += '<div class="tphdr">';
+    h += '<div style="display:flex;align-items:center">';
+    h += '<span class="tpscore">' + fmt(t.total) + '</span>';
+    h += '<div><div class="tpname">' + nm + ' &nbsp;' + badge + '</div>';
+    h += '<div class="tpmeta">' + t.members.length + ' uye &nbsp;|&nbsp; Hedef: ' + fmt(t.hedef,1) + ' puan</div></div>';
+    h += '</div>';
+    h += '<span style="font-family:monospace;font-size:13px;color:#a5c893;font-weight:700">%' + fmt(pct,1) + '</span>';
+    h += '</div>';
+    h += '<div class="tpbw"><div class="tpbf" style="width:' + fmt(pct,1) + '%"></div></div>';
+    h += '</div>';
   });
   h += '</div>';
   document.getElementById('s-progress').innerHTML = h;
 }
 
 function renderTeams(teams) {
-  const nms = Object.keys(teams);
+  var nms = Object.keys(teams);
   if (!nms.length) { document.getElementById('s-teams').innerHTML = ''; return; }
-  let h = '<div class="tgrid">';
-  nms.forEach(nm => {
-    const { members, teamOK } = teams[nm];
-    const avg = members.length
-      ? fmt(members.reduce((s, r) => s + r.score, 0) / members.length)
-      : '0.0';
-    h += `
-    <div class="tsec">
-      <div class="th">
-        <div class="tac">
-</div>
-        <h3>${nm}</h3>
-        <span class="tavg">Ort: ${avg} ${teamOK ? '<span style="color:#4ade80">&#10003;</span>' : ''}</span>
-      </div>
-      <div class="twrap">
-        <table>
-          <colgroup>
-            <col style="width:30%"><col style="width:14%">
-            <col class="col-level" style="width:20%">
-            <col style="width:14%"><col style="width:22%">
-          </colgroup>
-          <thead><tr>
-            <th>Isim</th><th>Puan</th>
-            <th class="col-level">Level</th>
-            <th>Prim</th>
-            <th style="text-align:right">Durum</th>
-          </tr></thead>
-          <tbody>
-            ${members.map((r, i) => {
-              const col = i === 0 ? '#ec5b13' : i === 1 ? '#a5c893' : '';
-              const pc  = primColor(r.primPct || 0);
-              const rid = encodeURIComponent(r.name || '');
-              return `<tr class="clickable" onclick="handleRowClick('${rid}')">
-                <td>
-<div class="nc">
-                  ${rowAvatar(r.photo, r.name, col)}
-                  <span class="nm" style="${col ? 'color:' + col : ''}">${r.name || '-'}</span>
-                </div></td>
-                <td class="pval" style="${col ? 'color:' + col : ''}">${fmt(r.score)}</td>
-                <td class="col-level">${levelLights(r.score)}</td>
-                <td style="font-weight:700;font-family:monospace;font-size:11px;color:${(r.primPct || 0) > 0 ? pc : '#64748b'}">
-                  ${(r.primPct || 0) > 0 ? '%' + r.primPct : '-'}
-                </td>
-                <td>${statusBadge(r.score, (r.toplamSatis !== undefined ? r.toplamSatis : (r.P3 || 0) + (r.P6 || 0) + (r.P12 || 0)), r.hedef, r.kotaAktif || false)}</td>
-              </tr>`;
-            }).join('\n')}
-          </tbody>
-        </table>
-      </div>
-    </div>`;
+  var h = '<div class="tgrid">';
+  nms.forEach(function(nm) {
+    var members = teams[nm].members;
+    var teamOK  = teams[nm].teamOK;
+    var avg = members.length ? fmt(members.reduce(function(a,r){return a+r.score;},0)/members.length) : '0.0';
+    var checkmark = teamOK ? '<span style="color:#4ade80">&#10003;</span>' : '';
+    h += '<div class="tsec">';
+    h += '<div class="th"><div class="tac"></div><h3>' + nm + '</h3>';
+    h += '<span class="tavg">Ort: ' + avg + ' ' + checkmark + '</span></div>';
+    h += '<div class="twrap"><table>';
+    h += '<colgroup><col style="width:30%"><col style="width:14%"><col class="col-level" style="width:20%"><col style="width:14%"><col style="width:22%"></colgroup>';
+    h += '<thead><tr><th>Isim</th><th>Puan</th><th class="col-level">Level</th><th>Prim</th><th style="text-align:right">Durum</th></tr></thead>';
+    h += '<tbody>';
+    for (var mi=0; mi<members.length; mi++) {
+      var r   = members[mi];
+      var col = mi===0 ? '#ec5b13' : mi===1 ? '#a5c893' : '';
+      var pc  = primColor(r.primPct || 0);
+      var rid = encodeURIComponent(r.name || '');
+      var ts  = r.toplamSatis !== undefined ? r.toplamSatis : (r.P3||0)+(r.P6||0)+(r.P12||0);
+      h += '<tr class="clickable" onclick="handleRowClick(\'' + rid + '\')">';
+      h += '<td><div class="nc">' + rowAvatar(r.photo, r.name, col);
+      h += '<span class="nm"' + (col ? ' style="color:'+col+'"' : '') + '>' + (r.name||'-') + '</span></div></td>';
+      h += '<td class="pval"' + (col ? ' style="color:'+col+'"' : '') + '>' + fmt(r.score) + '</td>';
+      h += '<td class="col-level">' + levelLights(r.score) + '</td>';
+      h += '<td style="font-weight:700;font-family:monospace;font-size:11px;color:' + ((r.primPct||0)>0 ? pc : '#64748b') + '">' + ((r.primPct||0)>0 ? '%'+r.primPct : '-') + '</td>';
+      h += '<td>' + statusBadge(r.score, ts, r.hedef, r.kotaAktif||false) + '</td>';
+      h += '</tr>';
+    }
+    h += '</tbody></table></div></div>';
   });
   h += '</div>';
   document.getElementById('s-teams').innerHTML = h;
 }
 
-let currentAll = [];
-
-function handleRowClick(encodedName) {
-  const name = decodeURIComponent(encodedName);
-  const rep  = currentAll.find(r => r.name === name);
-  if (rep) openModal(rep);
-}
-
 function renderCharts(all, teams) {
-  const p3  = all.reduce((s, r) => s + (r.P3  || 0), 0);
-  const p6  = all.reduce((s, r) => s + (r.P6  || 0), 0);
-  const p12 = all.reduce((s, r) => s + (r.P12 || 0), 0);
-  const pt  = p3 + p6 + p12;
-  const pp3  = pt > 0 ? Math.round(p3  / pt * 100) : 33;
-  const pp6  = pt > 0 ? Math.round(p6  / pt * 100) : 33;
-  const pp12 = pt > 0 ? Math.round(p12 / pt * 100) : 34;
-  const tot = all.reduce((s, r) => s + r.score, 0);
-  const tgt = teams
-    ? Object.values(teams).reduce((s, t) => s + t.hedef, 0)
-    : all.reduce((s, r) => s + (r.hedef !== null && r.hedef !== undefined ? r.hedef : 0), 0);
-  const tpct = tgt > 0 ? Math.min(100, (tot / tgt) * 100) : 0;
-  const t5 = all.slice(0, 5);
-  const mx = t5.length ? t5[0].score : 1;
-  document.getElementById('s-charts').innerHTML = `
-    <div style="display:flex;gap:12px;justify-content:center">
-      <div class="cc" style="flex:1;max-width:480px">
-        <div class="ctit">Urun Dagilimi</div>
-        <div class="drow">
-<span>ProStart-3</span>
-<span>${pp3}%</span>
-</div>
-        <div class="dbw">
-<div class="dbf" style="width:${pp3}%;background:#ec5b13">
-</div></div>
-        <div class="drow">
-<span>ProStart-6</span>
-<span>${pp6}%</span>
-</div>
-        <div class="dbw">
-<div class="dbf" style="width:${pp6}%;background:#a5c893">
-</div></div>
-        <div class="drow">
-<span>ProStart-12</span>
-<span>${pp12}%</span>
-</div>
-        <div class="dbw">
-<div class="dbf" style="width:${pp12}%;background:#60a5fa">
-</div></div>
-      </div>
-      <div class="cc" style="flex:1;max-width:480px">
-        <div class="ctit">Genel Siralama (Top ${t5.length})</div>
-        ${t5.map((r, i) => `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:11px;font-weight:700;color:${i === 0 ? '#ec5b13' : i === 1 ? '#a5c893' : '#fff'}">${i + 1}. ${r.name || '-'}</span>
-            <span style="font-family:monospace;font-size:10px;color:#a5c893">${fmt(r.score)}</span>
-          </div>
-          <div style="width:100%;background:rgba(255,255,255,.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">
-            <div style="width:${fmt(Math.min(100, r.score / mx * 100), 1)}%;height:100%;background:${i === 0 ? '#ec5b13' : '#304724'};border-radius:99px">
-</div>
-          </div>`).join('')}
-      </div>
-    </div>`;
+  var p3  = all.reduce(function(a,r){return a+(r.P3||0);},0);
+  var p6  = all.reduce(function(a,r){return a+(r.P6||0);},0);
+  var p12 = all.reduce(function(a,r){return a+(r.P12||0);},0);
+  var pt  = p3+p6+p12;
+  var pp3  = pt>0 ? Math.round(p3/pt*100)  : 33;
+  var pp6  = pt>0 ? Math.round(p6/pt*100)  : 33;
+  var pp12 = pt>0 ? Math.round(p12/pt*100) : 34;
+  var tot = all.reduce(function(a,r){return a+r.score;},0);
+  var tgt = teams
+    ? Object.keys(teams).reduce(function(a,k){return a+teams[k].hedef;},0)
+    : all.reduce(function(a,r){return a+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0);},0);
+  var tpct = tgt>0 ? Math.min(100,(tot/tgt)*100) : 0;
+  var t5 = all.slice(0,5);
+  var mx = t5.length ? t5[0].score : 1;
+
+  var h = '<div style="display:flex;gap:12px;justify-content:center">';
+  h += '<div class="cc" style="flex:1;max-width:480px">';
+  h += '<div class="ctit">Urun Dagilimi</div>';
+  h += '<div class="drow"><span>ProStart-3</span><span>' + pp3 + '%</span></div>';
+  h += '<div class="dbw"><div class="dbf" style="width:'+pp3+'%;background:#ec5b13"></div></div>';
+  h += '<div class="drow"><span>ProStart-6</span><span>' + pp6 + '%</span></div>';
+  h += '<div class="dbw"><div class="dbf" style="width:'+pp6+'%;background:#a5c893"></div></div>';
+  h += '<div class="drow"><span>ProStart-12</span><span>' + pp12 + '%</span></div>';
+  h += '<div class="dbw"><div class="dbf" style="width:'+pp12+'%;background:#60a5fa"></div></div>';
+  h += '</div>';
+  h += '<div class="cc" style="flex:1;max-width:480px">';
+  h += '<div class="ctit">Genel Siralama (Top ' + t5.length + ')</div>';
+  for (var ci=0; ci<t5.length; ci++) {
+    var r = t5[ci];
+    var nameColor = ci===0 ? '#ec5b13' : ci===1 ? '#a5c893' : '#fff';
+    var barW = fmt(Math.min(100, r.score/mx*100),1);
+    var barColor = ci===0 ? '#ec5b13' : '#304724';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
+    h += '<span style="font-size:11px;font-weight:700;color:'+nameColor+'">' + (ci+1) + '. ' + (r.name||'-') + '</span>';
+    h += '<span style="font-family:monospace;font-size:10px;color:#a5c893">' + fmt(r.score) + '</span></div>';
+    h += '<div style="width:100%;background:rgba(255,255,255,.07);height:4px;border-radius:99px;overflow:hidden;margin-bottom:6px">';
+    h += '<div style="width:'+barW+'%;height:100%;background:'+barColor+';border-radius:99px"></div></div>';
+  }
+  h += '</div></div>';
+  document.getElementById('s-charts').innerHTML = h;
 }
 
 function renderTicker(all) {
   if (!all.length) return;
-  const top  = all[0];
-  const rank = all.map((r, i) => `${i + 1}. ${r.name || '?'} (${fmt(r.score)})`).join(' | ');
-  const tot  = all.reduce((s, r) => s + r.score, 0);
-  const tgt  = all.reduce((s, r) => s + (r.hedef !== null && r.hedef !== undefined ? r.hedef : 0), 0);
-  const pct  = tgt > 0 ? fmt(Math.min(100, tot / tgt * 100), 1) : '0.0';
-  const content = `
-    <span class="ti tor">
-<span class="ms">bolt</span>ZİRVE: ${top.name || '-'} - ${fmt(top.score)} puan | Prim: %${top.primPct || 0}${top.score >= 15 ? ' | \u2605 Zirve Bonusu' : ''}</span>
-    <span class="ti">
-<span class="ms">emoji_events</span>SIRALAMA: ${rank}</span>
-    <span class="ti tgr">
-<span class="ms">trending_up</span>EKİP TOPLAMI: ${fmt(tot)} / ${fmt(tgt, 1)} puan (%${pct})</span>`;
+  var top  = all[0];
+  var rank = all.map(function(r,i){return (i+1)+'. '+(r.name||'?')+' ('+fmt(r.score)+')';}).join(' | ');
+  var tot  = all.reduce(function(a,r){return a+r.score;},0);
+  var tgt  = all.reduce(function(a,r){return a+(r.hedef!==null&&r.hedef!==undefined?r.hedef:0);},0);
+  var pct  = tgt>0 ? fmt(Math.min(100,tot/tgt*100),1) : '0.0';
+  var zirve = top.score>=15 ? ' | \u2605 Zirve Bonusu' : '';
+  var content = '<span class="ti tor"><span class="ms">bolt</span>ZİRVE: '+(top.name||'-')+' - '+fmt(top.score)+' puan | Prim: %'+(top.primPct||0)+zirve+'</span>';
+  content += '<span class="ti"><span class="ms">emoji_events</span>SIRALAMA: '+rank+'</span>';
+  content += '<span class="ti tgr"><span class="ms">trending_up</span>EKİP TOPLAMI: '+fmt(tot)+' / '+fmt(tgt,1)+' puan (%'+pct+')</span>';
   document.getElementById('tk-a').innerHTML = content;
   document.getElementById('tk-b').innerHTML = content;
 }
 
 function launchConfetti() {
-  const colors = ['#ec5b13', '#f59e0b', '#4ade80', '#60a5fa', '#a78bfa', '#f472b6', '#fff'];
-  const wrap = document.createElement('div');
+  var colors = ['#ec5b13','#f59e0b','#4ade80','#60a5fa','#a78bfa','#f472b6','#fff'];
+  var wrap = document.createElement('div');
   wrap.className = 'confetti-wrap';
   document.body.appendChild(wrap);
-  for (let i = 0; i < 120; i++) {
-    const p = document.createElement('div');
+  for (var i=0; i<120; i++) {
+    var p = document.createElement('div');
     p.className = 'cp';
-    const size   = 6 + Math.random() * 8;
-    const isRect = Math.random() > 0.5;
-    p.style.cssText = `
-      left:${Math.random() * 100}%;
-      width:${size}px;
-      height:${isRect ? size * 0.4 : size}px;
-      background:${colors[Math.floor(Math.random() * colors.length)]};
-      border-radius:${isRect ? '2px' : '50%'};
-      animation-duration:${2 + Math.random() * 3}s;
-      animation-delay:${Math.random() * 2}s;
-    `;
+    var size   = 6 + Math.random()*8;
+    var isRect = Math.random()>0.5;
+    p.style.cssText = 'left:'+Math.random()*100+'%;width:'+size+'px;height:'+(isRect?size*0.4:size)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(isRect?'2px':'50%')+';animation-duration:'+(2+Math.random()*3)+'s;animation-delay:'+Math.random()*2+'s;';
     wrap.appendChild(p);
   }
-  setTimeout(() => wrap.remove(), 6000);
+  setTimeout(function(){wrap.remove();}, 6000);
 }
 
 function renderDashboard(raw, period) {
-  const filtered = filterByPeriod(raw, period);
-  const { teams, all } = processData(filtered);
-  currentAll = all;
-  renderHero(all, teams);
+  var filtered = filterByPeriod(raw, period);
+  var result   = processData(filtered);
+  currentAll   = result.all;
+  renderHero(result.all, result.teams);
   renderLegend();
-  renderProgress(teams);
-  renderTeams(teams);
-  renderCharts(all, teams);
-  renderTicker(all);
+  renderProgress(result.teams);
+  renderTeams(result.teams);
+  renderCharts(result.all, result.teams);
+  renderTicker(result.all);
 }
 
 function onPeriodChange() {
@@ -1612,21 +1453,18 @@ function onPeriodChange() {
 
 function startCountdown() {
   if (cTimer) clearInterval(cTimer);
-  let v = AUTO_SEC;
-  document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
-  cTimer = setInterval(() => {
+  var v = AUTO_SEC;
+  document.getElementById('countdown').textContent = 'Sonraki: ' + v + 's';
+  cTimer = setInterval(function() {
     v--;
-    if (v > 0) document.getElementById('countdown').textContent = `Sonraki: ${v}s`;
-    else {
-      document.getElementById('countdown').textContent = 'Guncelleniyor...';
-      clearInterval(cTimer);
-    }
+    if (v > 0) document.getElementById('countdown').textContent = 'Sonraki: ' + v + 's';
+    else { document.getElementById('countdown').textContent = 'Guncelleniyor...'; clearInterval(cTimer); }
   }, 1000);
 }
 
-async function fetchData(manual = false) {
-  console.log('[MoS] fetchData çağrıldı, manual:', manual);
-  const btn = document.getElementById('rbtn');
+function fetchData(manual) {
+  manual = manual || false;
+  var btn = document.getElementById('rbtn');
   btn.disabled = true;
   document.getElementById('rico').outerHTML = '<span class="spin" id="rico"></span>';
   document.getElementById('sdot').className = 'sdot loading';
@@ -1634,39 +1472,42 @@ async function fetchData(manual = false) {
   document.getElementById('countdown').textContent = '';
   if (rTimer) clearInterval(rTimer);
   if (cTimer) clearInterval(cTimer);
-  try {
-    const opts = manual ? { cache: 'no-cache' } : {};
-    const res  = await fetch(API + '?t=' + Date.now(), opts);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const raw  = await res.json();
-    rawCache = raw;
-    let periods = (raw.periods && raw.periods.length) ? raw.periods : extractPeriods(raw);
-    if (!periods.length) periods = buildPeriodsFromTeams(raw);
-    if (!periods.length) { periods = ['Guncel']; raw.tumSatislar = null; }
-    updatePeriodDropdown(periods);
-    currentPeriod = document.getElementById('period-select').value;
-    document.getElementById('dash-title').textContent = 'MoS Team - ' + currentPeriod;
-    renderDashboard(raw, currentPeriod);
-    const now = new Date();
-    document.getElementById('last-upd').textContent =
-      now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
-    document.getElementById('sdot').className = 'sdot';
-    document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
-    startCountdown();
-    rTimer = setInterval(() => fetchData(false), AUTO_SEC * 1000);
-  } catch (e) {
-    console.error('[MoS] fetchData hatası:', e.message, e);
-    document.getElementById('sdot').className = 'sdot error';
-    document.getElementById('smsg').textContent = 'Hata: ' + e.message + ' (console F12)';
-    rTimer = setInterval(() => fetchData(false), AUTO_SEC * 1000);
-  } finally {
-    const ic = document.getElementById('rico');
-    if (ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
-    btn.disabled = false;
-  }
+  var opts = manual ? {cache:'no-cache'} : {};
+  fetch(API + '?t=' + Date.now(), opts)
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(raw) {
+      rawCache = raw;
+      var periods = (raw.periods && raw.periods.length) ? raw.periods : extractPeriods(raw);
+      if (!periods.length) periods = buildPeriodsFromTeams(raw);
+      if (!periods.length) { periods = ['Guncel']; raw.tumSatislar = null; }
+      updatePeriodDropdown(periods);
+      currentPeriod = document.getElementById('period-select').value;
+      document.getElementById('dash-title').textContent = 'MoS Team - ' + currentPeriod;
+      renderDashboard(raw, currentPeriod);
+      var now = new Date();
+      document.getElementById('last-upd').textContent = now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR');
+      document.getElementById('sdot').className = 'sdot';
+      document.getElementById('smsg').textContent = 'Veriler basariyla guncellendi.';
+      startCountdown();
+      rTimer = setInterval(function(){fetchData(false);}, AUTO_SEC*1000);
+    })
+    .catch(function(e) {
+      document.getElementById('sdot').className = 'sdot error';
+      document.getElementById('smsg').textContent = 'Hata: ' + e.message;
+      rTimer = setInterval(function(){fetchData(false);}, AUTO_SEC*1000);
+    })
+    .finally(function() {
+      var ic = document.getElementById('rico');
+      if (ic) ic.outerHTML = '<span class="ms" id="rico">refresh</span>';
+      btn.disabled = false;
+    });
 }
 
 fetchData(false);
+
 </script>
 </body>
 
