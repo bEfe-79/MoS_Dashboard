@@ -727,17 +727,28 @@ tr.clickable:hover td {
   .hstats {
     margin:0 auto}
   .header {
-    flex-wrap:wrap;
     gap:8px;
     padding:10px 12px}
   .logo {
     flex:1;
-    min-width:0}
+    min-width:0;
+    gap:7px}
+  .logo h2 {
+    font-size:13px}
+  .logo svg {
+    width:22px;
+    height:22px}
+  .period-select {
+    padding:5px 8px;
+    font-size:10px;
+    max-width:130px}
   .hdr-r {
-    flex-wrap:wrap;
-    gap:6px}
+    gap:8px;
+    flex-shrink:0}
   .upd-box {
     display:none}
+  .btn-p {
+    padding:8px 12px}
   .nm {
     max-width:70px;
     font-size:11px}
@@ -756,6 +767,18 @@ tr.clickable:hover td {
 @media(max-width:500px) {
       .main {
     padding:10px 10px 80px}
+  .header {
+    padding:9px 10px}
+  .logo h2 {
+    font-size:12px}
+  .period-select {
+    max-width:110px;
+    font-size:9px;
+    padding:5px 7px}
+  .btn-txt {
+    display:none}
+  .btn-p {
+    padding:8px 10px}
   .hero-info h1 {
     font-size:18px}
   .lgrid {
@@ -780,12 +803,12 @@ tr.clickable:hover td {
 <option value="">Yukleniyor...</option></select>
 </div>
 <div class="hdr-r">
-<div>
+<div class="upd-box">
 <div class="upd-lbl">Son Guncelleme</div>
 <div class="upd-val" id="last-upd">—</div>
 </div>
 <button class="btn btn-p" id="rbtn" onclick="fetchData(true)">
-<span id="rico" class="ms">refresh</span> Guncelle    </button>
+<span id="rico" class="ms">refresh</span> <span class="btn-txt">Guncelle</span></button>
 </div></header>
 <div class="main">
 <div class="sbar">
@@ -1161,7 +1184,19 @@ function processData(raw) {
     teams[nm] = {total:total, hedef:hedef, teamOK:teamOK, members:members};
   });
   all.sort(function(a,b){return (b.primPct||0)-(a.primPct||0)||b.score-a.score;});
-  return {teams:teams, all:all};
+
+  // Takimlari hedefe ulasma oranina gore sirala (yuksek > dusuk)
+  var orderedTeams = {};
+  Object.keys(teams)
+    .map(function(nm) {
+      var t = teams[nm];
+      var oran = t.hedef > 0 ? (t.total / t.hedef) : 0;
+      return {nm: nm, oran: oran};
+    })
+    .sort(function(a, b) { return b.oran - a.oran; })
+    .forEach(function(o) { orderedTeams[o.nm] = teams[o.nm]; });
+
+  return {teams:orderedTeams, all:all};
 }
 
 var currentAll = [];
